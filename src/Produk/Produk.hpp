@@ -1,9 +1,8 @@
 #include <iostream>
+#include "../Entitas/Entitas.hpp"
+
 using namespace std;
 
-class Entitas {      // ABC
-
-};
 
 class Produk : Entitas {      // ABC
     private:
