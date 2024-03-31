@@ -5,9 +5,9 @@ using namespace std;
 
 
 class Produk : Entitas {      // ABC
-    private:
-        int berat_tambahan;
-        string origin;
+    protected:
+        int berat_tambahan;     // tambahan berat untuk pemakan produk ini
+        string origin;          // Nama tanaman asal produk
     public:
         Produk(int berat_tambahan, string origin);      // ctor
         ~Produk();                                      // dtor
@@ -17,5 +17,5 @@ class Produk : Entitas {      // ABC
         void set_origin(string origin);                
         int get_berat_tambahan();                       // getter
         string get_origin();    
-        void print_info();                              // print info
+        virtual void print_info() = 0;                              // print info
 };
