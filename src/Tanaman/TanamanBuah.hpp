@@ -7,4 +7,4 @@ class TanamanBuah: public Tanaman {
         TanamanBuah(TanamanBuah &other); // cctor
         ~TanamanBuah(); // dtor
         TanamanBuah operator=(const TanamanBuah &other); // operator =
-}
+};

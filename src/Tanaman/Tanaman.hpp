@@ -15,4 +15,4 @@ class Tanaman: public Entitas {
         int dapatkan_umur_panen();
         void tambah_umur(); // increment umur
         bool bisa_panen(); 
-}
+};
