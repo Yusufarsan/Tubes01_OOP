@@ -7,4 +7,9 @@ using namespace std;
 class Bangunan : public Entitas {
 private:
     map<ProdukTanamanMaterial, int> resep_tanaman;
+public:
+    Bangunan();
+    ~Bangunan();
+    Bangunan(Bangunan const& other);
+    Bangunan& operator=(Bangunan const& other);
 };

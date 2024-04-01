@@ -12,4 +12,9 @@ private:
     vector<Hewan> hewan;
     vector<Produk> produk;
     vector<Bangunan> bangunan;
+public:
+    Toko();
+    ~Toko();
+    Toko(Toko const& other);
+    Toko& operator=(Toko const& other);
 };
