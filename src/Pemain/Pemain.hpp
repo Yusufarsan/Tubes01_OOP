@@ -13,7 +13,7 @@ class Pemain{
         int berat_badan;
     
     public:
-        Pemain(string nama);
+        Pemain(string nama, int uang, int berat_badan);
         ~Pemain();
 
         string dapatkan_nama(); // getter
@@ -23,8 +23,10 @@ class Pemain{
         int dapatkan_berat_badan(); // getter
         
         void cetak_peti();
-        void tambah_peti(string slot, Entitas val);
-        Entitas hapus_peti(string slot);
+        void tambah_peti(string slot, Entitas* val);
+        Entitas* hapus_peti(string slot);
+        bool cek_slot_peti(string slot);        // cek slot ada di peti atau tidak
+
         void jual();
         void beli();
         void makan();
