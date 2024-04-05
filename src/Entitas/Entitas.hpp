@@ -12,4 +12,5 @@ public:
     ~Entitas();
     Entitas(Entitas const& other);
     Entitas& operator=(Entitas const& other);
+    virtual void print_info() = 0;
 };
