@@ -13,9 +13,9 @@ class Produk : Entitas {      // ABC
         ~Produk();                                      // dtor
         Produk& operator=(const Produk &produk);        // operator=
         
-        void set_berat_tambahan(int berat_tambahan);    // setter
-        void set_origin(string origin);                
-        int get_berat_tambahan();                       // getter
-        string get_origin();    
+        void atur_berat_tambahan(int berat_tambahan);    // setter
+        void atur_origin(string origin);                
+        int dapatkan_berat_tambahan();                       // getter
+        string dapatkan_origin();    
         virtual void print_info() = 0;                              // print info
 };
