@@ -1,3 +1,6 @@
+#ifndef ENTITAS_HPP
+#define ENTITAS_HPP
+
 #include <iostream>
 using namespace std;
 
@@ -14,3 +17,5 @@ public:
     Entitas& operator=(Entitas const& other);
     virtual void print_info() = 0;
 };
+
+#endif

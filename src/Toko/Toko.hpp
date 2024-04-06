@@ -1,3 +1,6 @@
+#ifndef TOKO_HPP
+#define TOKO_HPP
+
 #include <iostream>
 #include <vector>
 #include "../Hewan/Hewan.hpp"
@@ -18,3 +21,5 @@ public:
     Toko(Toko const& other);
     Toko& operator=(Toko const& other);
 };
+
+#endif
