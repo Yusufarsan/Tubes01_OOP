@@ -5,14 +5,15 @@ class Hewan: public Entitas {
         const int berat_panen;
         int berat;
     public:
-        Hewan(int berat_panen); // ctor (default berat = 0)
+        Hewan(string id, string kode_huruf, string nama, int harga, int berat_panen); // ctor (default berat = 0)
         Hewan(Hewan &other); // cctor
         ~Hewan(); // dtor
-        Hewan operator=(const Hewan &other); // operator =
+        Hewan& operator=(const Hewan &other); // operator =
 
         int dapatkan_berat(); // getter
         int dapatkan_berat_panen();
-        void tambah_berat(); // increment berat
+        void tambah_berat(int num); // increment berat
         bool bisa_panen(); 
-        virtual void makan();
+        virtual void makan()=0;
+        void print_info();
 };
