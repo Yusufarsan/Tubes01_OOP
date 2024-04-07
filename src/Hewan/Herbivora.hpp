@@ -1,3 +1,6 @@
+#ifndef HERBIVORA_HPP
+#define HERBIVORA_HPP
+
 #include "Hewan.hpp"
 #include "../Produk/Produk.hpp"
 
@@ -13,3 +16,5 @@ class Herbivora: public Hewan {
         void makan(Produk *makanan);
 
 };
+
+#endif

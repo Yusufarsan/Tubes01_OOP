@@ -1,3 +1,6 @@
+#ifndef HEWAN_HPP
+#define HEWAN_HPP
+
 #include "../Entitas/Entitas.hpp"
 
 class Hewan: public Entitas {
@@ -17,3 +20,5 @@ class Hewan: public Entitas {
         virtual void makan()=0;
         void print_info();
 };
+
+#endif

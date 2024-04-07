@@ -1,3 +1,6 @@
+#ifndef OMNIVORA_HPP
+#define OMNIVORA_HPP
+
 #include "Hewan.hpp"
 #include "Produk/Produk.hpp"
 
@@ -12,3 +15,5 @@ class Omnivora: public Hewan {
 
         void makan(Produk *makanan);
 };
+
+#endif
