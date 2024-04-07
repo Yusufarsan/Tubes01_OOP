@@ -1,19 +1,24 @@
+#ifndef PETERNAK_HPP
+#define PETERNAK_HPP
+
 #include "Pemain.hpp"
 #include "../Hewan/Hewan.hpp"
 
 class Peternak: public Pemain{
-    protected:
-        vector<vector<Hewan>> peternakan;
+    private:
+        vector<vector<Hewan*>> peternakan;
     public:
         Peternak(string nama);
-        Peternak(const Peternak& other); // cctor
-        ~Peternak(); // dtor
+        ~Peternak();
         
-        void cetak_peternakan();
+        void cetak_peternakan(bool isWarna);
+        bool cek_slot_peternakan_valid(string slot);
         void ternak();
-        void tambah_peternakan(string slot, Entitas val);
-        Hewan hapus_peternakan(string slot);
-        void kasih_makan();
+        void tambah_peternakan(string slot, Hewan* val);
+        Hewan* hapus_peternakan(string slot);
+        void beri_pangan();
         void panen();
         int hitung_pajak();
 };
+
+#endif
