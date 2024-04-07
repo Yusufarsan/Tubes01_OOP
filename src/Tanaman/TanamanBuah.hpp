@@ -1,3 +1,6 @@
+#ifndef TANAMANBUAH_HPP
+#define TANAMANBUAH_HPP
+
 #include "Tanaman.hpp"
 
 class TanamanBuah: public Tanaman {
@@ -6,5 +9,7 @@ class TanamanBuah: public Tanaman {
         TanamanBuah(int umur_panen); // ctor
         TanamanBuah(TanamanBuah &other); // cctor
         ~TanamanBuah(); // dtor
-        TanamanBuah operator=(const TanamanBuah &other); // operator =
+        TanamanBuah& operator=(const TanamanBuah &other); // operator =
 };
+
+#endif

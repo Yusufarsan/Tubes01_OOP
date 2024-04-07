@@ -1,3 +1,6 @@
+#ifndef TANAMANMATERIAL_HPP
+#define TANAMANMATERIAL_HPP
+
 #include "Tanaman.hpp"
 
 class TanamanMaterial: public Tanaman {
@@ -6,5 +9,7 @@ class TanamanMaterial: public Tanaman {
         TanamanMaterial(int umur_panen); // ctor
         TanamanMaterial(TanamanMaterial &other); // cctor
         ~TanamanMaterial(); // dtor
-        TanamanMaterial operator=(const TanamanMaterial &other); // operator =
+        TanamanMaterial& operator=(const TanamanMaterial &other); // operator =
 };
+
+#endif
