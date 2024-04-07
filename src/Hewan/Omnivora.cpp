@@ -1,5 +1,5 @@
 #include "Omnivora.hpp"
-#include "../utils/utils.cpp"
+#include "../Util/Util.hpp"
 #include "../Produk/ProdukHewan.hpp"
 #include "../Produk/ProdukTanamanBuah.hpp"
 #include <iostream>
@@ -18,7 +18,7 @@ Omnivora& Omnivora::operator=(const Omnivora& other){
 }
 
 void Omnivora::makan(Produk *makanan){
-    if(instanceof<ProdukTanamanBuah>(makanan)||instanceof<ProdukHewan>(makanan)){
+    if(Util::instanceof<ProdukTanamanBuah>(makanan)||Util::instanceof<ProdukHewan>(makanan)){
         //melakukan proses makan
         tambah_berat(makanan->dapatkan_berat_tambahan());
         cout << "Berhasil makan" <<endl;

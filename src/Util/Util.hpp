@@ -15,6 +15,11 @@ public:
     static string label_kolom_tabel(int indeks);
     static int indeks_baris_slot(const string& nama_baris);
     static int indeks_kolom_slot(const string& nama_kolom);
+    
+    template<typename Base, typename T>
+    static inline bool instanceof(const T *ptr) {
+    return dynamic_cast<const Base*>(ptr) != nullptr;
+    }
 };
 
 #endif

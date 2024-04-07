@@ -1,5 +1,5 @@
 #include "Herbivora.hpp"
-#include "../utils/utils.cpp"
+#include "../Util/Util.hpp"
 #include "../Produk/ProdukTanamanBuah.hpp"
 #include <iostream>
 
@@ -17,7 +17,7 @@ Herbivora& Herbivora::operator=(const Herbivora& other){
 }
 
 void Herbivora::makan(Produk *makanan){
-    if(instanceof<ProdukTanamanBuah>(makanan)){
+    if(Util::instanceof<ProdukTanamanBuah>(makanan)){
         //melakukan proses makan
         tambah_berat(makanan->dapatkan_berat_tambahan());
         cout << "Berhasil makan" <<endl;

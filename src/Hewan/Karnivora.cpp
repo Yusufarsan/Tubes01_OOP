@@ -1,5 +1,5 @@
 #include "Karnivora.hpp"
-#include "../utils/utils.cpp"
+#include "../Util/Util.hpp"
 #include "../Produk/ProdukHewan.hpp"
 #include <iostream>
 
@@ -17,7 +17,7 @@ Karnivora& Karnivora::operator=(const Karnivora& other){
 }
 
 void Karnivora::makan(Produk *makanan){
-    if(instanceof<ProdukHewan>(makanan)){
+    if(Util::instanceof<ProdukHewan>(makanan)){
         //melakukan proses makan
         tambah_berat(makanan->dapatkan_berat_tambahan());
         cout << "Berhasil makan" <<endl;
