@@ -1,3 +1,6 @@
+#ifndef BANGUNAN_HPP
+#define BANGUNAN_HPP
+
 #include <iostream>
 #include <map>
 #include "../Entitas/Entitas.hpp"
@@ -8,8 +11,10 @@ class Bangunan : public Entitas {
 private:
     map<ProdukTanamanMaterial, int> resep_tanaman;
 public:
-    Bangunan();
+    Bangunan(string id, string kode_huruf, string nama, int harga);
     ~Bangunan();
     Bangunan(Bangunan const& other);
     Bangunan& operator=(Bangunan const& other);
 };
+
+#endif
