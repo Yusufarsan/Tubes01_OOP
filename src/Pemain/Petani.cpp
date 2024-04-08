@@ -1,4 +1,5 @@
 #include "Petani.hpp"
+#include "../pcolor/pcolor.h"
 #include <cmath>
 
 // Ganti 50, 10, 15, 10 sesuai konfig
@@ -69,13 +70,22 @@ void Petani::cetak_ladang(bool isWarna){
                 Tanaman* val = ladang[n-1][m];
                 if (isWarna){
                     if (val->bisa_panen()){
-                        // print warna
-                        cout << " " << val->dapatkan_kode_huruf() << " |";
+                        cout << " ";
+                        
+                        for (char c: val->dapatkan_kode_huruf()){
+                            print_green(c);
+                        }
 
+                        cout << " |";
                     }
                     else{
-                        // print warna
-                        cout << " " << val->dapatkan_kode_huruf() << " |";
+                        cout << " ";
+                        
+                        for (char c: val->dapatkan_kode_huruf()){
+                            print_red(c);
+                        }
+
+                        cout << " |";
                     }
                 }
                 else{
@@ -147,13 +157,13 @@ void Petani::tanam(){
 };
 
 
-void Petani::tambah_ladang(string slot, Tanaman* val){
+void Petani::tambah_ladang(string slot, Tanaman& val){
     if (cek_slot_ladang_valid(slot)){
         int i = Util::indeks_baris_slot(slot);
         int j = Util::indeks_kolom_slot(slot);
 
         if (ladang[i][j] == nullptr){
-            ladang[i][j] = val;
+            ladang[i][j] = &val;
         }
         else{
             cout << "Ada isinya" << endl;

@@ -1,6 +1,8 @@
 #include "Pemain.hpp"
 
 int main(){
+    Herbivora kambing("1", "GOT", "mbek", 20, 5);
+
     cout << "constructor" << endl;
     Pemain player("Mage Tiktok", 50, 60);
     cout << player;
@@ -16,11 +18,11 @@ int main(){
     player.atur_berat_badan(60);
     cout << player.dapatkan_berat_badan() << endl;
 
+    player.tambah_peti("A01", kambing);
 
     cout << endl << "cetak_peti" << endl;
     player.cetak_peti();
 
-    // player.tambah_peti("AB13", Entitas* stuff);
 
     cout << endl << "jualan" << endl;
     player.jual();

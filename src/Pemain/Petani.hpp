@@ -17,7 +17,7 @@ class Petani: public Pemain{
         bool cek_slot_ladang_valid(string slot);
         
         void tanam();
-        void tambah_ladang(string slot, Tanaman* val);
+        void tambah_ladang(string slot, Tanaman& val);
         Tanaman* hapus_ladang(string slot);
         void panen();
         int hitung_pajak();
