@@ -2,7 +2,7 @@
 #define OMNIVORA_HPP
 
 #include "Hewan.hpp"
-#include "Produk/Produk.hpp"
+#include "../Produk/Produk.hpp"
 
 class Omnivora: public Hewan {
     private:

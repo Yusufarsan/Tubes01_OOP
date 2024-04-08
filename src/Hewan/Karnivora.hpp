@@ -2,7 +2,7 @@
 #define KARNIVORA_HPP
 
 #include "Hewan.hpp"
-#include "Produk/Produk.hpp"
+#include "../Produk/Produk.hpp"
 
 class Karnivora: public Hewan {
     private:
