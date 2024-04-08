@@ -35,6 +35,9 @@ void Pemain::cetak_peti(){
     int maxLengthRowCode = Util::label_baris_tabel(numRow).length();
     int maxLengthColCode = Util::label_kolom_tabel(numCol).length();
 
+    // Cetak judul tabel
+    cout << "    ================[ Penyimpanan ]==================\n\n";
+
     // cetak nama kolom
     for (int n = 1; n <= numCol; ++n){
         if (n == 1){
@@ -169,6 +172,21 @@ int Pemain::jumlah_slot_kosong_peti(){
     return emptySlot;
 };
 
+bool Pemain::cek_bisa_dimakan(string& slot){        // Belom di test
+    if (cek_slot_peti_valid(slot)){
+        int idxRow = Util::indeks_baris_slot(slot);
+        int idxCol = Util::indeks_kolom_slot(slot);
+
+        if (peti[idxRow][idxCol] != nullptr){
+            if (Produk* produk = dynamic_cast<Produk*>(peti[idxRow][idxCol])) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void Pemain::jual(){
     cetak_peti();
 
@@ -213,51 +231,48 @@ void Pemain::beli(){
     }
 }
 
-void Pemain::makan(){
-    cetak_peti();
+void Pemain::makan(){       // Belom di test dan tinggal perbaikin print-an
+    cout << "Pilih makanan dari penyimpanan\n\n";
 
-    if (jumlah_slot_kosong_peti() == (peti.size() * peti[0].size())){
-        cout << "Peti nya kosong! Mau makan angin?" << endl;
+    this->cetak_peti();
+
+    while (true) {
+        try {
+            string slot;
+            cout << "Slot: ";
+            cin >> slot;
+            cout << endl;
+
+            if (!this->cek_slot_peti_valid(slot)) {   // Validasi slot
+                throw "Slot tidak valid\n";
+            }
+
+            // Validasi isi sloat kosong atau tidak
+            if (this->peti[Util::indeks_baris_slot(slot)][Util::indeks_kolom_slot(slot)] == nullptr) {
+                throw "Slot yang dipilih kosong\n";
+            }
+
+            if (!this->cek_bisa_dimakan(slot)) {   // Validasi makanan
+                // Handle the case where makanan is not a Produk
+                throw "Slot yang dipilih tidak bisa dimakan\n";
+            }
+
+            Entitas* makanan = this->hapus_peti(slot);
+
+            if (Produk* produk = dynamic_cast<Produk*>(makanan)) {
+                this->atur_berat_badan(this->dapatkan_berat_badan() + produk->dapatkan_berat_tambahan());
+            } else {
+                // Handle the case where makanan is not a Produk
+                throw "Slot yang dipilih tidak bisa dimakan\n";
+            }
+
+            cout << "Dengan lahapnya, kamu memakanan hidangan itu\n";
+            cout << "Alhasil, berat badan kamu naik menjadi " << this->dapatkan_berat_badan() << "\n\n";
+        }
+        catch (const char* e) {
+            cout << e << endl << endl;
+        }
     }
-    else{
-        string slot_masukan;
-        cout << "Mau makan slot berapa? ";
-        cin >> slot_masukan;
-
-        cout << slot_masukan << endl;
-    }
-
-
-    // cout << "Pilih makanan dari penyimpanan\n\n";
-
-    // this->cetak_peti();
-
-    // while (true) {
-    //     try {
-    //         string slot;
-    //         cout << "\nSlot: ";
-    //         cin >> slot;
-    //         cout << endl;
-
-    //         if (!this->cek_slot_peti_valid(slot)) {   // Validasi slot
-    //             throw ;
-    //         }
-
-    //         Entitas* makanan = this->hapus_peti(slot);
-
-    //         if (Produk* produk = dynamic_cast<Produk*>(makanan)) {
-    //             this->atur_berat_badan(this->dapatkan_berat_badan() + produk->dapatkan_berat_tambahan());
-    //         } else {
-    //             // Handle the case where makanan is not a Produk
-    //             throw;
-    //         }
-
-    //         // cout << 
-    //     }
-    //     catch (...) {
-    //         cout << "Slot tidak valid\n";
-    //     }
-    // }
 
 }
 

@@ -34,6 +34,7 @@ class Pemain{
         Entitas* hapus_peti(string slot);
         bool cek_slot_peti_valid(string slot);
         int jumlah_slot_kosong_peti();
+        bool cek_bisa_dimakan(string& slot);
 
         void jual();
         void beli();
