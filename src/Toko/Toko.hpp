@@ -7,16 +7,18 @@
 #include "../Tanaman/Tanaman.hpp"
 #include "../Produk/Produk.hpp"
 #include "../Bangunan/Bangunan.hpp"
+#include "../InputKonfigurasi/InputKonfigurasi.hpp"
+
 using namespace std;
 
 class Toko {
 private:
-    vector<Tanaman> tanaman;
-    vector<Hewan> hewan;
-    vector<Produk> produk;
+    vector<Tanaman*> tanaman;
+    vector<Hewan*> hewan;
+    vector<Produk*> produk;
     vector<Bangunan> bangunan;
 public:
-    Toko();
+    Toko(string path);
     ~Toko();
     Toko(const Toko& other);
     Toko& operator=(const Toko& other);

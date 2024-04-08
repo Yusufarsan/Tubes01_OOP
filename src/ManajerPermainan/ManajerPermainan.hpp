@@ -5,6 +5,7 @@
 #include <vector>
 #include "../Pemain/Pemain.hpp"
 #include "../InputKonfigurasi/InputKonfigurasi.hpp"
+#include "../Toko/Toko.hpp"
 
 using namespace std;
 
@@ -17,9 +18,14 @@ private:
     vector<Tanaman*> daftar_tanaman;
     vector<Hewan*> daftar_hewan;
     vector<Produk*> daftar_produk;
+    vector<Bangunan> daftar_bangunan;
+
+    Toko toko = Toko("../config");
 public:
-    ManagerPermainan();
+    ManagerPermainan(string path);
     ~ManagerPermainan();
+
+    void print_konfigurasi();
 };
 
 #endif

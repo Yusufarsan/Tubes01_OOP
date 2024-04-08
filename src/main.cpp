@@ -1,8 +1,11 @@
 #include <iostream>
+#include "./ManajerPermainan/ManajerPermainan.hpp"
 
-using std::cout;
+using namespace std;
 
 int main() {
-    cout << "Hello, World!" << std::endl;
+    ManagerPermainan mp = ManagerPermainan("../config");
+
+    mp.print_konfigurasi();
     return 0;
 }
