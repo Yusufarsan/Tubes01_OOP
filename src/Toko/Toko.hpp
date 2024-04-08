@@ -13,11 +13,12 @@ using namespace std;
 
 class Toko {
 private:
-    vector<Tanaman*> tanaman;
-    vector<Hewan*> hewan;
-    vector<Produk*> produk;
+    vector<shared_ptr<Tanaman>> tanaman;
+    vector<shared_ptr<Hewan>> hewan;
+    vector<shared_ptr<Produk>> produk;
     vector<Bangunan> bangunan;
 public:
+    Toko();
     Toko(string path);
     ~Toko();
     Toko(const Toko& other);

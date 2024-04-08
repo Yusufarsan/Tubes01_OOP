@@ -11,23 +11,7 @@ ManagerPermainan::ManagerPermainan(string path) {
     this->toko = Toko(path);
 }
 
-ManagerPermainan::~ManagerPermainan() {
-    for (int i = 0; i < this->daftar_tanaman.size(); i++) {
-        delete this->daftar_tanaman[i];
-    }
-
-    for (int i = 0; i < this->daftar_hewan.size(); i++) {
-        delete this->daftar_hewan[i];
-    }
-
-    for (int i = 0; i < this->daftar_produk.size(); i++) {
-        delete this->daftar_produk[i];
-    }
-
-    for (int i = 0; i < this->daftar_pemain.size(); i++) {
-        delete this->daftar_pemain[i];
-    }
-}
+ManagerPermainan::~ManagerPermainan() {}
 
 void ManagerPermainan::print_konfigurasi() {
     cout << "Daftar Tanaman:" << endl;

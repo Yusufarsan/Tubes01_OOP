@@ -1,8 +1,8 @@
 #include "InputKonfigurasi.hpp"
 
 
-vector<Tanaman*> InputKonfigurasi::InputKonfigurasiTanaman(string nama_file) {
-    vector<Tanaman*> daftar_tanaman;
+vector<shared_ptr<Tanaman>> InputKonfigurasi::InputKonfigurasiTanaman(string nama_file) {
+    vector<shared_ptr<Tanaman>> daftar_tanaman;
     ifstream file;
     file.open(nama_file);
     if (file.is_open()) {
@@ -17,12 +17,12 @@ vector<Tanaman*> InputKonfigurasi::InputKonfigurasiTanaman(string nama_file) {
             int harga = stoi(data[5]);
 
             if (tipe == "MATERIAL_PLANT") {
-                Tanaman* tanaman = new TanamanMaterial(id, kode_huruf, nama, harga, umur_panen);
-                daftar_tanaman.push_back(tanaman);
+                shared_ptr<Tanaman> tanaman = make_unique<TanamanMaterial>(id, kode_huruf, nama, harga, umur_panen);
+                daftar_tanaman.push_back(move(tanaman));
             }
             else if (tipe == "FRUIT_PLANT") {
-                Tanaman* tanaman = new TanamanBuah(id, kode_huruf, nama, harga, umur_panen);
-                daftar_tanaman.push_back(tanaman);
+                shared_ptr<Tanaman> tanaman = make_unique<TanamanBuah>(id, kode_huruf, nama, harga, umur_panen);
+                daftar_tanaman.push_back(move(tanaman));
             }
         }
 
@@ -32,8 +32,8 @@ vector<Tanaman*> InputKonfigurasi::InputKonfigurasiTanaman(string nama_file) {
     return daftar_tanaman;
 }
 
-vector<Hewan*> InputKonfigurasi::InputKonfigurasiHewan(string nama_file) {
-    vector<Hewan*> daftar_hewan;
+vector<shared_ptr<Hewan>> InputKonfigurasi::InputKonfigurasiHewan(string nama_file) {
+    vector<shared_ptr<Hewan>> daftar_hewan;
     ifstream file;
     file.open(nama_file);
     if (file.is_open()) {
@@ -48,16 +48,16 @@ vector<Hewan*> InputKonfigurasi::InputKonfigurasiHewan(string nama_file) {
             int harga = stoi(data[5]);
 
             if (tipe == "HERBIVORE") {
-                Hewan* hewan = new Herbivora(id, kode_huruf, nama, harga, berat);
-                daftar_hewan.push_back(hewan);
+                shared_ptr<Hewan> hewan = make_unique<Herbivora>(id, kode_huruf, nama, harga, berat);
+                daftar_hewan.push_back(move(hewan));
             }
             else if (tipe == "CARNIVORE") {
-                Hewan* hewan = new Karnivora(id, kode_huruf, nama, harga, berat);
-                daftar_hewan.push_back(hewan);
+                shared_ptr<Hewan> hewan = make_unique<Karnivora>(id, kode_huruf, nama, harga, berat);
+                daftar_hewan.push_back(move(hewan));
             }
             else if (tipe == "OMNIVORE") {
-                Hewan* hewan = new Omnivora(id, kode_huruf, nama, harga, berat);
-                daftar_hewan.push_back(hewan);
+                shared_ptr<Hewan> hewan = make_unique<Omnivora>(id, kode_huruf, nama, harga, berat);
+                daftar_hewan.push_back(move(hewan));
             }
         }
 
@@ -67,8 +67,8 @@ vector<Hewan*> InputKonfigurasi::InputKonfigurasiHewan(string nama_file) {
     return daftar_hewan;
 }
 
-vector<Produk*> InputKonfigurasi::InputKonfigurasiProduk(string nama_file) {
-    vector<Produk*> daftar_produk;
+vector<shared_ptr<Produk>> InputKonfigurasi::InputKonfigurasiProduk(string nama_file) {
+    vector<shared_ptr<Produk>> daftar_produk;
     ifstream file;
     file.open(nama_file);
     if (file.is_open()) {
@@ -84,16 +84,16 @@ vector<Produk*> InputKonfigurasi::InputKonfigurasiProduk(string nama_file) {
             int harga = stoi(data[6]);
 
             if (tipe == "PRODUCT_MATERIAL_PLANT") {
-                Produk* produk = new ProdukTanamanMaterial(id, kode_huruf, nama, harga, berat_tambahan, origin);
-                daftar_produk.push_back(produk);
+                shared_ptr<Produk> produk = make_unique<ProdukTanamanMaterial>(id, kode_huruf, nama, harga, berat_tambahan, origin);
+                daftar_produk.push_back(move(produk));
             }
             else if (tipe == "PRODUCT_FRUIT_PLANT") {
-                Produk* produk = new ProdukTanamanBuah(id, kode_huruf, nama, harga, berat_tambahan, origin);
-                daftar_produk.push_back(produk);
+                shared_ptr<Produk> produk = make_unique<ProdukTanamanBuah>(id, kode_huruf, nama, harga, berat_tambahan, origin);
+                daftar_produk.push_back(move(produk));
             }
             else if (tipe == "PRODUCT_ANIMAL") {
-                Produk* produk = new ProdukHewan(id, kode_huruf, nama, harga, berat_tambahan, origin);
-                daftar_produk.push_back(produk);
+                shared_ptr<Produk> produk = make_unique<ProdukHewan>(id, kode_huruf, nama, harga, berat_tambahan, origin);
+                daftar_produk.push_back(move(produk));
             }
         }
 

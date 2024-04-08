@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <memory>
 #include "../Tanaman/Tanaman.hpp"
 #include "../Tanaman/TanamanMaterial.hpp"
 #include "../Tanaman/TanamanBuah.hpp"
@@ -18,13 +19,14 @@
 #include "../Bangunan/Bangunan.hpp"
 #include "../Util/Util.hpp"
 
+
 using namespace std;
 
 class InputKonfigurasi {
 public:
-    static vector<Tanaman*> InputKonfigurasiTanaman(string nama_file);
-    static vector<Hewan*> InputKonfigurasiHewan(string nama_file);
-    static vector<Produk*> InputKonfigurasiProduk(string nama_file);
+    static vector<shared_ptr<Tanaman>> InputKonfigurasiTanaman(string nama_file);
+    static vector<shared_ptr<Hewan>> InputKonfigurasiHewan(string nama_file);
+    static vector<shared_ptr<Produk>> InputKonfigurasiProduk(string nama_file);
     static vector<Bangunan> InputKonfigurasiResepBangunan(string nama_file);
 };
 
