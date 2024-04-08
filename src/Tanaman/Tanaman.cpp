@@ -1,18 +1,27 @@
 #include "Tanaman.hpp"
 
-Tanaman::Tanaman(int umur_panen): umur_panen(umur_panen) {
+Tanaman::Tanaman(string id, string kode_huruf, string nama, int harga, int umur_panen):Entitas(id, kode_huruf, nama, harga) {
+    this->umur_panen = umur_panen;
     umur = 0;
 } 
 
-Tanaman::Tanaman(Tanaman &other): umur_panen(other.umur_panen) {
+Tanaman::Tanaman(const Tanaman &other): Entitas(other) {
+    umur_panen = other.umur_panen;
     umur = other.umur;
 }
 
 Tanaman::~Tanaman() {}
 
-Tanaman& Tanaman::operator=(const Tanaman &other): umur_panen(other.umur_panen) {
-    umur = other.umur;
-    return *this
+Tanaman& Tanaman::operator=(const Tanaman &other) {
+    if (this != &other) {
+        this->id = other.id;
+        this->kode_huruf = other.kode_huruf;
+        this->nama = other.nama;
+        this->harga = other.harga;
+        this->umur_panen = other.umur_panen;
+        this->umur = other.umur;
+    }
+    return *this;
 }
 
 int Tanaman::dapatkan_umur() {
@@ -33,3 +42,12 @@ bool Tanaman::bisa_panen() {
     }
     return false;
 } 
+
+void Tanaman::print_info() {
+    cout << "ID: " << id << endl;
+    cout << "Kode Huruf: " << kode_huruf << endl;
+    cout << "Nama: " << nama << endl;
+    cout << "Harga: " << harga << endl;
+    cout << "Umur: " << umur << endl;
+    cout << "Umur Panen: " << umur_panen << endl;
+}
