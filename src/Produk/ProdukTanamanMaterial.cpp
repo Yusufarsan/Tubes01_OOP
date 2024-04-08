@@ -1,6 +1,6 @@
 #include "ProdukTanamanMaterial.hpp"
 
-ProdukTanamanMaterial::ProdukTanamanMaterial(int berat_tambahan, string origin) : Produk("", "", "", 0, berat_tambahan, origin) {}
+ProdukTanamanMaterial::ProdukTanamanMaterial(string id, string kode_huruf, string nama, int harga, int berat_tambahan, string origin) : Produk(id, kode_huruf, nama, harga, berat_tambahan, origin) {}
 
 ProdukTanamanMaterial::~ProdukTanamanMaterial() {}
 

@@ -2,7 +2,7 @@
 
 class ProdukTanamanMaterial : public Produk {
     public:
-        ProdukTanamanMaterial(int berat_tambahan, string origin); // ctor
+        ProdukTanamanMaterial(string id, string kode_huruf, string nama, int harga, int berat_tambahan, string origin); // ctor
         ~ProdukTanamanMaterial(); // dtor
         ProdukTanamanMaterial(const ProdukTanamanMaterial& other); // cctor
         ProdukTanamanMaterial& operator=(const ProdukTanamanMaterial& other); // operator=
