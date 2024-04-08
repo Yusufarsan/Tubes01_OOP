@@ -17,6 +17,15 @@ int main() {
     // Membuat objek omnivora
     Omnivora omnivore("003", "T", "Beruang", 150, 400);
     
+    
+    Herbivora her("004", "F", "Flaminggo", 200, 300);
+
+    
+    her = herbivore;
+    cout << "Hewan Herbivora assignment" << endl;
+    her.print_info(); 
+    cout << endl;
+
     // Mencetak informasi masing-masing hewan
     cout << "Hewan Herbivora" << endl;
     herbivore.print_info(); 

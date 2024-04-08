@@ -7,6 +7,8 @@ Hewan :: Hewan(Hewan& other): Entitas(other), berat(other.dapatkan_berat()), ber
 Hewan :: ~Hewan(){}
 
 Hewan& Hewan :: operator=(const Hewan& other){
+    berat = other.berat;
+    berat_panen = other.berat_panen;
     Entitas::operator=(other);
     return *this;
 }

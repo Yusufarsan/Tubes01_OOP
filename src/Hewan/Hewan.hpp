@@ -6,7 +6,7 @@
 
 class Hewan: public Entitas {
     protected:
-        const int berat_panen;
+        int berat_panen;
         int berat;
     public:
         Hewan(string id, string kode_huruf, string nama, int harga, int berat_panen); // ctor (default berat = 0)
