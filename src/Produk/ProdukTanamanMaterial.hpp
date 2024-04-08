@@ -1,6 +1,6 @@
 #include "Produk.hpp"
 
-class ProdukTanamanMaterial : Produk {
+class ProdukTanamanMaterial : public Produk {
     public:
         ProdukTanamanMaterial(int berat_tambahan, string origin); // ctor
         ~ProdukTanamanMaterial(); // dtor
