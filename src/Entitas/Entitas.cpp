@@ -25,3 +25,10 @@ Entitas& Entitas::operator=(Entitas const& other) {
     }
     return *this;
 }
+
+string Entitas::dapatkan_kode_huruf(){
+    return kode_huruf;
+};
+string Entitas::dapatkan_nama(){
+    return nama;
+};

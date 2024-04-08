@@ -1,4 +1,5 @@
 #include "Peternak.hpp"
+#include "../pcolor/pcolor.h"
 #include <cmath>
 
 // nanti ganti 50, 10, 15, 10
@@ -67,13 +68,22 @@ void Peternak::cetak_peternakan(bool isWarna){
                 Hewan* val = peternakan[n-1][m];
                 if (isWarna){
                     if (val->bisa_panen()){
-                        // print warna
-                        cout << " " << val->dapatkan_kode_huruf() << " |";
+                        cout << " ";
+                        
+                        for (char c: val->dapatkan_kode_huruf()){
+                            print_green(c);
+                        }
 
+                        cout << " |";
                     }
                     else{
-                        // print warna
-                        cout << " " << val->dapatkan_kode_huruf() << " |";
+                        cout << " ";
+                        
+                        for (char c: val->dapatkan_kode_huruf()){
+                            print_red(c);
+                        }
+
+                        cout << " |";
                     }
                 }
                 else{
@@ -118,13 +128,13 @@ void Peternak::ternak(){
     };
 };
 
-void Peternak::tambah_peternakan(string slot, Hewan* val){
+void Peternak::tambah_peternakan(string slot, Hewan& val){
     if (cek_slot_peternakan_valid(slot)){
         int i = Util::indeks_baris_slot(slot);
         int j = Util::indeks_kolom_slot(slot);
 
         if(peternakan[i][j] == nullptr){
-            peternakan[i][j] = val;
+            peternakan[i][j] = &val;
         }
         else{
             cout << "Ada isinya" << endl;

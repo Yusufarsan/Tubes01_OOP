@@ -4,6 +4,7 @@
 #include "../Entitas/Entitas.hpp"
 #include "../Hewan/Hewan.hpp"
 #include "../Tanaman/Tanaman.hpp"
+#include "../Hewan/Herbivora.hpp"
 #include "../Util/Util.hpp"
 #include <iostream>
 #include <vector>
@@ -29,7 +30,7 @@ class Pemain{
         int dapatkan_berat_badan();
         
         void cetak_peti();
-        void tambah_peti(string slot, Entitas* val);
+        void tambah_peti(string slot, Entitas& val);
         Entitas* hapus_peti(string slot);
         bool cek_slot_peti_valid(string slot);
         int jumlah_slot_kosong_peti();

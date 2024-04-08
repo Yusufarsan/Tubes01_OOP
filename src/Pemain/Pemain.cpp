@@ -85,7 +85,9 @@ void Pemain::cetak_peti(){
                 emptySlot++;
             }
             else{
-                cout << " " << "TAI" << " |";
+                cout << " ";
+                cout << peti[n-1][m]->dapatkan_kode_huruf(); // kode huruf
+                cout << " |";
             }
             
         }
@@ -107,13 +109,13 @@ void Pemain::cetak_peti(){
     cout << endl << "Total slot kosong: " << emptySlot << endl;
 }
 
-void Pemain::tambah_peti(string slot, Entitas* val){
+void Pemain::tambah_peti(string slot, Entitas& val){
     if (cek_slot_peti_valid(slot)){
         int i = Util::indeks_baris_slot(slot);
         int j = Util::indeks_kolom_slot(slot);
 
         if (peti[i][j] == nullptr){
-            peti[i][j] = val;
+            peti[i][j] = &val;
         }
         else{
             cout << "Ada isinya" << endl;

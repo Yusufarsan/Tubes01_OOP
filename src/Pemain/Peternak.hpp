@@ -14,7 +14,7 @@ class Peternak: public Pemain{
         void cetak_peternakan(bool isWarna);
         bool cek_slot_peternakan_valid(string slot);
         void ternak();
-        void tambah_peternakan(string slot, Hewan* val);
+        void tambah_peternakan(string slot, Hewan& val);
         Hewan* hapus_peternakan(string slot);
         void beri_pangan();
         void panen();
