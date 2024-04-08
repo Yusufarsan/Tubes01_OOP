@@ -9,14 +9,14 @@ Entitas::Entitas(string id, string kode_huruf, string nama, int harga) {
 
 Entitas::~Entitas() {}
 
-Entitas::Entitas(Entitas const& other) {
+Entitas::Entitas(const Entitas& other) {
     this->id = other.id;
     this->kode_huruf = other.kode_huruf;
     this->nama = other.nama;
     this->harga = other.harga;
 }
 
-Entitas& Entitas::operator=(Entitas const& other) {
+Entitas& Entitas::operator=(const Entitas& other) {
     if (this != &other) {
         this->id = other.id;
         this->kode_huruf = other.kode_huruf;
@@ -26,9 +26,9 @@ Entitas& Entitas::operator=(Entitas const& other) {
     return *this;
 }
 
-string Entitas::dapatkan_kode_huruf(){
+string Entitas::dapatkan_kode_huruf() {
     return kode_huruf;
 };
-string Entitas::dapatkan_nama(){
+string Entitas::dapatkan_nama() {
     return nama;
 };

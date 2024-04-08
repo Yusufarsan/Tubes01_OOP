@@ -18,8 +18,8 @@ private:
 public:
     Toko();
     ~Toko();
-    Toko(Toko const& other);
-    Toko& operator=(Toko const& other);
+    Toko(const Toko& other);
+    Toko& operator=(const Toko& other);
 };
 
 #endif
