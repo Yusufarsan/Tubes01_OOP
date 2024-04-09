@@ -1,11 +1,11 @@
 #include "Pemain.hpp"
 
-int main(){
+int main() {
     Herbivora kambing("1", "GOT", "mbek", 20, 5);
     TanamanBuah tomat("1", "TMT", "Tomat", 30, 20);
 
     cout << "constructor" << endl;
-    Pemain player("Mage Tiktok", 50, 60);
+    Pemain player("player", 1000, 50, make_tuple(2, 2));
     cout << player;
 
     cout << "dapatkan_nama" << endl;
@@ -53,6 +53,6 @@ int main(){
 
     // cout << endl << "makan" << endl;
     // player.makan();
-    
+
     return 0;
 }

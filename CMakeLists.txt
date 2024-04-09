@@ -14,10 +14,10 @@ add_executable(BCN_BacinPunya
             src/Hewan/Omnivora.cpp
             src/InputKonfigurasi/InputKonfigurasi.cpp
             src/ManajerPermainan/ManajerPermainan.cpp
-            # src/Pemain/Pemain.cpp
-            # src/Pemain/Petani.cpp
-            # src/Pemain/Peternak.cpp
-            # src/Pemain/Walikota.cpp
+            src/Pemain/Pemain.cpp
+            src/Pemain/Petani.cpp
+            src/Pemain/Peternak.cpp
+            src/Pemain/Walikota.cpp
             src/Produk/Produk.cpp
             src/Produk/ProdukHewan.cpp
             src/Produk/ProdukTanamanBuah.cpp
@@ -27,4 +27,5 @@ add_executable(BCN_BacinPunya
             src/Tanaman/TanamanMaterial.cpp
             src/Toko/Toko.cpp
             src/Util/Util.cpp
+            src/Pcolor/Pcolor.cpp
             )

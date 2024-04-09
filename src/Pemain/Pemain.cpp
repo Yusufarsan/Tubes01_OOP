@@ -124,43 +124,6 @@ void Pemain::cetak_peti() {
     cout << endl << "Total slot kosong: " << emptySlot << endl;
 }
 
-template<class T>
-void Pemain::tambah_peti(const string& slot, T& val) {
-    if (cek_slot_peti_valid(slot)) {
-        int i = Util::indeks_baris_slot(slot);
-        int j = Util::indeks_kolom_slot(slot);
-
-        if (!peti[i][j]) {
-            peti[i][j] = make_shared<T>(val);;
-        }
-        else {
-            cout << "Ada isinya" << endl;
-        }
-    }
-    else {
-        cout << "index out of bonds" << endl;
-    }
-}
-
-template<class T>
-void Pemain::tambah_peti(T& val) {
-    bool isInserted = false;
-
-    for (int i = 0; i < peti.size(); i++) {
-        for (int j = 0; j < peti[0].size(); j++) {
-            if (!peti[i][j]) {
-                peti[i][j] = make_shared<T>(val);
-                isInserted = true;
-                break;
-            }
-        }
-
-        if (isInserted) {
-            break;
-        }
-    }
-}
-
 Entitas* Pemain::hapus_peti(const string& slot) {
     if (cek_slot_peti_valid(slot)) {
         int idxRow = Util::indeks_baris_slot(slot);

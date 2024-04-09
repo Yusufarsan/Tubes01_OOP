@@ -2,10 +2,10 @@
 
 Toko::Toko() {}
 
-Toko::Toko(string path) {
-    this->tanaman = InputKonfigurasi::InputKonfigurasiTanaman(path + "/plant.txt");
-    this->hewan = InputKonfigurasi::InputKonfigurasiHewan(path + "/animal.txt");
-}
+// Toko::Toko(string path) {
+//     this->tanaman = InputKonfigurasi::InputKonfigurasiTanaman(path + "/plant.txt");
+//     this->hewan = InputKonfigurasi::InputKonfigurasiHewan(path + "/animal.txt");
+// }
 
 Toko::~Toko() {}
 
@@ -30,6 +30,6 @@ void Toko::tambah_produk(shared_ptr<Produk> p) {
     this->produk.push_back(p);
 }
 
-void Toko::tambah_bangunan(Bangunan b) {
+void Toko::tambah_bangunan(shared_ptr<Bangunan> b) {
     this->bangunan.push_back(b);
 }

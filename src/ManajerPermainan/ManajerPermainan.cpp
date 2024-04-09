@@ -16,7 +16,7 @@ ManagerPermainan::ManagerPermainan(string path) {
     this->besar_peternakan = make_tuple(misc[6], misc[7]);
 
 
-    this->toko = Toko(path);
+    // this->toko = Toko(path);
 }
 
 ManagerPermainan::~ManagerPermainan() {}
@@ -42,7 +42,7 @@ void ManagerPermainan::print_konfigurasi() {
 
     cout << "Daftar Bangunan:" << endl;
     for (int i = 0; i < this->daftar_bangunan.size(); i++) {
-        this->daftar_bangunan[i].print_info();
+        this->daftar_bangunan[i]->print_info();
         cout << endl;
     }
 }

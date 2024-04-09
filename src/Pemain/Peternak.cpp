@@ -179,13 +179,13 @@ void Peternak::ternak() {
     };
 };
 
-void Peternak::tambah_peternakan(string slot, Hewan& val) {
+void Peternak::tambah_peternakan(string slot, shared_ptr<Hewan> val) {
     if (cek_slot_peternakan_valid(slot)) {
         int i = Util::indeks_baris_slot(slot);
         int j = Util::indeks_kolom_slot(slot);
 
         if (peternakan[i][j] == nullptr) {
-            peternakan[i][j] = make_shared<Hewan>(val);
+            peternakan[i][j] = val;
         }
         else {
             cout << "Ada isinya" << endl;

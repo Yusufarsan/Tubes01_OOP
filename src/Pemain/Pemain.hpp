@@ -24,7 +24,7 @@ protected:
 
 public:
     Pemain(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti);
-    ~Pemain() {};
+    virtual ~Pemain() {};
 
     string dapatkan_nama();
     void atur_uang(int uang);
@@ -35,10 +35,41 @@ public:
     void cetak_peti();
     // void tambah_peti(string slot, Entitas& val);
     template<class T>
-    void tambah_peti(const string& slot, T& val);
+    void tambah_peti(const string& slot, T& val) {
+        if (cek_slot_peti_valid(slot)) {
+            int i = Util::indeks_baris_slot(slot);
+            int j = Util::indeks_kolom_slot(slot);
+
+            if (!peti[i][j]) {
+                peti[i][j] = dynamic_pointer_cast<Entitas>(val);;
+            }
+            else {
+                cout << "Ada isinya" << endl;
+            }
+        }
+        else {
+            cout << "index out of bonds" << endl;
+        }
+    }
 
     template<class T>
-    void tambah_peti(T& val);
+    void tambah_peti(T& val) {
+        bool isInserted = false;
+
+        for (int i = 0; i < peti.size(); i++) {
+            for (int j = 0; j < peti[0].size(); j++) {
+                if (!peti[i][j]) {
+                    peti[i][j] = dynamic_pointer_cast<Entitas>(val);
+                    isInserted = true;
+                    break;
+                }
+            }
+
+            if (isInserted) {
+                break;
+            }
+        }
+    }
 
     Entitas* hapus_peti(const string& slot);
     bool cek_slot_peti_valid(const string& slot);

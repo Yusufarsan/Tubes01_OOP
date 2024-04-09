@@ -24,7 +24,7 @@ private:
     vector<shared_ptr<Tanaman>> daftar_tanaman;
     vector<shared_ptr<Hewan>> daftar_hewan;
     vector<shared_ptr<Produk>> daftar_produk;
-    vector<Bangunan> daftar_bangunan;
+    vector<shared_ptr<Bangunan>> daftar_bangunan;
 
     // State Toko
     Toko toko;

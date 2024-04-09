@@ -104,8 +104,8 @@ vector<shared_ptr<Produk>> InputKonfigurasi::InputKonfigurasiProduk(string nama_
 }
 
 
-vector<Bangunan> InputKonfigurasi::InputKonfigurasiResepBangunan(string nama_file) {
-    vector<Bangunan> daftar_bangunan;
+vector<shared_ptr<Bangunan>> InputKonfigurasi::InputKonfigurasiResepBangunan(string nama_file) {
+    vector<shared_ptr<Bangunan>> daftar_bangunan;
     ifstream file;
     file.open(nama_file);
     if (file.is_open()) {
@@ -121,8 +121,8 @@ vector<Bangunan> InputKonfigurasi::InputKonfigurasiResepBangunan(string nama_fil
                 resep_tanaman[data[i]] = stoi(data[i + 1]);
             }
 
-            Bangunan bangunan(id, kode_huruf, nama, harga);
-            bangunan.atur_resep_tanaman(resep_tanaman);
+            shared_ptr<Bangunan> bangunan = make_unique<Bangunan>(id, kode_huruf, nama, harga);
+            bangunan->atur_resep_tanaman(resep_tanaman);
             daftar_bangunan.push_back(bangunan);
         }
 
@@ -177,7 +177,7 @@ vector<int> InputKonfigurasi::InputKonfigurasiMisc(string nama_file) {
     return data;
 }
 
-vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, vector<shared_ptr<Tanaman>> daftar_tanaman, vector<shared_ptr<Hewan>> daftar_hewan, vector<shared_ptr<Produk>> daftar_produk, vector<Bangunan> daftar_bangunan, tuple<int, int> besar_penyimpanan, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan, Toko& toko) {
+vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, vector<shared_ptr<Tanaman>> daftar_tanaman, vector<shared_ptr<Hewan>> daftar_hewan, vector<shared_ptr<Produk>> daftar_produk, vector<shared_ptr<Bangunan>> daftar_bangunan, tuple<int, int> besar_penyimpanan, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan, Toko& toko) {
     vector<shared_ptr<Pemain>> daftar_pemain;
     ifstream file;
     file.open(nama_file);
@@ -231,7 +231,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
 
                     k = 0;
                     while (!found && k < daftar_bangunan.size()) {
-                        if (daftar_bangunan[k].dapatkan_nama() == line) {
+                        if (daftar_bangunan[k]->dapatkan_nama() == line) {
                             pemain->tambah_peti(daftar_bangunan[k]);
                             found = true;
                         }
@@ -305,7 +305,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
 
                     k = 0;
                     while (!found && k < daftar_bangunan.size()) {
-                        if (daftar_bangunan[k].dapatkan_nama() == line) {
+                        if (daftar_bangunan[k]->dapatkan_nama() == line) {
                             pemain->tambah_peti(daftar_bangunan[k]);
                             found = true;
                         }
@@ -329,7 +329,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                             shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(pemain);
                             shared_ptr<Hewan> hewan = daftar_hewan[k];
                             hewan->tambah_berat(berat);
-                            peternak->tambah_peternakan(slot, *hewan);
+                            peternak->tambah_peternakan(slot, hewan);
                             found = true;
                         }
                         k++;
@@ -376,7 +376,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
 
                     k = 0;
                     while (!found && k < daftar_bangunan.size()) {
-                        if (daftar_bangunan[k].dapatkan_nama() == line) {
+                        if (daftar_bangunan[k]->dapatkan_nama() == line) {
                             pemain->tambah_peti(daftar_bangunan[k]);
                             found = true;
                         }
@@ -413,7 +413,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
 
             j = 0;
             while (!found && j < daftar_bangunan.size()) {
-                if (daftar_bangunan[j].dapatkan_nama() == nama) {
+                if (daftar_bangunan[j]->dapatkan_nama() == nama) {
                     while (banyak > 0) {
                         toko.tambah_bangunan(daftar_bangunan[j]);
                         banyak--;
