@@ -28,6 +28,7 @@ public:
     static vector<shared_ptr<Hewan>> InputKonfigurasiHewan(string nama_file);
     static vector<shared_ptr<Produk>> InputKonfigurasiProduk(string nama_file);
     static vector<Bangunan> InputKonfigurasiResepBangunan(string nama_file);
+    static vector<int> InputKonfigurasiMisc(string nama_file);
 };
 
 #endif

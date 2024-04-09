@@ -19,6 +19,7 @@ public:
 
     string dapatkan_kode_huruf();
     string dapatkan_nama();
+    int dapatkan_harga();
 };
 
 

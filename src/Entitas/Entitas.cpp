@@ -29,6 +29,11 @@ Entitas& Entitas::operator=(const Entitas& other) {
 string Entitas::dapatkan_kode_huruf() {
     return kode_huruf;
 };
+
 string Entitas::dapatkan_nama() {
     return nama;
+};
+
+int Entitas::dapatkan_harga() {
+    return harga;
 };
