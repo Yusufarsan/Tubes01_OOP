@@ -108,6 +108,16 @@ void Peternak::cetak_peternakan(bool isWarna){
     };
 };
 
+bool Peternak::cek_slot_peternakan_valid(string slot){
+    int i = Util::indeks_baris_slot(slot);
+    int j = Util::indeks_kolom_slot(slot);
+
+    if (i < peternakan.size() and j < peternakan[0].size()){
+        return true;
+    }
+
+    return false;
+};
 
 void Peternak::ternak(){
     cetak_peti();
