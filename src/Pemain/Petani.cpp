@@ -1,5 +1,5 @@
 #include "Petani.hpp"
-#include "../pcolor/pcolor.h"
+#include "../Pcolor/Pcolor.hpp"
 #include <cmath>
 
 Petani::Petani(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti, tuple<int, int> ukuran_ladang) : Pemain(nama, uang, berat_badan, ukuran_peti) {
@@ -80,18 +80,14 @@ void Petani::cetak_ladang() {
                 if (val->bisa_panen()) {
                     cout << " ";
 
-                    for (char c : val->dapatkan_kode_huruf()) {
-                        print_green(c);
-                    }
+                    print_green(val->dapatkan_kode_huruf());
 
                     cout << " |";
                 }
                 else {
                     cout << " ";
 
-                    for (char c : val->dapatkan_kode_huruf()) {
-                        print_red(c);
-                    }
+                    print_red(val->dapatkan_kode_huruf());
 
                     cout << " |";
                 }

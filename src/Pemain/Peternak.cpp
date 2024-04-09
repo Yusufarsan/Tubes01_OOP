@@ -1,5 +1,5 @@
 #include "Peternak.hpp"
-#include "../pcolor/pcolor.h"
+#include "../Pcolor/Pcolor.hpp"
 #include <cmath>
 
 Peternak::Peternak(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti, tuple<int, int> ukuran_peternakan) : Pemain(nama, uang, berat_badan, ukuran_peti) {
@@ -78,18 +78,14 @@ void Peternak::cetak_peternakan() {
                 if (val->bisa_panen()) {
                     cout << " ";
 
-                    for (char c : val->dapatkan_kode_huruf()) {
-                        print_green(c);
-                    }
+                    print_green(val->dapatkan_kode_huruf());
 
                     cout << " |";
                 }
                 else {
                     cout << " ";
 
-                    for (char c : val->dapatkan_kode_huruf()) {
-                        print_red(c);
-                    }
+                    print_red(val->dapatkan_kode_huruf());
 
                     cout << " |";
                 }
