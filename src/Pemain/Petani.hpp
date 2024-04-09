@@ -4,6 +4,7 @@
 
 #include "Pemain.hpp"
 #include "../Tanaman/Tanaman.hpp"
+#include <unordered_map>
 
 class Petani : public Pemain {
 private:
@@ -19,6 +20,7 @@ public:
     void tanam();
     void tambah_ladang(string slot, Tanaman& val);
     Tanaman* hapus_ladang(string slot);
+    unordered_map<string, int> frekuensi_panen() const;
     void panen();
     int hitung_pajak();
 };

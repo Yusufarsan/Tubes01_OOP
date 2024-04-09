@@ -37,10 +37,7 @@ void Tanaman::tambah_umur() {
 }
 
 bool Tanaman::bisa_panen() {
-    if (umur == umur_panen) {
-        return true;
-    }
-    return false;
+    return umur >= umur_panen;
 } 
 
 void Tanaman::print_info() {

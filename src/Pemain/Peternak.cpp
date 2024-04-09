@@ -26,6 +26,9 @@ void Peternak::cetak_peternakan() {
     int maxLengthRowCode = Util::label_baris_tabel(numRow).length();
     int maxLengthColCode = Util::label_kolom_tabel(numCol).length();
 
+    // Cetak judul tabel
+    cout << "    ================[ Peternakan ]==================\n\n";
+
     // cetak label kolom
     for (int n = 1; n <= numCol; ++n) {
         if (n == 1) {
@@ -62,14 +65,14 @@ void Peternak::cetak_peternakan() {
     }
     cout << "+\n";
 
-    // cetak label baris dan elementnnya
+    // cetak label baris dan elemennya
     for (int n = 1; n <= numRow; n++) {
         string label_baris = Util::label_baris_tabel(n);
         string space(maxLengthRowCode + 1 - label_baris.length(), ' ');
         cout << label_baris << space << '|';
 
         for (int m = 0; m < numCol; m++) {
-            if (!peternakan[n - 1][m]) {
+            if (!peternakan[n - 1][m].get()) {
                 cout << "     |";
                 emptySlot++;
             }
@@ -90,22 +93,24 @@ void Peternak::cetak_peternakan() {
                     cout << " |";
                 }
             }
+
         }
+        cout << endl;
 
-    }
-    cout << endl;
+        // +---+
+        for (int n = 1; n <= numCol; n++) {
+            if (n == 1) {
+                string spaces(maxLengthRowCode + 1, ' ');
+                cout << spaces;
+            }
 
-    // +---+
-    for (int n = 1; n <= numCol; n++) {
-        if (n == 1) {
-            string spaces(maxLengthRowCode + 1, ' ');
-            cout << spaces;
+            string dash(5, '-');
+            cout << "+" << dash;
         }
+        cout << "+\n";
+    };
 
-        string dash(5, '-');
-        cout << "+" << dash;
-    }
-    cout << "+\n";
+    // cout << endl << "Total slot kosong: " << emptySlot << endl;
 };
 
 bool Peternak::cek_slot_peternakan_valid(string slot) {
@@ -121,14 +126,14 @@ bool Peternak::cek_slot_peternakan_valid(string slot) {
 
 void Peternak::ternak() {
     if (jumlah_slot_kosong_peti() == (peti.size() * peti[0].size())) {
-        cout << "Gak punya penyimpanan kok mau ternak!" << endl;
+        cout << "Gak punya penyimpanan kok mau tanam!" << endl;
     }
     else {
         cetak_peti();
 
         string slot_masukan_peti, slot_masukan_peternakan;
-        int i, j;
-        Entitas* bibit = nullptr;
+        int idxRowPeti, idxColPeti, idxRowPeternakan, idxColPeternakan;
+        shared_ptr<Entitas> bibit = nullptr;
 
         while (true) {
             cout << "Silakan pilih hewan yang ingin Anda ternak!" << endl;
@@ -139,14 +144,15 @@ void Peternak::ternak() {
                 cout << "Slot tidak valid" << endl;
             }
             else {
-                i = Util::indeks_baris_slot(slot_masukan_peti);
-                j = Util::indeks_kolom_slot(slot_masukan_peti);
-                bibit = peti[i][j].get();
-                if (!Util::instanceof<Hewan>(bibit)) {
-                    cout << "Slot " << slot_masukan_peti << " tidak berisi hewan." << endl;
+                idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
+                idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
+                bibit = peti[idxRowPeti][idxColPeti];
+                if (!Util::instanceof<Hewan>(bibit.get())) {
+                    cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
                 }
-                else {
-                    cout << "Kamu memilih " << bibit->dapatkan_nama() << " untuk diternak." << endl;
+                else{
+                    cout << "Kamu memilih " << bibit->dapatkan_nama() << " untuk dipelihara." << endl;
+                    break;
                 }
             }
         }
@@ -162,17 +168,22 @@ void Peternak::ternak() {
                 cout << "Slot tidak valid" << endl;
             }
             else {
-                i = Util::indeks_baris_slot(slot_masukan_peternakan);
-                j = Util::indeks_kolom_slot(slot_masukan_peternakan);
+                idxRowPeternakan = Util::indeks_baris_slot(slot_masukan_peternakan);
+                idxColPeternakan = Util::indeks_kolom_slot(slot_masukan_peternakan);
 
-                shared_ptr<Hewan> tanah = peternakan[i][j];
+                shared_ptr<Hewan> tanah = peternakan[idxRowPeternakan][idxColPeternakan];
 
-                if (!tanah) {
-                    cout << "Slot " << slot_masukan_peti << " kosong." << endl;
+                if(tanah){
+                    cout << "Slot " << slot_masukan_peti << " milik tanaman lain." << endl;
                 }
-                else {
+                else{
+                    // peternakan[idxRowPeternakan][idxColPeternakan] = make_shared<Karnivora>(hewanBibit);
+                    shared_ptr<Hewan> hewanPtr = dynamic_pointer_cast<Hewan>(bibit);
+                    tambah_peternakan(slot_masukan_peternakan, hewanPtr);
+                    peti[idxRowPeti][idxColPeti].reset();
                     cout << "Ternak, ternak, ternak yang banyak!" << endl;
-                    cout << tanah.get()->dapatkan_nama() << " telah menjadi peliharaanmu sekarang!" << endl;
+                    cout << bibit.get()->dapatkan_nama() << " berhasil ditanam!" << endl;
+                    break;
                 }
             }
         }

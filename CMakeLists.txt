@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
-project(BCN_BacinPunya)
+project(driverPetani)
 
 set(CMAKE_CXX_STANDARD 17)
 
 # Add the source in project root directory
-add_executable(BCN_BacinPunya 
+add_executable(driverPetani 
             src/main.cpp
             src/Bangunan/Bangunan.cpp
             src/Entitas/Entitas.cpp
@@ -29,3 +29,7 @@ add_executable(BCN_BacinPunya
             src/Util/Util.cpp
             src/Pcolor/Pcolor.cpp
             )
+
+set_target_properties(driverPetani PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/src/Pemain
+        )

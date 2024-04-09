@@ -1,8 +1,8 @@
 #include "Pemain.hpp"
 
 int main() {
-    Herbivora kambing("1", "GOT", "mbek", 20, 5);
-    TanamanBuah tomat("1", "TMT", "Tomat", 30, 20);
+    shared_ptr<Hewan> kambing = make_shared<Herbivora>("1", "GOT", "mbek", 20, 5);
+    shared_ptr<Tanaman> tomat = make_shared<TanamanBuah>("1", "TMT", "Tomat", 30, 20);
 
     cout << "constructor" << endl;
     Pemain player("player", 1000, 50, make_tuple(2, 2));

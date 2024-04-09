@@ -26,6 +26,9 @@ void Petani::cetak_ladang() {
     int maxLengthRowCode = Util::label_baris_tabel(numRow).length();
     int maxLengthColCode = Util::label_kolom_tabel(numCol).length();
 
+    // Cetak judul tabel
+    cout << "    ================[ Ladang ]==================\n\n";
+
     // label kolom
     for (int n = 1; n <= numCol; ++n) {
         if (n == 1) {
@@ -108,6 +111,8 @@ void Petani::cetak_ladang() {
         }
         cout << "+\n";
     };
+
+    // cout << endl << "Total slot kosong: " << emptySlot << endl;
 };
 
 int Petani::jumlah_slot_kosong_ladang() {
@@ -143,8 +148,9 @@ void Petani::tanam() {
         cetak_peti();
 
         string slot_masukan_peti, slot_masukan_ladang;
-        int i, j;
+        int idxRowPeti, idxColPeti, idxRowLadang, idxColLadang;
         Entitas* bibit = nullptr;
+        Tanaman* tanamanBibit;
 
         while (true) {
             cout << "Silakan pilih tanaman yang ingin Anda tanam!" << endl;
@@ -155,14 +161,16 @@ void Petani::tanam() {
                 cout << "Slot tidak valid" << endl;
             }
             else {
-                i = Util::indeks_baris_slot(slot_masukan_peti);
-                j = Util::indeks_kolom_slot(slot_masukan_peti);
-                bibit = peti[i][j].get();
+                idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
+                idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
+                bibit = peti[idxRowPeti][idxColPeti].get();
                 if (!Util::instanceof<Tanaman>(bibit)) {
                     cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
                 }
-                else {
+                else{
+                    tanamanBibit = dynamic_cast<Tanaman*>(bibit);
                     cout << "Kamu memilih " << bibit->dapatkan_nama() << " untuk ditanam." << endl;
+                    break;
                 }
             }
         }
@@ -178,17 +186,21 @@ void Petani::tanam() {
                 cout << "Slot tidak valid" << endl;
             }
             else {
-                i = Util::indeks_baris_slot(slot_masukan_ladang);
-                j = Util::indeks_kolom_slot(slot_masukan_ladang);
+                idxRowLadang = Util::indeks_baris_slot(slot_masukan_ladang);
+                idxColLadang = Util::indeks_kolom_slot(slot_masukan_ladang);
 
-                shared_ptr<Tanaman> tanah = ladang[i][j];
+                shared_ptr<Tanaman> tanah = ladang[idxRowLadang][idxColLadang];
 
-                if (!tanah) {
-                    cout << "Slot " << slot_masukan_peti << " kosong." << endl;
+                if(tanah){
+                    cout << "Slot " << slot_masukan_peti << " milik tanaman lain." << endl;
                 }
-                else {
+                else{
+                    
+                    ladang[idxRowLadang][idxColLadang] = make_shared<Tanaman>(*tanamanBibit);
+                    peti[idxRowPeti][idxColPeti].reset();
                     cout << "Cangkul, cangkul, cangkul yang dalam!" << endl;
-                    cout << tanah.get()->dapatkan_nama() << " berhasil ditanam!" << endl;
+                    cout << tanamanBibit->dapatkan_nama() << " berhasil ditanam!" << endl;
+                    break;
                 }
             }
         }
@@ -229,10 +241,36 @@ Tanaman* Petani::hapus_ladang(string slot) {
     return nullptr;
 }
 
+unordered_map<string, int> Petani::frekuensi_panen() const {
+    unordered_map<string, int> frequencyMap;
+
+    // Iterate over the elements of ladang vector
+    for (const auto& row : ladang) {
+        for (const auto& tanamanPtr : row) {
+            if (tanamanPtr && tanamanPtr.get()->bisa_panen()) {
+                // Increment the frequency count for the Tanaman's name
+                frequencyMap[tanamanPtr.get()->dapatkan_nama()]++;
+            }
+        }
+    }
+
+    return frequencyMap;
+}
+
 void Petani::panen() {
     cetak_ladang();
+    
+    unordered_map<string, int> frequencyMap = frekuensi_panen();
 
-    cout << "Pilih tanaman siap panen yang kamu miliki" << endl;
+    // Display the names and frequencies of harvest-ready Tanaman objects
+    cout << "Pilih tanaman siap panen yang kamu miliki:" << endl;
+    
+    int counter = 1;
+    for (const auto& [nama, frequency] : frequencyMap) {
+        cout << counter << ". " << nama << " (" << frequency << " petak siap panen)" << endl;
+        counter++;
+    }
+
 }
 
 int Petani::hitung_pajak() {
