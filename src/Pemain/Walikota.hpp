@@ -2,9 +2,10 @@
 
 class Walikota: public Pemain{
     public:
-        Walikota(string nama); // ctor
+        Walikota(string nama, int uang, int berat_badan); // ctor
         Walikota(const Walikota& other); // cctor
         ~Walikota(); // dtor
+
         
         void tagih_pajak();
         void bangun();
