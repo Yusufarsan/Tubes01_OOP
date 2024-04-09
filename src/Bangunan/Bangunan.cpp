@@ -19,6 +19,10 @@ Bangunan& Bangunan::operator=(const Bangunan& other) {
     return *this;
 }
 
+map<string, int> Bangunan::dapatkan_resep() {
+    return this->resep_tanaman;
+}
+
 void Bangunan::atur_resep_tanaman(map<string, int> resep_tanaman) {
     this->resep_tanaman = resep_tanaman;
 }

@@ -16,6 +16,7 @@ public:
     Bangunan(const Bangunan& other);
     Bangunan& operator=(const Bangunan& other);
 
+    map<string, int> dapatkan_resep();
     void atur_resep_tanaman(map<string, int> resep_tanaman);
     void print_info();
 };
