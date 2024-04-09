@@ -25,3 +25,11 @@ Toko& Toko::operator=(const Toko& other) {
     }
     return *this;
 }
+
+void Toko::tambah_produk(shared_ptr<Produk> p) {
+    this->produk.push_back(p);
+}
+
+void Toko::tambah_bangunan(Bangunan b) {
+    this->bangunan.push_back(b);
+}

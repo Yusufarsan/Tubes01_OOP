@@ -23,6 +23,9 @@ public:
     ~Toko();
     Toko(const Toko& other);
     Toko& operator=(const Toko& other);
+
+    void tambah_produk(shared_ptr<Produk> p);
+    void tambah_bangunan(Bangunan b);
 };
 
 #endif
