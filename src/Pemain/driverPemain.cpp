@@ -19,19 +19,26 @@ int main(){
     cout << player.dapatkan_berat_badan() << endl;
 
     player.tambah_peti("A01", kambing);
+    player.tambah_peti("J15", kambing);
 
     cout << endl << "cetak_peti" << endl;
     player.cetak_peti();
 
+    Entitas* tes = player.hapus_peti("A01");
 
-    cout << endl << "jualan" << endl;
-    player.jual();
+    player.cetak_peti();
 
-    cout << endl << "beli" << endl;
-    player.beli();
 
-    cout << endl << "makan" << endl;
-    player.makan();
+
+
+    // cout << endl << "jualan" << endl;
+    // player.jual();
+
+    // cout << endl << "beli" << endl;
+    // player.beli();
+
+    // cout << endl << "makan" << endl;
+    // player.makan();
     
     return 0;
 }

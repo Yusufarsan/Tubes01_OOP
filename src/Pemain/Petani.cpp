@@ -128,8 +128,6 @@ bool Petani::cek_slot_ladang_valid(string slot){
     int i = Util::indeks_baris_slot(slot);
     int j = Util::indeks_kolom_slot(slot);
 
-    cout << "Indeks ladang [" << i << "][" << j << "]" << endl;
-
     if (i < ladang.size() and j < ladang[0].size()){
         return true;
     }

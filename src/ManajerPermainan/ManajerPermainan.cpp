@@ -8,6 +8,14 @@ ManagerPermainan::ManagerPermainan(string path) {
     this->daftar_produk = InputKonfigurasi::InputKonfigurasiProduk(path + "/product.txt");
     this->daftar_bangunan = InputKonfigurasi::InputKonfigurasiResepBangunan(path + "/recipe.txt");
 
+    vector<int> misc = InputKonfigurasi::InputKonfigurasiMisc(path + "/misc.txt");
+    this->uang_pemenang = misc[0];
+    this->berat_pemenang = misc[1];
+    this->besar_penyimpanan = make_tuple(misc[2], misc[3]);
+    this->besar_lahan = make_tuple(misc[4], misc[5]);
+    this->besar_peternakan = make_tuple(misc[6], misc[7]);
+
+
     this->toko = Toko(path);
 }
 

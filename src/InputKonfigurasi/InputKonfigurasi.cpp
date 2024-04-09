@@ -131,3 +131,48 @@ vector<Bangunan> InputKonfigurasi::InputKonfigurasiResepBangunan(string nama_fil
 
     return daftar_bangunan;
 }
+
+vector<int> InputKonfigurasi::InputKonfigurasiMisc(string nama_file) {
+    vector<int> data;
+    ifstream file;
+    file.open(nama_file);
+    if (file.is_open()) {
+        string line;
+
+        // Jumlah uang pemain untuk menang
+        getline(file, line);
+        int uang_pemenang = stoi(line);
+        data.push_back(uang_pemenang);
+
+        // Jumlah berat pemain untuk menang
+        getline(file, line);
+        int berat_pemenang = stoi(line);
+        data.push_back(berat_pemenang);
+
+        // Besar penyimpanan
+        getline(file, line);
+        vector<string> vector_penyimpanan = Util::SplitString(line, " ");
+        int besar_penyimpanan1 = stoi(vector_penyimpanan[0]);
+        int besar_penyimpanan2 = stoi(vector_penyimpanan[1]);
+        data.push_back(besar_penyimpanan1);
+        data.push_back(besar_penyimpanan2);
+
+        // Besar lahan
+        getline(file, line);
+        vector<string> vector_lahan = Util::SplitString(line, " ");
+        int besar_lahan1 = stoi(vector_lahan[0]);
+        int besar_lahan2 = stoi(vector_lahan[1]);
+        data.push_back(besar_lahan1);
+        data.push_back(besar_lahan2);
+
+        // Besar peternakan
+        getline(file, line);
+        vector<string> vector_peternakan = Util::SplitString(line, " ");
+        int besar_peternakan1 = stoi(vector_peternakan[0]);
+        int besar_peternakan2 = stoi(vector_peternakan[1]);
+        data.push_back(besar_peternakan1);
+        data.push_back(besar_peternakan2);
+    }
+
+    return data;
+}
