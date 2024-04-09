@@ -2,6 +2,7 @@
 
 int main(){
     Herbivora kambing("1", "GOT", "mbek", 20, 5);
+    TanamanBuah tomat("1", "TMT", "Tomat", 30, 20);
 
     cout << "constructor" << endl;
     Pemain player("Mage Tiktok", 50, 60);
@@ -18,13 +19,26 @@ int main(){
     player.atur_berat_badan(60);
     cout << player.dapatkan_berat_badan() << endl;
 
-    player.tambah_peti("A01", kambing);
-    player.tambah_peti("J15", kambing);
+    string slot_masukan;
+
+    cin >> slot_masukan;
+
+    player.tambah_peti(slot_masukan, kambing);
 
     cout << endl << "cetak_peti" << endl;
     player.cetak_peti();
 
-    Entitas* tes = player.hapus_peti("A01");
+    cin >> slot_masukan;
+
+    player.tambah_peti(slot_masukan, tomat);
+
+    player.cetak_peti();
+
+    cin >> slot_masukan;
+
+    cout << "hapus" << endl;
+
+    player.hapus_peti(slot_masukan);
 
     player.cetak_peti();
 

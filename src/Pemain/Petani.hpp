@@ -7,14 +7,14 @@
 
 class Petani: public Pemain{
     private:
-        vector<vector<Tanaman*>> ladang;
+        vector<vector<shared_ptr<Tanaman>>> ladang;
     public:
         Petani(string nama); // ctor
         ~Petani(); // dtor
 
-        void cetak_ladang(bool isWarna);
+        void cetak_ladang();
+        bool cek_slot_ladang_valid(const string& slot);
         int jumlah_slot_kosong_ladang();
-        bool cek_slot_ladang_valid(string slot);
         
         void tanam();
         void tambah_ladang(string slot, Tanaman& val);

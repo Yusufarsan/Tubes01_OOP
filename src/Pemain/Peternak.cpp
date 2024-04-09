@@ -3,12 +3,12 @@
 #include <cmath>
 
 // nanti ganti 50, 10, 15, 10
-Peternak::Peternak(string nama): Pemain(nama, 50, 10), peternakan(15, vector<Hewan*>(10, nullptr)){
+Peternak::Peternak(string nama): Pemain(nama, 50, 10), peternakan(15, vector<shared_ptr<Hewan>>(10, nullptr)){
 }
 
 Peternak::~Peternak(){};
 
-void Peternak::cetak_peternakan(bool isWarna){
+void Peternak::cetak_peternakan(){
     int numRow = peternakan.size();
     int numCol = peternakan[0].size();
     int emptySlot = 0;
@@ -60,52 +60,47 @@ void Peternak::cetak_peternakan(bool isWarna){
         cout << label_baris << space << '|';
 
         for (int m = 0; m < numCol; m++){
-            if (peternakan[n-1][m] == nullptr){
+            if (!peternakan[n-1][m]){
                 cout << "     |";
                 emptySlot++;
             }
             else{
-                Hewan* val = peternakan[n-1][m];
-                if (isWarna){
-                    if (val->bisa_panen()){
-                        cout << " ";
-                        
-                        for (char c: val->dapatkan_kode_huruf()){
-                            print_green(c);
-                        }
-
-                        cout << " |";
+                Hewan* val = peternakan[n-1][m].get();
+                if (val->bisa_panen()){
+                    cout << " ";
+                    
+                    for (char c: val->dapatkan_kode_huruf()){
+                        print_green(c);
                     }
-                    else{
-                        cout << " ";
-                        
-                        for (char c: val->dapatkan_kode_huruf()){
-                            print_red(c);
-                        }
 
-                        cout << " |";
-                    }
+                    cout << " |";
                 }
                 else{
-                    cout << " " << "TAI" << " |";
+                    cout << " ";
+                    
+                    for (char c: val->dapatkan_kode_huruf()){
+                        print_red(c);
+                    }
+
+                    cout << " |";
                 }
             }
+        }
             
-        }
-        cout << endl;
+    }
+    cout << endl;
 
-        // +---+
-        for (int n = 1; n <= numCol; n++){
-            if (n == 1){
-                string spaces(maxLengthRowCode+1, ' ');
-                cout << spaces;
-            }
-
-            string dash(5, '-');
-            cout << "+" << dash;
+    // +---+
+    for (int n = 1; n <= numCol; n++){
+        if (n == 1){
+            string spaces(maxLengthRowCode+1, ' ');
+            cout << spaces;
         }
-        cout << "+\n";
-    };
+
+        string dash(5, '-');
+        cout << "+" << dash;
+    }
+    cout << "+\n";
 };
 
 bool Peternak::cek_slot_peternakan_valid(string slot){
@@ -120,21 +115,62 @@ bool Peternak::cek_slot_peternakan_valid(string slot){
 };
 
 void Peternak::ternak(){
-    cetak_peti();
-
     if (jumlah_slot_kosong_peti() == (peti.size() * peti[0].size())){
         cout << "Gak punya penyimpanan kok mau ternak!" << endl;
     }
     else{
-        // ada penyimpanan, cek ada hewan gak?
-        // baru lanjut
-        cout << "Silakan pilih hewan yang ingin Anda ternak!" << endl;
-        cout << "Petak : ";
+        cetak_peti();
 
-        string slot_masukan;
-        cin >> slot_masukan;
+        string slot_masukan_peti, slot_masukan_peternakan;
+        int i, j;
+        Entitas* bibit = nullptr;
 
-        cout << slot_masukan;
+        while(true){
+            cout << "Silakan pilih hewan yang ingin Anda ternak!" << endl;
+            cout << "Petak : ";
+            cin >> slot_masukan_peti;
+
+            if(!cek_slot_peti_valid(slot_masukan_peti)){
+                cout << "Slot tidak valid" << endl;
+            }
+            else{
+                i = Util::indeks_baris_slot(slot_masukan_peti);
+                j = Util::indeks_kolom_slot(slot_masukan_peti);
+                bibit = peti[i][j].get();
+                if(!Util::instanceof<Hewan>(bibit)){
+                    cout << "Slot " << slot_masukan_peti << " tidak berisi hewan." << endl;
+                }
+                else{
+                    cout << "Kamu memilih " << bibit->dapatkan_nama() << " untuk diternak." << endl;
+                }
+            }
+        }
+
+        cetak_peternakan();
+        
+        while(true){
+            cout << "Pilih petak tanah yang akan ditinggali" << endl;
+            cout << "Petak : ";
+            cin >> slot_masukan_peternakan;
+
+            if(!cek_slot_peti_valid(slot_masukan_peternakan)){
+                cout << "Slot tidak valid" << endl;
+            }
+            else{
+                i = Util::indeks_baris_slot(slot_masukan_peternakan);
+                j = Util::indeks_kolom_slot(slot_masukan_peternakan);
+
+                shared_ptr<Hewan> tanah = peternakan[i][j];
+
+                if(!tanah){
+                    cout << "Slot " << slot_masukan_peti << " kosong." << endl;
+                }
+                else{
+                    cout << "Ternak, ternak, ternak yang banyak!" << endl;
+                    cout << tanah.get()->dapatkan_nama() << " telah menjadi peliharaanmu sekarang!" << endl;
+                }
+            }
+        }
     };
 };
 
@@ -161,7 +197,7 @@ Hewan* Peternak::hapus_peternakan(string slot){
         int idxCol = Util::indeks_kolom_slot(slot);
 
         if (peternakan[idxRow][idxCol] != nullptr){
-            Hewan* delHewan = peternakan[idxRow][idxCol];
+            Hewan* delHewan = peternakan[idxRow][idxCol].get();
             peternakan[idxRow][idxCol] = nullptr;
 
             return delHewan;
@@ -172,7 +208,7 @@ Hewan* Peternak::hapus_peternakan(string slot){
 };
 
 void Peternak::beri_pangan(){
-    cetak_peternakan(true);
+    cetak_peternakan();
 
     string slot_masukan;
 
@@ -185,14 +221,14 @@ void Peternak::beri_pangan(){
         int idxRow = Util::indeks_baris_slot(slot_masukan);
         int idxCol = Util::indeks_kolom_slot(slot_masukan);
 
-        Hewan* val = peternakan[idxRow][idxCol];
+        Hewan* val = peternakan[idxRow][idxCol].get();
 
-        if (val != nullptr){
+        if (val){
             cout << "Kamu ingin memberi makan " << val->dapatkan_nama() << endl;
 
             cout << "Pilih pangan yang akan diberikan: ";
 
-            this->cetak_peti();
+            cetak_peti();
 
             cout  << "Makanan ingin kamu berikan adalah: ";
         }
@@ -203,7 +239,7 @@ void Peternak::beri_pangan(){
 };
 
 void Peternak::panen(){
-    cetak_peternakan(true);
+    cetak_peternakan();
 };
 
 

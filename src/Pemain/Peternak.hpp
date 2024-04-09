@@ -6,12 +6,12 @@
 
 class Peternak: public Pemain{
     private:
-        vector<vector<Hewan*>> peternakan;
+        vector<vector<shared_ptr<Hewan>>> peternakan;
     public:
         Peternak(string nama);
         ~Peternak();
         
-        void cetak_peternakan(bool isWarna);
+        void cetak_peternakan();
         bool cek_slot_peternakan_valid(string slot);
         void ternak();
         void tambah_peternakan(string slot, Hewan& val);
