@@ -73,6 +73,8 @@ public:
 
     Entitas* hapus_peti(const string& slot);
     bool cek_slot_peti_valid(const string& slot);
+    bool cek_peti_penuh();
+    bool cek_peti_kosong();
     int jumlah_slot_kosong_peti();
     bool cek_bisa_dimakan(const string& slot);
 

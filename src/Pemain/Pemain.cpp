@@ -151,12 +151,20 @@ bool Pemain::cek_slot_peti_valid(const string& slot) {
     return false;
 }
 
+bool Pemain::cek_peti_penuh() {
+    return jumlah_slot_kosong_peti() == 0;
+};
+
+bool Pemain::cek_peti_kosong() {
+    return jumlah_slot_kosong_peti() == (peti.size() * peti[0].size());
+};
+
 int Pemain::jumlah_slot_kosong_peti() {
     int emptySlot = 0;
 
     for (int i = 0; i < peti.size(); i++) {
         for (int j = 0; j < peti[0].size(); j++) {
-            if (peti[i][j] == nullptr) {
+            if (!peti[i][j]) {
                 emptySlot++;
             }
         }
@@ -183,7 +191,7 @@ bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
 void Pemain::jual() {
     cetak_peti();
 
-    if (jumlah_slot_kosong_peti() == (peti.size() * peti[0].size())) {
+    if (cek_peti_kosong()) {
         cout << "Gak punya harta kok mau jual!" << endl;
     }
     else {
@@ -214,7 +222,7 @@ void Pemain::jual() {
 void Pemain::beli() {
     cetak_peti();
 
-    if (jumlah_slot_kosong_peti() == 0) {
+    if (cek_peti_penuh()) {
         cout << "Peti nya penuh! Cari kantong kresek sana!" << endl;
     }
     else {

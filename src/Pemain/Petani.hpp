@@ -15,6 +15,8 @@ public:
 
     void cetak_ladang();
     bool cek_slot_ladang_valid(const string& slot);
+    bool cek_ladang_penuh();
+    bool cek_ladang_kosong();
     int jumlah_slot_kosong_ladang();
 
     void tanam();

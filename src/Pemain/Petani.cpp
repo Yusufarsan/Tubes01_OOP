@@ -115,12 +115,20 @@ void Petani::cetak_ladang() {
     // cout << endl << "Total slot kosong: " << emptySlot << endl;
 };
 
+bool Petani::cek_ladang_penuh() {
+    return jumlah_slot_kosong_peti() == 0;
+};
+
+bool Petani::cek_ladang_kosong() {
+    return jumlah_slot_kosong_peti() == (ladang.size() * ladang[0].size());
+};
+
 int Petani::jumlah_slot_kosong_ladang() {
     int emptySlot = 0;
 
     for (int i = 0; i < ladang.size(); i++) {
         for (int j = 0; j < ladang[0].size(); j++) {
-            if (!ladang[i][j].get()) {
+            if (!ladang[i][j]) {
                 emptySlot++;
             }
         }
@@ -141,7 +149,7 @@ bool Petani::cek_slot_ladang_valid(const string& slot) {
 };
 
 void Petani::tanam() {
-    if (jumlah_slot_kosong_peti() == (peti.size() * peti[0].size())) {
+    if (cek_peti_penuh()) {
         cout << "Gak punya penyimpanan kok mau tanam!" << endl;
     }
     else {
@@ -165,7 +173,7 @@ void Petani::tanam() {
                 idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
                 bibit = peti[idxRowPeti][idxColPeti].get();
                 if (!Util::instanceof<Tanaman>(bibit)) {
-                    cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
+                    cout << "Slot " << slot_masukan_peti << " tidak berisi tanaman." << endl;
                 }
                 else{
                     tanamanBibit = dynamic_cast<Tanaman*>(bibit);
@@ -195,7 +203,6 @@ void Petani::tanam() {
                     cout << "Slot " << slot_masukan_peti << " milik tanaman lain." << endl;
                 }
                 else{
-                    
                     ladang[idxRowLadang][idxColLadang] = make_shared<Tanaman>(*tanamanBibit);
                     peti[idxRowPeti][idxColPeti].reset();
                     cout << "Cangkul, cangkul, cangkul yang dalam!" << endl;

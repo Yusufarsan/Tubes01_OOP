@@ -124,6 +124,28 @@ bool Peternak::cek_slot_peternakan_valid(string slot) {
     return false;
 };
 
+bool Peternak::cek_peternakan_penuh() {
+    return jumlah_slot_kosong_peternakan() == 0;
+};
+
+bool Peternak::cek_peternakan_kosong() {
+    return jumlah_slot_kosong_peternakan() == (peternakan.size() * peternakan[0].size());
+};
+
+int Peternak::jumlah_slot_kosong_peternakan() {
+    int emptySlot = 0;
+
+    for (int i = 0; i < peternakan.size(); i++) {
+        for (int j = 0; j < peternakan[0].size(); j++) {
+            if (!peternakan[i][j]) {
+                emptySlot++;
+            }
+        }
+    }
+
+    return emptySlot;
+};
+
 void Peternak::ternak() {
     if (jumlah_slot_kosong_peti() == (peti.size() * peti[0].size())) {
         cout << "Gak punya penyimpanan kok mau tanam!" << endl;
@@ -224,34 +246,84 @@ Hewan* Peternak::hapus_peternakan(string slot) {
 };
 
 void Peternak::beri_pangan() {
-    cetak_peternakan();
-
-    string slot_masukan;
-
-    cout << "Slot hewan yang ingin diberi makan: ";
-    cin >> slot_masukan;
-
-    cout << slot_masukan;
-
-    if (cek_slot_peternakan_valid(slot_masukan)) {
-        int idxRow = Util::indeks_baris_slot(slot_masukan);
-        int idxCol = Util::indeks_kolom_slot(slot_masukan);
-
-        Hewan* val = peternakan[idxRow][idxCol].get();
-
-        if (val) {
-            cout << "Kamu ingin memberi makan " << val->dapatkan_nama() << endl;
-
-            cout << "Pilih pangan yang akan diberikan: ";
-
-            cetak_peti();
-
-            cout << "Makanan ingin kamu berikan adalah: ";
-        }
-        else {
-            cout << "Mau ngasih makan setan?";
-        }
+    if (cek_peternakan_kosong()){
+        cout << "Kandangnya kosong semua, mau kasih makan setan?" << endl;
     }
+    else {
+        cetak_peternakan();
+
+        string slot_masukan_peti, slot_masukan_peternakan;
+        int idxRowPeti, idxColPeti, idxRowPeternakan, idxColPeternakan;
+        Entitas* produk = nullptr;
+        Hewan* hewanLapar;
+
+        while (true) {
+            cout << "Pilih kandang yang akan dikasih makan" << endl;
+            cout << "Petak : ";
+            cin >> slot_masukan_peternakan;
+
+            if (!cek_slot_peti_valid(slot_masukan_peternakan)) {
+                cout << "Slot tidak valid" << endl;
+            }
+            else {
+                idxRowPeternakan = Util::indeks_baris_slot(slot_masukan_peternakan);
+                idxColPeternakan = Util::indeks_kolom_slot(slot_masukan_peternakan);
+
+                shared_ptr<Hewan> kandang = peternakan[idxRowPeternakan][idxColPeternakan];
+
+                if(!kandang){
+                    cout << "Slot " << slot_masukan_peti << " gak ada hewannya." << endl;
+                }
+                else{
+                    hewanLapar = dynamic_cast<Hewan*>(kandang.get());
+                    cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk dikasih makan." << endl;
+                    break;
+                }
+            }
+        }
+
+        cetak_peti();
+
+        while (true){
+            cout << "Silakan pilih pangan yang ingin Anda berikan!" << endl;
+            cout << "Petak : ";
+            cin >> slot_masukan_peti;
+
+            if (!cek_slot_peti_valid(slot_masukan_peti)) {
+                cout << "Slot tidak valid" << endl;
+            }
+            else {
+                idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
+                idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
+                produk = peti[idxRowPeti][idxColPeti].get();
+                if (!Util::instanceof<Produk>(produk)) {
+                    cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
+                }
+                else if (Util::instanceof<ProdukTanamanMaterial>(produk)){
+                    cout << "Slot " << slot_masukan_peti << " berisi produk tanaman material yang tidak bisa dimakan." << endl;
+                }
+                else{
+                    Produk* makanan = dynamic_cast<Produk*>(produk);
+                    if(Util::instanceof<Omnivora>(hewanLapar)){
+                        hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                    }
+                    else if(Util::instanceof<Karnivora>(hewanLapar)){
+                        if (Util::instanceof<ProdukHewan>(makanan)){
+                            hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                        }
+                    }
+                    else{
+                        if (Util::instanceof<ProdukTanamanBuah>(makanan)){
+                            hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                        }
+                    }
+                    cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk ditanam." << endl;
+                }
+                
+                break;
+            }
+        }
+    };
 };
 
 void Peternak::panen() {
