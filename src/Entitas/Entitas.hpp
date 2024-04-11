@@ -17,9 +17,11 @@ public:
     Entitas& operator=(const Entitas& other);
     virtual void print_info() = 0;
 
+    string dapatkanId();
     string dapatkan_kode_huruf();
     string dapatkan_nama();
     int dapatkan_harga();
+    bool operator==(Entitas& other);
 };
 
 
