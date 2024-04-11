@@ -15,19 +15,36 @@ vector<string> Util::SplitString(string s, string delimiter) {
     return res;
 }
 
-string Util::label_baris_tabel(int indeks){
+void Util::ltrim(string& s) {
+    s.erase(s.begin(), find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !isspace(ch);
+        }));
+}
+
+void Util::rtrim(string& s) {
+    s.erase(find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !isspace(ch);
+        }).base(), s.end());
+}
+
+void Util::trim(string& s) {
+    ltrim(s);
+    rtrim(s);
+}
+
+string Util::label_baris_tabel(int indeks) {
     string nama_kolom;
     indeks += 11;
 
-    while (indeks > 0){
-        nama_kolom = char('0' + (indeks-1) % 10) + nama_kolom;
+    while (indeks > 0) {
+        nama_kolom = char('0' + (indeks - 1) % 10) + nama_kolom;
         indeks = (indeks - 1) / 10;
     }
 
     return nama_kolom;
 }
 
-string Util::label_kolom_tabel(int indeks){
+string Util::label_kolom_tabel(int indeks) {
     string nama_kolom;
 
     while (indeks > 0) {
@@ -38,7 +55,7 @@ string Util::label_kolom_tabel(int indeks){
     return nama_kolom;
 }
 
-int Util::indeks_baris_slot(const string& slot){
+int Util::indeks_baris_slot(const string& slot) {
     size_t pos = slot.find_first_of("0123456789");
 
     string nama_kolom = slot.substr(pos);
@@ -46,9 +63,9 @@ int Util::indeks_baris_slot(const string& slot){
     return stoi(nama_kolom) - 1;
 };
 
-int Util::indeks_kolom_slot(const string& slot){
+int Util::indeks_kolom_slot(const string& slot) {
     size_t pos = slot.find_first_of("0123456789");
-    
+
     string nama_baris = slot.substr(0, pos);
 
     int index = 0;
