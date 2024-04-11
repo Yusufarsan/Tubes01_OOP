@@ -30,10 +30,10 @@ bool Hewan::bisa_panen(){
 }
 
 void Hewan::print_info(){
-    cout << Entitas::id << endl;
-    cout << Entitas::nama << endl;
-    cout << Entitas::kode_huruf << endl;
-    cout << Entitas::harga << endl;
-    cout << berat << endl;
-    cout << berat_panen << endl;
+    cout << "ID: " << Entitas::id << endl;
+    cout << "Kode Huruf: " << Entitas::nama << endl;
+    cout << "Nama: " << Entitas::kode_huruf << endl;
+    cout << "Harga: " << Entitas::harga << endl;
+    cout << "Berat saat ini: " << berat << endl;
+    cout << "Berat untuk panen: " << berat_panen << endl;
 }

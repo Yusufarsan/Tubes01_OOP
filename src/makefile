@@ -9,9 +9,8 @@ MATRIKS = driverMatriks
 PCOLOR = driverPcolor
 PEMAIN = driverPemain
 MANAJER = driverGM
+TOKO = driverToko
 
-# Daftar paket
-PACKAGES = Hewan Produk Entitas Util Tanaman
 
 # File sumber untuk setiap paket
 Bangunan_SRCS = Bangunan/Bangunan.cpp
@@ -34,6 +33,7 @@ DriverMatriks_SRCS = Matriks/driverMatriks.cpp
 DriverPcolor_SRCS = Pcolor/driverPcolor.cpp
 DriverPemain_SRCS = Pemain/driverPemain.cpp
 DriverManajer_SRCS = ManajerPermainan/driverGM.cpp
+DriverToko_SRCS = Toko/driverToko.cpp
 
 # File objek untuk setiap paket
 Bangunan_OBJS = $(Bangunan_SRCS:.cpp=.o)
@@ -56,6 +56,7 @@ DriverMatriks_OBJS = $(DriverMatriks_SRCS:.cpp=.o)
 DriverPcolor_OBJS = $(DriverPcolor_SRCS:.cpp=.o)
 DriverPemain_OBJS = $(DriverPemain_SRCS:.cpp=.o)
 DriverManajer_OBJS = $(DriverManajer_SRCS:.cpp=.o)
+DriverToko_OBJS = $(DriverToko_SRCS:.cpp=.o)
 
 # Target utama
 all: $(MAIN)
@@ -65,6 +66,7 @@ Matriks: $(MATRIKS)
 Pcolor: $(PCOLOR)
 Pemain: $(PEMAIN)
 Manajer: $(MANAJER)
+Toko: $(TOKO)
 
 # Target untuk membuat executable driverMain
 $(MAIN): $(DriverMain_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS) 
@@ -94,6 +96,10 @@ $(PEMAIN): $(DriverPemain_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $
 $(MANAJER): $(DriverManajer_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
 	$(CC) $(CFLAGS) -o ../test/$(MANAJER) $^
 
+# Target untuk membuat executable driverManajer
+$(TOKO): $(DriverToko_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
+	$(CC) $(CFLAGS) -o ../test/$(TOKO) $^
+
 # Target untuk mengkompilasi file objek untuk setiap paket
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -120,6 +126,9 @@ test_Pemain: Pemain
 
 test_Manajer: Manajer
 	../test/$(MANAJER)
+
+test_Toko: Toko
+	../test/$(TOKO)
 
 .PHONY: clean
 

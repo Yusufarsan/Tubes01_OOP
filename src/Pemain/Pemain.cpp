@@ -128,6 +128,10 @@ bool Pemain::cek_peti_kosong(){
     return peti.kosong();
 }
 
+int Pemain::jumlah_slot_kosong_peti(){
+    return peti.jumlahSlotKosong();
+}
+
 bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
     int idxRow = Util::indeks_baris_slot(slot);
     int idxCol = Util::indeks_kolom_slot(slot);
