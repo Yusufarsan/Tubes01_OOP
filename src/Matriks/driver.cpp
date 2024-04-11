@@ -17,18 +17,18 @@ int main() {
     Omnivora* beruang = new Omnivora("1", "S", "beruang", 200, 10);
     
     // Set values in the matrix
-    mat.set(0, 0, &ayam);
-    mat.set(0, 1, sapi);
-    mat.set(1, 0, ular);
-    mat.set(1, 1, beruang);
+    mat.editElemen(0, 0, &ayam);
+    mat.editElemen(0, 1, sapi);
+    mat.editElemen(1, 0, ular);
+    mat.editElemen(1, 1, beruang);
 
     // Print the matrix
     cout << "Matrix:" << endl;
-    mat.print();
+    mat.cetak();
 
     // Get value at position (1, 1)
     cout << "Value at (1, 1): "<<endl;
-    mat.get(1, 1)->print_info();
+    mat.dapatkanElemen(1, 1)->print_info();
     cout << endl;
 
     // delete element
@@ -36,10 +36,10 @@ int main() {
     
     // Print the matrix
     cout << "Matrix:" << endl;
-    mat.print();
+    mat.cetak();
 
     // Trying to set value at invalid position
-    mat.set(3, 3, &ayam);
+    mat.dapatkanElemen(3, 3);
 
     return 0;
 }

@@ -35,8 +35,8 @@ public:
     }
 
     // setElement
-    void set(int i, int j, A* value) {
-        if (!isIndexValid(i,j)) {
+    void editElemen(int i, int j, A* value) {
+        if (!apakahIndexValid(i,j)) {
             cout << "Index out of bounds." << endl;
             return;
         }
@@ -45,33 +45,43 @@ public:
     }
 
     // menghapus element objek menjadi nullptr
-    void hapus(int baris, int kolom){
-        if (!isIndexValid(baris,kolom)) {
+    A* hapus(int baris, int kolom){
+        if (!apakahIndexValid(baris,kolom)) {
                 cout << "Index out of bounds." << endl;
-                return;
-            }
-        // delete data.at(baris).at(kolom);
-        data.at(baris).at(kolom) = nullptr;
-        N_element-=1;
+                return nullptr;
+        }else{
+            A* el = data[baris][kolom];
+            data[baris][kolom] = nullptr;
+            N_element-=1;
+            return el ;
+        }
     }
 
     // mengecek apakah index valid
-    bool isIndexValid(int baris, int kolom){
+    bool apakahIndexValid(int baris, int kolom){
         return (!(baris < 0 || baris >= rows || kolom < 0 || kolom >= cols));
     }
 
-    bool isSlotKosong(int baris, int kolom){
+    bool apakahSlotKosong(int baris, int kolom){
         return data[baris][kolom] == nullptr;
     }
 
     // memberikan nilai slot kosong pada matriks
-    int slotKosong(){
+    int jumlahSlotKosong(){
         return (rows*cols)-N_element;
     }
 
+    bool penuh(){
+        return jumlahSlotKosong() == 0;
+    }
+
+    bool kosong(){
+        return N_element == 0;
+    }
+
     // getElement
-    A* get(int baris, int kolom) {
-        if (!isIndexValid(baris,kolom)) {
+    A* dapatkanElemen(int baris, int kolom) {
+        if (!apakahIndexValid(baris,kolom)) {
             cout << "Index out of bounds." << endl;
             return nullptr; // Return a default value or throw an exception
         }
@@ -79,12 +89,12 @@ public:
     }
 
     // get N row
-    int getRow() const{
+    int dapatkanBaris() const{
         return rows;
     }
 
     // get N col
-    int getCol() const{
+    int dapatkanKolom() const{
         return cols;
     }
 
@@ -93,10 +103,10 @@ public:
     }
 
     // print
-    void print(){
+    void cetak(){
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
-                if(!isSlotKosong(i,j)){
+                if(!apakahSlotKosong(i,j)){
                     cout << data[i][j]->dapatkan_nama() << " ";
                 }else{
                     cout << "kosong" << " ";
