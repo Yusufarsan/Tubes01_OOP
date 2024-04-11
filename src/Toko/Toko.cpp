@@ -39,11 +39,11 @@ void Toko::atur_hewan(vector<shared_ptr<Hewan>> h) {
 }
 
 void Toko::tambah_produk(shared_ptr<Produk> p) {
-    this->produk.push_back(p);
+    this->produk[p] += 1;
 }
 
 void Toko::tambah_bangunan(shared_ptr<Bangunan> b) {
-    this->bangunan.push_back(b);
+    this->bangunan[b] += 1;
 }
 
 void Toko::cetak_isi_toko() {
@@ -60,14 +60,16 @@ void Toko::cetak_isi_toko() {
     }
 
     cout << "Daftar Produk:" << endl;
-    for (int i = 0; i < this->produk.size(); i++) {
-        this->produk[i]->print_info();
+    for (auto it = this->produk.begin(); it != this->produk.end(); it++) {
+        it->first->print_info();
+        cout << "Jumlah: " << it->second << endl;
         cout << endl;
     }
 
     cout << "Daftar Bangunan:" << endl;
-    for (int i = 0; i < this->bangunan.size(); i++) {
-        this->bangunan[i]->print_info();
+    for (auto it = this->bangunan.begin(); it != this->bangunan.end(); it++) {
+        it->first->print_info();
+        cout << "Jumlah: " << it->second << endl;
         cout << endl;
     }
 }

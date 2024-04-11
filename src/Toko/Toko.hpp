@@ -16,11 +16,10 @@ class Toko {
 private:
     vector<shared_ptr<Tanaman>> tanaman;
     vector<shared_ptr<Hewan>> hewan;
-    vector<shared_ptr<Produk>> produk;
-    vector<shared_ptr<Bangunan>> bangunan;
+    map<shared_ptr<Produk>, int> produk;
+    map<shared_ptr<Bangunan>, int> bangunan;
 public:
     Toko();
-    // Toko(string path);
     ~Toko();
     Toko(const Toko& other);
     Toko& operator=(const Toko& other);
