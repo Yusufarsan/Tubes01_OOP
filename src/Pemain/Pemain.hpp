@@ -9,6 +9,7 @@
 #include "../Bangunan/Bangunan.hpp"
 #include "../Util/Util.hpp"
 #include "../Matriks/Matriks.hpp"
+#include "../Toko/Toko.hpp"
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -72,6 +73,7 @@ public:
         }
     }
 
+
     Entitas* hapus_peti(const string& slot);
     bool cek_slot_peti_valid(const string& slot);
     bool cek_peti_penuh();
@@ -79,7 +81,7 @@ public:
     int jumlah_slot_kosong_peti();
     bool cek_bisa_dimakan(const string& slot);
 
-    void jual();
+    void jual(Toko& toko);
     void beli();
     void makan();
 

@@ -1,5 +1,9 @@
 #include "Pemain.hpp"
+#include "Walikota.hpp"
+#include "Petani.hpp"
+#include "Peternak.hpp"
 #include "../Util/Util.hpp"
+#include "../Toko/Toko.hpp"
 #include <cmath>
 
 Pemain::Pemain(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti): nama(nama), uang(uang), berat_badan(berat_badan), peti(get<0>(ukuran_peti), get<1>(ukuran_peti)){}
@@ -148,7 +152,7 @@ bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
     return false;
 }
 
-void Pemain::jual() {
+void Pemain::jual(Toko& toko) {
     cetak_peti();
 
     if (cek_peti_kosong()) {
@@ -156,6 +160,18 @@ void Pemain::jual() {
     }
     else {
         string slot_masukan;
+        bool isWalikota;
+        if(Util::instanceof<Walikota>(this)){
+            isWalikota = true;
+        }else{
+            isWalikota = false;
+
+        }
+
+        // Menampilkan apa saja yang dapat dibeli oleh role;
+        toko.tampilBarang(isWalikota);
+
+        // Memilih petak
         cout << "Silakan pilih petak yang ingin Anda jual!" << endl;
         cout << "Petak : ";
 
@@ -176,14 +192,31 @@ void Pemain::jual() {
         // TINGGAL JUAL KE TOKO
         for (const string& cell : list_slot_masukan) {
             cout << "Anda memilih slot: " << cell << endl;
+
             int row = Util::indeks_baris_slot(cell);
             int col = Util::indeks_kolom_slot(cell);
-            cout << "Anda memilih barang: " << peti.dapatkanElemen(row, col)->dapatkan_nama() << endl;
-            
-            // Tambahkan uang ke pemain
-            atur_uang(dapatkan_uang()+peti.dapatkanElemen(row, col)->dapatkan_harga());
+            Entitas* ent = peti.dapatkanElemen(row, col);
+            if(!peti.apakahSlotKosong(row, col)){
+                if(Util::instanceof<Bangunan>(ent)){
+                    if(!isWalikota){
+                        cout << "   Kamu gabisa jual " << ent->dapatkan_nama() << endl;
+                        break;
+                    }
 
-            // Tambahkan barang ke toko
+                }
+                cout << "   -> " << ent->dapatkan_nama() << " dengan harga " << ent->dapatkan_harga() << endl;
+                
+                // Tambahkan uang ke pemain
+                atur_uang(dapatkan_uang()+ent->dapatkan_harga());
+
+                // Tambahkan barang ke toko
+                toko.masukanEntitas(ent);
+
+                cout << "   Berhasil menjual " << ent->dapatkan_nama() << endl;
+                ent = peti.hapus(row, col);
+            }else{
+                cout << "ups, untuk yang ini barangnya gaada nih.." << endl;
+            }
         }
 
 
