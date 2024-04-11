@@ -1,3 +1,6 @@
+#ifndef PRODUKTANAMANMATERIAL_HPP
+#define PRODUKTANAMANMATERIAL_HPP
+
 #include "Produk.hpp"
 
 class ProdukTanamanMaterial : public Produk {
@@ -9,3 +12,5 @@ class ProdukTanamanMaterial : public Produk {
         
         void print_info(); // print info
 };
+
+#endif

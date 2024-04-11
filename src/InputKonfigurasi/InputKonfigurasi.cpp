@@ -1,6 +1,7 @@
 #include "InputKonfigurasi.hpp"
+#include <memory>
 
-
+using namespace std;
 vector<shared_ptr<Tanaman>> InputKonfigurasi::InputKonfigurasiTanaman(string nama_file) {
     vector<shared_ptr<Tanaman>> daftar_tanaman;
     ifstream file;
