@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++14
+CFLAGS = -std=c++17
 
 # Daftar target
 MAIN = driverMain
@@ -8,6 +8,7 @@ INPUT = driverInput
 MATRIKS = driverMatriks
 PCOLOR = driverPcolor
 PEMAIN = driverPemain
+MANAJER = driverGM
 
 # Daftar paket
 PACKAGES = Hewan Produk Entitas Util Tanaman
@@ -32,6 +33,7 @@ DriverInput_SRCS = InputKonfigurasi/driverInput.cpp
 DriverMatriks_SRCS = Matriks/driverMatriks.cpp
 DriverPcolor_SRCS = Pcolor/driverPcolor.cpp
 DriverPemain_SRCS = Pemain/driverPemain.cpp
+DriverManajer_SRCS = ManajerPermainan/driverGM.cpp
 
 # File objek untuk setiap paket
 Bangunan_OBJS = $(Bangunan_SRCS:.cpp=.o)
@@ -53,6 +55,7 @@ DriverInput_OBJS = $(DriverInput_SRCS:.cpp=.o)
 DriverMatriks_OBJS = $(DriverMatriks_SRCS:.cpp=.o)
 DriverPcolor_OBJS = $(DriverPcolor_SRCS:.cpp=.o)
 DriverPemain_OBJS = $(DriverPemain_SRCS:.cpp=.o)
+DriverManajer_OBJS = $(DriverManajer_SRCS:.cpp=.o)
 
 # Target utama
 all: $(MAIN)
@@ -61,30 +64,35 @@ Input: $(INPUT)
 Matriks: $(MATRIKS)
 Pcolor: $(PCOLOR)
 Pemain: $(PEMAIN)
+Manajer: $(MANAJER)
 
 # Target untuk membuat executable driverMain
 $(MAIN): $(DriverMain_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS) 
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(MAIN) $^
 
 # Target untuk membuat executable driverHewan
 $(HEWAN): $(DriverHewan_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(HEWAN) $^
 
 # Target untuk membuat executable driverInput
 $(INPUT): $(DriverInput_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(INPUT) $^
 
 # Target untuk membuat executable driverMatriks
 $(MATRIKS): $(DriverMatriks_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(MATRIKS) $^
 
 # Target untuk membuat executable driverPcolor
 $(PCOLOR): $(DriverPcolor_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(PCOLOR) $^
 
 # Target untuk membuat executable driverPemain
 $(PEMAIN): $(DriverPemain_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(PEMAIN) $^
+
+# Target untuk membuat executable driverManajer
+$(MANAJER): $(DriverManajer_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
+	$(CC) $(CFLAGS) -o ../test/$(MANAJER) $^
 
 # Target untuk mengkompilasi file objek untuk setiap paket
 %.o: %.cpp
@@ -93,22 +101,25 @@ $(PEMAIN): $(DriverPemain_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $
 
 # Target untuk menjalankan pengujian setiap paket
 test: all
-	./$(MAIN)
+	../test/$(MAIN)
 
 test_Hewan: Hewan
-	./$(HEWAN)
+	../test/$(HEWAN)
 
 test_Input: Input
-	./$(INPUT)
+	../test/$(INPUT)
 
 test_Matriks: Matriks
-	./$(MATRIKS)
+	../test/$(MATRIKS)
 
 test_Pcolor: Pcolor
-	./$(PCOLOR)
+	../test/$(PCOLOR)
 
 test_Pemain: Pemain
-	./$(PEMAIN)
+	../test/$(PEMAIN)
+
+test_Manajer: Manajer
+	../test/$(MANAJER)
 
 .PHONY: clean
 

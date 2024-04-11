@@ -21,6 +21,23 @@ ManagerPermainan::ManagerPermainan(string path) {
 
 ManagerPermainan::~ManagerPermainan() {}
 
+void ManagerPermainan::atur_pemain(string path) {
+    this->daftar_pemain = InputKonfigurasi::InputStatePemain(path + "/state.txt", this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko);
+}
+
+vector<shared_ptr<Pemain>> ManagerPermainan::dapatkan_daftar_pemain() {
+    return this->daftar_pemain;
+}
+
+void ManagerPermainan::inisialisasi_toko() {
+    this->toko.atur_tanaman(this->daftar_tanaman);
+    this->toko.atur_hewan(this->daftar_hewan);
+}
+
+Toko ManagerPermainan::dapatkan_toko() {
+    return this->toko;
+}
+
 void ManagerPermainan::print_konfigurasi() {
     cout << "Daftar Tanaman:" << endl;
     for (int i = 0; i < this->daftar_tanaman.size(); i++) {

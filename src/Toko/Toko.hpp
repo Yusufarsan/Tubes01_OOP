@@ -25,8 +25,13 @@ public:
     Toko(const Toko& other);
     Toko& operator=(const Toko& other);
 
+    void atur_tanaman(vector<shared_ptr<Tanaman>> t);
+    void atur_hewan(vector<shared_ptr<Hewan>> h);
+
     void tambah_produk(shared_ptr<Produk> p);
     void tambah_bangunan(shared_ptr<Bangunan> b);
+
+    void cetak_isi_toko();
 };
 
 #endif

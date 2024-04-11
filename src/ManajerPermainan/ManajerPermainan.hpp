@@ -36,6 +36,12 @@ public:
     ManagerPermainan(string path);
     ~ManagerPermainan();
 
+    void atur_pemain(string path);
+    vector<shared_ptr<Pemain>> dapatkan_daftar_pemain();
+
+    void inisialisasi_toko();
+    Toko dapatkan_toko();
+
     void print_konfigurasi();
 };
 
