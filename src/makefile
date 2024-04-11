@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++14
+CFLAGS = -std=c++17
 
 # Daftar target
 MAIN = driverMain
@@ -64,27 +64,27 @@ Pemain: $(PEMAIN)
 
 # Target untuk membuat executable driverMain
 $(MAIN): $(DriverMain_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS) 
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(MAIN) $^
 
 # Target untuk membuat executable driverHewan
 $(HEWAN): $(DriverHewan_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(HEWAN) $^
 
 # Target untuk membuat executable driverInput
 $(INPUT): $(DriverInput_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(INPUT) $^
 
 # Target untuk membuat executable driverMatriks
 $(MATRIKS): $(DriverMatriks_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(MATRIKS) $^
 
 # Target untuk membuat executable driverPcolor
 $(PCOLOR): $(DriverPcolor_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(PCOLOR) $^
 
 # Target untuk membuat executable driverPemain
 $(PEMAIN): $(DriverPemain_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $(Input_OBJS) $(Manajer_OBJS) $(Pcolor_OBJS) $(Pemain_OBJS) $(Produk_OBJS) $(Tanaman_OBJS) $(Toko_OBJS) $(Util_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o ../test/$(PEMAIN) $^
 
 # Target untuk mengkompilasi file objek untuk setiap paket
 %.o: %.cpp
@@ -93,22 +93,22 @@ $(PEMAIN): $(DriverPemain_OBJS) $(Bangunan_OBJS) $(Entitas_OBJS) $(Hewan_OBJS) $
 
 # Target untuk menjalankan pengujian setiap paket
 test: all
-	./$(MAIN)
+	../test/$(MAIN)
 
 test_Hewan: Hewan
-	./$(HEWAN)
+	../test/$(HEWAN)
 
 test_Input: Input
-	./$(INPUT)
+	../test/$(INPUT)
 
 test_Matriks: Matriks
-	./$(MATRIKS)
+	../test/$(MATRIKS)
 
 test_Pcolor: Pcolor
-	./$(PCOLOR)
+	../test/$(PCOLOR)
 
 test_Pemain: Pemain
-	./$(PEMAIN)
+	../test/$(PEMAIN)
 
 .PHONY: clean
 
