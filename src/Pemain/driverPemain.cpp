@@ -42,11 +42,8 @@ int main() {
 
     player.cetak_peti();
 
-
-
-
-    // cout << endl << "jualan" << endl;
-    // player.jual();
+    cout << endl << "jualan" << endl;
+    player.jual();
 
     // cout << endl << "beli" << endl;
     // player.beli();

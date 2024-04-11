@@ -195,11 +195,13 @@ void Pemain::jual() {
         cout << "Gak punya harta kok mau jual!" << endl;
     }
     else {
+        string slot_masukan;
         cout << "Silakan pilih petak yang ingin Anda jual!" << endl;
         cout << "Petak : ";
 
-        string slot_masukan;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         getline(cin, slot_masukan);
+
 
         istringstream iss(slot_masukan);
         vector<string> list_slot_masukan;
@@ -211,11 +213,14 @@ void Pemain::jual() {
             list_slot_masukan.push_back(slot);
         }
 
+        // TINGGAL JUAL KE TOKO
         for (const string& cell : list_slot_masukan) {
             cout << "Anda memilih slot: " << cell << endl;
+            int row = Util::indeks_baris_slot(cell);
+            int col = Util::indeks_kolom_slot(cell);
         }
 
-        // TINGGAL JUAL KE TOKO
+
     }
 }
 
