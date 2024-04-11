@@ -26,6 +26,10 @@ Toko& Toko::operator=(const Toko& other) {
     return *this;
 }
 
+bool Toko::operator==(const Toko& other){
+    if()
+}
+
 void Toko::atur_tanaman(vector<shared_ptr<Tanaman>> t) {
     this->tanaman = t;
 }
