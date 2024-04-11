@@ -279,9 +279,3 @@ void Petani::panen() {
     }
 
 }
-
-int Petani::hitung_pajak() {
-    int KKP, neto, KTKP;
-
-    return 10;
-}

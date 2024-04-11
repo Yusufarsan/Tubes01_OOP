@@ -24,7 +24,6 @@ public:
     Tanaman* hapus_ladang(string slot);
     unordered_map<string, int> frekuensi_panen() const;
     void panen();
-    int hitung_pajak();
 };
 
 #endif

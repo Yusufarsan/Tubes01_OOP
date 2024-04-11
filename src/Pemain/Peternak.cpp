@@ -329,10 +329,3 @@ void Peternak::beri_pangan() {
 void Peternak::panen() {
     cetak_peternakan();
 };
-
-
-int Peternak::hitung_pajak() {
-    int KKP, neto, KTKP;
-
-    return 10;
-}

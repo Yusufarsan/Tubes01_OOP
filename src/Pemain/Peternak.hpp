@@ -29,7 +29,6 @@ public:
     Hewan* hapus_peternakan(string slot);
     void beri_pangan();
     void panen();
-    int hitung_pajak();
 };
 
 #endif
