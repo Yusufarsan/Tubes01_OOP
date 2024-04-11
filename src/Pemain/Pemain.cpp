@@ -1,22 +1,8 @@
 #include "Pemain.hpp"
+#include "../Util/Util.hpp"
 #include <cmath>
 
-Pemain::Pemain(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti) {
-    this->nama = nama;
-    this->uang = uang;
-    this->berat_badan = berat_badan;
-
-    int row = get<0>(ukuran_peti);
-    int col = get<1>(ukuran_peti);
-
-    for (int i = 0; i < row; i++) {
-        vector<shared_ptr<Entitas>> row;
-        for (int j = 0; j < col; j++) {
-            row.push_back(nullptr);
-        }
-        peti.push_back(row);
-    }
-}
+Pemain::Pemain(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti): nama(nama), uang(uang), berat_badan(berat_badan), peti(get<0>(ukuran_peti), get<1>(ukuran_peti)){}
 
 string Pemain::dapatkan_nama() {
     return this->nama;
@@ -39,14 +25,13 @@ int Pemain::dapatkan_berat_badan() {
 }
 
 void Pemain::cetak_peti() {
-    int numRow = peti.size();
-    int numCol = peti[0].size();
-    int emptySlot = 0;
+    int numRow = peti.dapatkanBaris();
+    int numCol = peti.dapatkanKolom();
 
     //  Cari tau label terpanjang
     int maxLengthRowCode = Util::label_baris_tabel(numRow).length();
     int maxLengthColCode = Util::label_kolom_tabel(numCol).length();
-
+    
     // Cetak judul tabel
     cout << "    ================[ Penyimpanan ]==================\n\n";
 
@@ -95,13 +80,12 @@ void Pemain::cetak_peti() {
         cout << label_baris << space << '|';
 
         for (int m = 0; m < numCol; m++) {
-            if (!peti[n - 1][m]) {
+            if (peti.apakahSlotKosong(n-1,m)) {
                 cout << "     |";
-                emptySlot++;
             }
             else {
                 cout << " ";
-                cout << peti[n - 1][m].get()->dapatkan_kode_huruf(); // kode huruf
+                cout << peti.dapatkanElemen(n - 1,m)->dapatkan_kode_huruf(); // kode huruf
                 cout << " |";
             }
 
@@ -121,68 +105,40 @@ void Pemain::cetak_peti() {
         cout << "+\n";
     };
 
-    cout << endl << "Total slot kosong: " << emptySlot << endl;
+    cout << endl << "Total slot kosong: " << peti.jumlahSlotKosong() << endl;
 }
 
-Entitas* Pemain::hapus_peti(const string& slot) {
-    if (cek_slot_peti_valid(slot)) {
-        int idxRow = Util::indeks_baris_slot(slot);
-        int idxCol = Util::indeks_kolom_slot(slot);
-
-        if (peti[idxRow][idxCol]) {
-            Entitas* delEntitas = peti[idxRow][idxCol].get();
-            peti[idxRow][idxCol].reset();
-
-            return delEntitas;
-        }
-    }
-
-    return nullptr;
+Entitas* Pemain::hapus_peti(const string& slot){
+    int idxRow = Util::indeks_baris_slot(slot);
+    int idxCol = Util::indeks_kolom_slot(slot);
+    return peti.hapus(idxRow, idxCol);
 }
 
-bool Pemain::cek_slot_peti_valid(const string& slot) {
-    int i = Util::indeks_baris_slot(slot);
-    int j = Util::indeks_kolom_slot(slot);
-
-    if (i < peti.size() and j < peti[0].size()) {
-        return true;
-    }
-
-    return false;
+bool Pemain::cek_slot_peti_valid(const string& slot){
+    int idxRow = Util::indeks_baris_slot(slot);
+    int idxCol = Util::indeks_kolom_slot(slot);
+    return peti.apakahIndexValid(idxRow, idxCol);
 }
 
-bool Pemain::cek_peti_penuh() {
-    return jumlah_slot_kosong_peti() == 0;
-};
+bool Pemain::cek_peti_penuh(){
+    return peti.penuh();
+}
 
-bool Pemain::cek_peti_kosong() {
-    return jumlah_slot_kosong_peti() == (peti.size() * peti[0].size());
-};
-
-int Pemain::jumlah_slot_kosong_peti() {
-    int emptySlot = 0;
-
-    for (int i = 0; i < peti.size(); i++) {
-        for (int j = 0; j < peti[0].size(); j++) {
-            if (!peti[i][j]) {
-                emptySlot++;
-            }
-        }
-    }
-
-    return emptySlot;
-};
+bool Pemain::cek_peti_kosong(){
+    return peti.kosong();
+}
 
 bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
-    if (cek_slot_peti_valid(slot)) {
-        int idxRow = Util::indeks_baris_slot(slot);
-        int idxCol = Util::indeks_kolom_slot(slot);
-
-        if (peti[idxRow][idxCol] != nullptr) {
-            if (Util::instanceof<Produk>(peti[idxRow][idxCol].get())) {
+    int idxRow = Util::indeks_baris_slot(slot);
+    int idxCol = Util::indeks_kolom_slot(slot);
+    if (peti.apakahIndexValid(idxRow, idxCol)) {
+        if (!peti.apakahSlotKosong(idxRow, idxCol)) {
+            if (Util::instanceof<Produk>(peti.dapatkanElemen(idxRow, idxCol))) {
                 return true;
             }
         }
+    }else{
+        cout << "masukan slot yang valid" <<endl;
     }
 
     return false;
@@ -243,22 +199,24 @@ void Pemain::makan() {       // Belom di test dan tinggal perbaikin print-an
             cout << "Slot: ";
             cin >> slot;
             cout << endl;
+            int row = Util::indeks_baris_slot(slot);
+            int col = Util::indeks_kolom_slot(slot);
 
-            if (!this->cek_slot_peti_valid(slot)) {   // Validasi slot
+            if (!peti.apakahIndexValid(row,col)) {   // Validasi slot
                 throw "Slot tidak valid\n";
             }
 
             // Validasi isi sloat kosong atau tidak
-            if (this->peti[Util::indeks_baris_slot(slot)][Util::indeks_kolom_slot(slot)] == nullptr) {
+            if (peti.apakahSlotKosong(row,col)) {
                 throw "Slot yang dipilih kosong\n";
             }
 
-            if (!this->cek_bisa_dimakan(slot)) {   // Validasi makanan
+            if (!cek_bisa_dimakan(slot)) {   // Validasi makanan
                 // Handle the case where makanan is not a Produk
                 throw "Slot yang dipilih tidak bisa dimakan\n";
             }
 
-            Entitas* makanan = this->hapus_peti(slot);
+            Entitas* makanan = peti.hapus(row, col);
 
             if (Produk* produk = dynamic_cast<Produk*>(makanan)) {
                 this->atur_berat_badan(this->dapatkan_berat_badan() + produk->dapatkan_berat_tambahan());

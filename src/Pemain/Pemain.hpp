@@ -8,6 +8,7 @@
 #include "../Hewan/Karnivora.hpp"
 #include "../Bangunan/Bangunan.hpp"
 #include "../Util/Util.hpp"
+#include "../Matriks/Matriks.hpp"
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -18,7 +19,7 @@ using namespace std;
 class Pemain {
 protected:
     string nama;
-    vector<vector<shared_ptr<Entitas>>> peti;
+    Matrix<Entitas> peti;
     int uang;
     int berat_badan;
 
@@ -35,13 +36,13 @@ public:
     void cetak_peti();
     // void tambah_peti(string slot, Entitas& val);
     template<class T>
-    void tambah_peti(const string& slot, T& val) {
-        if (cek_slot_peti_valid(slot)) {
-            int i = Util::indeks_baris_slot(slot);
-            int j = Util::indeks_kolom_slot(slot);
-
-            if (!peti[i][j]) {
-                peti[i][j] = dynamic_pointer_cast<Entitas>(val);;
+    void tambah_peti(const string& slot, T* val) {
+        int row = Util::indeks_baris_slot(slot);
+        int col = Util::indeks_kolom_slot(slot);
+        if (peti.apakahIndexValid(row, col)) {
+            if (peti.apakahSlotKosong(row, col)) {
+                cout << row << col << endl;
+                peti.editElemen(row, col, val);
             }
             else {
                 cout << "Ada isinya" << endl;
@@ -53,13 +54,13 @@ public:
     }
 
     template<class T>
-    void tambah_peti(T& val) {
+    void tambah_peti(T* val) {
         bool isInserted = false;
 
-        for (int i = 0; i < peti.size(); i++) {
-            for (int j = 0; j < peti[0].size(); j++) {
-                if (!peti[i][j]) {
-                    peti[i][j] = dynamic_pointer_cast<Entitas>(val);
+        for (int i = 0; i < peti.dapatkanBaris(); i++) {
+            for (int j = 0; j < peti.dapatkanKolom(); j++) {
+                if (peti.apakahSlotKosong(i,j)) {
+                    peti.editElemen(i, j, val);
                     isInserted = true;
                     break;
                 }
