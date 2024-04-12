@@ -33,6 +33,28 @@ public:
         //     }
         // }
     }
+    // tambahElement pada slot kosong
+    Matrix& operator+=(A* El){
+        if(!penuh()){
+            bool isInserted = false;
+
+            for(int i = 0; i<rows; i++){
+                for(int j=0; j<cols; j++){
+                    if(apakahSlotKosong(i,j)){
+                        editElemen(i, j, El);
+                        isInserted = true;
+                        break;
+                    }
+                }
+                if(isInserted){
+                    break;
+                }
+            }
+        }else{
+            cout<<"Ups udah penuh nih"<<endl;
+        }
+            return *this;
+    }
 
     // setElement
     void editElemen(int i, int j, A* value) {

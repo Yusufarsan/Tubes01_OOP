@@ -36,6 +36,8 @@ int main() {
     
     // Print the matrix
     cout << "Matrix:" << endl;
+
+    mat+=(sapi);
     mat.cetak();
 
     // Trying to set value at invalid position
