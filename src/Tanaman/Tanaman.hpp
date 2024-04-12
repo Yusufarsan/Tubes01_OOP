@@ -19,6 +19,9 @@ class Tanaman: public Entitas {
         void tambah_umur(); // increment umur
         bool bisa_panen();
         void print_info();
-};
+        void atur_umur(int umur){
+            this->umur = umur;
+        }
+};  
 
 #endif

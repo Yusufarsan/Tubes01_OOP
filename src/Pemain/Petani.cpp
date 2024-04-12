@@ -124,7 +124,7 @@ bool Petani::cek_slot_ladang_valid(const string& slot) {
 };
 
 void Petani::tanam() {
-    if (cek_peti_penuh()) {
+    if (cek_peti_kosong()) {
         cout << "Gak punya penyimpanan kok mau tanam!" << endl;
     }
     else {
@@ -221,13 +221,12 @@ unordered_map<string, int> Petani::frekuensi_panen() {
     for (int i=0; i<ladang.dapatkanBaris(); i++) {
         for (int j=0; j<ladang.dapatkanKolom(); j++){
             Tanaman* tan = ladang.dapatkanElemen(i,j);
-            if (tan && tan->bisa_panen()) {
+            if (tan!=nullptr && tan->bisa_panen()) {
                 // Increment the frequency count for the Tanaman's name
                 frequencyMap[tan->dapatkan_nama()]++;
             }
         }
     }
-
     return frequencyMap;
 }
 
@@ -236,13 +235,50 @@ void Petani::panen() {
     
     unordered_map<string, int> frequencyMap = frekuensi_panen();
 
-    // Display the names and frequencies of harvest-ready Tanaman objects
-    cout << "Pilih tanaman siap panen yang kamu miliki:" << endl;
-    
-    int counter = 1;
-    for (const auto& [nama, frequency] : frequencyMap) {
-        cout << counter << ". " << nama << " (" << frequency << " petak siap panen)" << endl;
-        counter++;
+    if(frequencyMap.size()!=0){
+        // Display the names and frequencies of harvest-ready Tanaman objects
+        cout << "Pilih tanaman siap panen yang kamu miliki:" << endl;
+        
+        vector<string> key;
+        int counter = 1;
+        for (const auto& it : frequencyMap) {
+            key.push_back(it.first);
+            cout << counter << ". " << it.first << " (" << it.second << " petak siap panen)" << endl;
+            counter++;
+        }
+
+        bool isNumValid = false;
+        int nomor, petak;
+        while(!isNumValid){
+            bool isJumlahValid = false;
+            cout << "Nomor tanaman yang ingin dipanen: ";
+            cin >> nomor;
+            if(nomor>=counter || nomor <=0){
+                cout << "---Masukkan nomor yang valid!---" <<endl;
+            }
+            while(!isJumlahValid && nomor<counter && nomor>0){
+                cout << "Berapa petak yang ingin dipanen: ";
+                cin >> petak;
+                if (petak<=frequencyMap[key.at(nomor-1)] && petak>0){
+                    cout << "Berhasil panen" << endl;
+                    isJumlahValid = true;
+                    isNumValid = true;
+                }else if(petak>frequencyMap[key.at(nomor-1)]){
+                    cout << "Kamu hanya memiliki " << key.at(nomor-1) << " sebanyak " << frequencyMap[key.at(nomor-1)] << endl;
+                }else{
+                    if(petak==-1){
+                        // kembali ke pemilihan nomor
+                        isJumlahValid = true;
+                    }else{
+                        cout << "---Masukan petak yang valid!--- (-1 for back)"<<endl;
+                    }
+                }
+            }
+
+        }
+
+    }else{
+        cout << "Kamu belum punya tanaman siap panen nih, ayo semangat bekerja!" << endl;
     }
 
 }
