@@ -2,7 +2,7 @@
 
 int main() {
     // Membuat objek petani
-    Petani petani("NamaPetani", 1000, 70, {5, 5}, {10, 10});
+    Petani petani("NamaPetani", 1000, 70, {5, 5}, {5, 5});
 
     // Membuat beberapa tanaman
     Tanaman tanaman1("T1", "PAD", "Padi", 50, 10);
@@ -39,8 +39,12 @@ int main() {
     // Menampilkan jumlah slot kosong di ladang
     std::cout << "Jumlah slot kosong di ladang: " << petani.jumlah_slot_kosong_ladang() << std::endl;
 
+    // Melakukan penghapusan 
+
+
     // Memulai proses penanaman
     petani.tanam();
+    petani.cetak_peti();
 
     // Melakukan panen
     tanaman1.atur_umur(30);
@@ -49,6 +53,7 @@ int main() {
     // Mencetak ladang setelah operasi
     std::cout << "Ladang setelah operasi:" << std::endl;
     petani.cetak_ladang();
+    petani.cetak_peti();
 
     return 0;
 }

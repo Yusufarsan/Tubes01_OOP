@@ -42,7 +42,6 @@ public:
         int col = Util::indeks_kolom_slot(slot);
         if (peti.apakahIndexValid(row, col)) {
             if (peti.apakahSlotKosong(row, col)) {
-                cout << row << col << endl;
                 peti.editElemen(row, col, val);
             }
             else {
