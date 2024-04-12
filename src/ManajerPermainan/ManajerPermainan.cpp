@@ -23,10 +23,12 @@ ManagerPermainan::~ManagerPermainan() {}
 
 void ManagerPermainan::atur_pemain(string path) {
     this->daftar_pemain = InputKonfigurasi::InputStatePemain(path + "/state.txt", this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko);
+    this->sort_daftar_pemain();
 }
 
 void ManagerPermainan::atur_pemain(vector<shared_ptr<Pemain>> daftarPemain) {
     this->daftar_pemain = daftarPemain;
+    this->sort_daftar_pemain();
 }
 
 void ManagerPermainan::sort_daftar_pemain() {
@@ -40,7 +42,8 @@ vector<shared_ptr<Pemain>> ManagerPermainan::dapatkan_daftar_pemain() {
 }
 
 shared_ptr<Pemain> ManagerPermainan::pemain_skrg() {
-    return this->daftar_pemain.at(this->giliran);
+    if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran)))
+    return p;
 }
 
 void ManagerPermainan::next() {         // Belom di test
