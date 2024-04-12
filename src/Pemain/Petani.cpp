@@ -282,3 +282,12 @@ void Petani::panen() {
     }
 
 }
+
+void Petani::next_umur() {
+    if (this->cek_ladang_kosong()) return;      // Kalo ladang nya kosong ya udah lah cuk, ga ngapa ngapain
+    for (int i = 0; i < this->ladang.dapatkanBaris(); i++) {
+        for (int j = 0; j < this->ladang.dapatkanKolom(); j++) {    // Kalo ladang pada petak tertentu tidak kosong (ada tanamannya), maka umur ditambah
+            if (this->ladang.dapatkanElemen(i, j) != nullptr) this->ladang.dapatkanElemen(i, j)->tambah_umur();   
+        }
+    }
+}
