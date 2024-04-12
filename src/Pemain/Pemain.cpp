@@ -160,10 +160,6 @@ bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
     return false;
 }
 
-int Pemain::hitung_pajak() {
-    return 0;
-}
-
 void Pemain::jual(Toko& toko) {
     cetak_peti();
 

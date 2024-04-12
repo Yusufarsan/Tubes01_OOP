@@ -28,6 +28,7 @@ public:
     unordered_map<string, int> frekuensi_panen();
     void panen();
     void next_umur();     // Nambahin semua umur tanaman yg di tanem sebanyak 1 karena efek command next
+    int hitung_pajak();
 };
 
 #endif

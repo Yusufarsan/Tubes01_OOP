@@ -57,7 +57,23 @@ void Walikota::tambahPemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int,
     }
 }
 bool Walikota::bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::shared_ptr<Pemain>& b) {
-    return a->hitung_pajak() > b->hitung_pajak();
+    int pajak_a = 0;
+    int pajak_b = 0;
+    if (Util::instanceof<Petani>(a.get())) {
+        shared_ptr<Petani> petani_a = dynamic_pointer_cast<Petani>(a);
+        pajak_a = petani_a->hitung_pajak();
+    } else if (Util::instanceof<Peternak>(a.get())) {
+        shared_ptr<Peternak> peternak_a = dynamic_pointer_cast<Peternak>(a);
+        pajak_a = peternak_a->hitung_pajak();
+    }
+    if (Util::instanceof<Petani>(b.get())) {
+        shared_ptr<Petani> petani_b = dynamic_pointer_cast<Petani>(b);
+        pajak_b = petani_b->hitung_pajak();
+    } else if (Util::instanceof<Peternak>(b.get())) {
+        shared_ptr<Peternak> peternak_b = dynamic_pointer_cast<Peternak>(b);
+        pajak_b = peternak_b->hitung_pajak();
+    }
+    return pajak_a > pajak_b;
 }
 
 void Walikota::tagih_pajak(vector<shared_ptr<Pemain>> daftar_pemain) {
@@ -86,6 +102,7 @@ void Walikota::tagih_pajak(vector<shared_ptr<Pemain>> daftar_pemain) {
         jumlah_pajak += pajak_pemain;
         j++;
     }
+    this->uang += jumlah_pajak;
 
     cout << endl;
     cout << "Negara mendapatkan pemasukan sebesar " << jumlah_pajak << " gulden." << endl;

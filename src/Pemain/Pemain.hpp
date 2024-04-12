@@ -83,8 +83,6 @@ public:
     int jumlah_slot_kosong_peti();
     bool cek_bisa_dimakan(const string& slot);
 
-    int hitung_pajak();
-
     void jual(Toko& toko);
     void beli();
     void makan();
