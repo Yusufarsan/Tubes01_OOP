@@ -16,6 +16,9 @@ class Hewan: public Entitas {
 
         int dapatkan_berat(); // getter
         int dapatkan_berat_panen();
+        void atur_berat(int berat){ // setter
+            this->berat = berat;
+        }
         void tambah_berat(int num); // increment berat
         bool bisa_panen(); 
         virtual void makan(Produk *makanan)=0;

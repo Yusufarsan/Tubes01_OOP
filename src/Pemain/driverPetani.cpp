@@ -43,7 +43,7 @@ int main() {
 
 
     // Memulai proses penanaman
-    petani.tanam();
+    // petani.tanam();
     petani.cetak_peti();
 
     // Melakukan panen

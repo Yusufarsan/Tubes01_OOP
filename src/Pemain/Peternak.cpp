@@ -2,6 +2,7 @@
 #include "../Pcolor/Pcolor.hpp"
 #include <cmath>
 
+using namespace std;
 Peternak::Peternak(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti, tuple<int, int> ukuran_peternakan) : Pemain(nama, uang, berat_badan, ukuran_peti), peternakan(get<0>(ukuran_peternakan), get<1>(ukuran_peternakan)) {}
 
 Peternak::~Peternak() {};
@@ -292,6 +293,117 @@ void Peternak::beri_pangan() {
     };
 };
 
+
+tuple<vector<string>, vector<string>, int> Peternak::tampilkanPanen(unordered_map<pair<string,string>, int, pair_hash> frequencyMap){
+    // Display the names and frequencies of harvest-ready Tanaman objects
+    
+    int counter = 1;
+    vector<string> nama;
+    vector<string> kode;
+
+    // tampilkan kode & nama
+    for (const auto& it : frequencyMap) {
+        nama.push_back(it.first.second);
+        kode.push_back(it.first.first);
+        cout << " -> " << it.first.first << " : " << it.first.second << endl;
+
+    }
+    cout << endl << "Pilih hewan siap panen yang kamu miliki:" << endl;
+    
+    // tampilkan kode & petak
+    for (const auto& it : frequencyMap) {
+        cout << counter << ". " << it.first.first << " (" << it.second << " petak siap panen)" << endl;
+        counter++;
+
+    }
+    cout << endl;
+    return make_tuple(kode, nama, counter);
+}
+
 void Peternak::panen() {
     cetak_peternakan();
-};
+    unordered_map<pair<string,string>, int, pair_hash> frequencyMap = frekuensi_panen();
+    if(frequencyMap.size()!=0){
+        auto res = tampilkanPanen(frequencyMap);
+        vector<string> kode = get<0>(res);
+        vector<string> nama = get<1>(res);
+        int counter = get<2>(res);
+        bool isNumValid = false;
+        int nomor, petak;
+        while(!isNumValid){
+            bool isJumlahValid = false;
+            cout << "Nomor hewan yang ingin dipanen: ";
+            cin >> nomor;
+            if(nomor>=counter || nomor <=0){
+                cout << "---Masukkan nomor yang valid!---" <<endl;
+            }
+            while(!isJumlahValid && nomor<counter && nomor>0){
+                cout << "Berapa petak yang ingin dipanen: ";
+                cin >> petak;
+                if (petak<=frequencyMap[make_pair((kode.at(nomor-1)),(nama.at(nomor-1)))] && petak>0){
+                    if(peti.jumlahSlotKosong()>=petak){
+                        cout << "Pilih petak yang ingin dipanen: "<<endl;
+                        vector<string> succ;
+                        int i=0; bool isPetakValid=false;
+                        while(i<petak){
+                            string slot;
+                            cout << "   Petak ke-" << i+1 << " : ";
+                            cin >> slot;
+                            int row = Util::indeks_baris_slot(slot);
+                            int col = Util::indeks_kolom_slot(slot);
+                            if(peternakan.apakahIndexValid(row,col)){
+                                if(!peternakan.apakahSlotKosong(row, col)){
+                                    if(peternakan.dapatkanElemen(row,col)->bisa_panen()){
+                                        if(Util::strComp(nama.at(nomor-1), peternakan.dapatkanElemen(row, col)->dapatkan_nama())){
+                                            // hapus dari peternakan
+                                            Entitas* hew = dynamic_cast<Entitas*>(this->peternakan.hapus(row, col));
+                                            // tambah ke peti penyimpanan
+                                            tambah_peti(slot, hew);
+                                            succ.push_back(slot);
+                                            i++;
+                                            cout<<"----Berhasil----"<<endl;
+                                        }else{
+                                            cout << "Katanya mau panen " << nama.at(nomor-1) << endl;
+                                        }
+
+                                    }else{
+                                        cout << "--Itu belum bisa dipanen---"<<endl;
+                                    }
+
+                                }else{
+                                    cout<<"Kamu ga punya tanaman di situ"<<endl;
+                                }
+                            }else{
+                                cout<<"Weitts kelebihan tu petaknya" << endl;
+                            }
+                        }
+                        cout << petak <<" petak tanaman " << nama.at(nomor-1) << " pada petak ";
+                        for(auto &each:succ){
+                            cout << each << " " ;
+                        }
+                        cout << "telah dipanen!" <<endl;
+                        isJumlahValid = true;
+                        isNumValid = true;
+                    }else{
+                        cout << "---Penyimpanan kamu ga cukup hey---" << endl;
+                        isJumlahValid = true;
+                    }
+                }else if(petak>frequencyMap[make_pair(kode.at(nomor-1), nama.at(nomor-1))]){
+                    cout << "Kamu hanya memiliki " << nama.at(nomor-1) << " sebanyak " << frequencyMap[make_pair(kode.at(nomor-1), nama.at(nomor-1))] << endl;
+                }else{
+                    if(petak==-1){
+                        // kembali ke pemilihan nomor
+                        isJumlahValid = true;
+                    }else{
+                        cout << "---Masukan petak yang valid!--- (-1 for back)"<<endl;
+                    }
+                }
+            }
+
+        }
+
+    }else{
+        cout << "Kamu belum punya hewan siap panen nih, ayo semangat bekerja!" << endl;
+    }
+
+}

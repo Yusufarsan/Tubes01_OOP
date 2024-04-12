@@ -42,12 +42,15 @@ int main() {
     // Memberi makan hewan di peternakan
     peternak.beri_pangan();
 
+    omnivora.atur_berat(100);
+
     // Melakukan panen
     peternak.panen();
 
     // Mencetak peternakan setelah operasi
     std::cout << "Peternakan setelah operasi:" << std::endl;
     peternak.cetak_peternakan();
+    peternak.cetak_peti();
 
     return 0;
 }

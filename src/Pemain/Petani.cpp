@@ -265,14 +265,12 @@ void Petani::panen() {
         while(!isNumValid){
             bool isJumlahValid = false;
             cout << "Nomor tanaman yang ingin dipanen: ";
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             cin >> nomor;
             if(nomor>=counter || nomor <=0){
                 cout << "---Masukkan nomor yang valid!---" <<endl;
             }
             while(!isJumlahValid && nomor<counter && nomor>0){
                 cout << "Berapa petak yang ingin dipanen: ";
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 cin >> petak;
                 if (petak<=frequencyMap[make_pair((kode.at(nomor-1)),(nama.at(nomor-1)))] && petak>0){
                     if(peti.jumlahSlotKosong()>=petak){
