@@ -114,8 +114,16 @@ bool Petani::cek_ladang_kosong() {
     return ladang.kosong();
 };
 
+int Petani::jumlah_slot_efektif_ladang() {
+    return ladang.jumlahElement();
+};
+
 int Petani::jumlah_slot_kosong_ladang() {
     return ladang.jumlahSlotKosong();
+};
+
+Matrix<Tanaman> Petani::dapatkan_ladang() {
+    return ladang;
 };
 
 bool Petani::cek_slot_ladang_valid(const string& slot) {
@@ -347,4 +355,51 @@ void Petani::next_umur() {
             if (this->ladang.dapatkanElemen(i, j) != nullptr) this->ladang.dapatkanElemen(i, j)->tambah_umur();   
         }
     }
+}
+
+int Petani::hitung_pajak() {
+    int KKP, pajak;
+    int KTKP = 13;
+    int neto_kekayaan = uang;
+
+    if (!cek_ladang_kosong()) {
+        for (int i=0; i<ladang.dapatkanBaris(); i++) {
+            for (int j=0; j<ladang.dapatkanKolom(); j++) {
+                if (ladang.dapatkanElemen(i,j) != nullptr) {
+                    neto_kekayaan += ladang.dapatkanElemen(i,j)->dapatkan_harga();
+                }
+            }
+        }
+    }
+
+    if (!cek_peti_kosong()) {
+        for (int i=0; i<peti.dapatkanBaris(); i++) {
+            for (int j=0; j<peti.dapatkanKolom(); j++) {
+                if (peti.dapatkanElemen(i,j) != nullptr) {
+                    neto_kekayaan += peti.dapatkanElemen(i,j)->dapatkan_harga();
+                }
+            }
+        }
+    }
+
+    KKP = neto_kekayaan - KTKP;
+    if (KKP <= 0) {
+        pajak = 0;
+    } else if (KKP <= 6) {
+        pajak = round(KKP * 0.05);
+    } else if (KKP <= 25) {
+        pajak = round(KKP * 0.15);
+    } else if (KKP <= 50) {
+        pajak = round(KKP * 0.25);
+    } else if (KKP <= 500) {
+        pajak = round(KKP * 0.3);
+    } else {
+        pajak = round(KKP * 0.35);
+    }
+
+    if (pajak > uang) {
+        pajak = uang;
+    }
+
+    return pajak;
 }

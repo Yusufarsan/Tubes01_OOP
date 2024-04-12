@@ -118,8 +118,16 @@ bool Peternak::cek_peternakan_kosong() {
     return peternakan.kosong();
 };
 
+int Peternak::jumlah_slot_efektif_peternakan() {
+    return peternakan.jumlahElement();
+};
+
 int Peternak::jumlah_slot_kosong_peternakan() {
     return peternakan.jumlahSlotKosong();
+};
+
+Matrix<Hewan> Peternak::dapatkan_peternakan() {
+    return peternakan;
 };
 
 void Peternak::ternak() {
@@ -406,4 +414,52 @@ void Peternak::panen() {
         cout << "Kamu belum punya hewan siap panen nih, ayo semangat bekerja!" << endl;
     }
 
+}
+
+
+int Peternak::hitung_pajak() {
+    int KKP, pajak;
+    int KTKP = 11;
+    int neto_kekayaan = uang;
+
+    if (!cek_peternakan_kosong()) {
+        for (int i=0; i<peternakan.dapatkanBaris(); i++) {
+            for (int j=0; j<peternakan.dapatkanKolom(); j++) {
+                if (peternakan.dapatkanElemen(i,j) != nullptr) {
+                    neto_kekayaan += peternakan.dapatkanElemen(i,j)->dapatkan_harga();
+                }
+            }
+        }
+    }
+
+    if (!cek_peti_kosong()) {
+        for (int i=0; i<peti.dapatkanBaris(); i++) {
+            for (int j=0; j<peti.dapatkanKolom(); j++) {
+                if (peti.dapatkanElemen(i,j) != nullptr) {
+                    neto_kekayaan += peti.dapatkanElemen(i,j)->dapatkan_harga();
+                }
+            }
+        }
+    }
+
+    KKP = neto_kekayaan - KTKP;
+    if (KKP <= 0) {
+        pajak = 0;
+    } else if (KKP <= 6) {
+        pajak = round(KKP * 0.05);
+    } else if (KKP <= 25) {
+        pajak = round(KKP * 0.15);
+    } else if (KKP <= 50) {
+        pajak = round(KKP * 0.25);
+    } else if (KKP <= 500) {
+        pajak = round(KKP * 0.3);
+    } else {
+        pajak = round(KKP * 0.35);
+    }
+
+    if (pajak > uang) {
+        pajak = uang;
+    }
+
+    return pajak;
 }

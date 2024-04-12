@@ -2,8 +2,6 @@
 #include "Walikota.hpp"
 #include "Petani.hpp"
 #include "Peternak.hpp"
-#include "../Util/Util.hpp"
-#include "../Toko/Toko.hpp"
 #include <cmath>
 
 Pemain::Pemain(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti): nama(nama), uang(uang), berat_badan(berat_badan), peti(get<0>(ukuran_peti), get<1>(ukuran_peti)){}
@@ -26,6 +24,10 @@ void Pemain::atur_berat_badan(int berat) {
 
 int Pemain::dapatkan_berat_badan() {
     return this->berat_badan;
+}
+
+Matrix<Entitas> Pemain::dapatkan_peti() {
+    return this->peti;
 }
 
 void Pemain::cetak_peti() {
@@ -132,6 +134,10 @@ bool Pemain::cek_peti_kosong(){
     return peti.kosong();
 }
 
+int Pemain::jumlah_slot_efektif_peti(){
+    return peti.jumlahElement();
+}
+
 int Pemain::jumlah_slot_kosong_peti(){
     return peti.jumlahSlotKosong();
 }
@@ -150,10 +156,6 @@ bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
     }
 
     return false;
-}
-
-int Pemain::hitung_pajak() {
-    return 0;
 }
 
 void Pemain::jual(Toko& toko) {
@@ -227,16 +229,87 @@ void Pemain::jual(Toko& toko) {
     }
 }
 
-void Pemain::beli() {
-    cetak_peti();
-
-    if (cek_peti_penuh()) {
+void Pemain::membeli(Toko& toko) {
+    if (this->cek_peti_penuh()) {
         cout << "Peti nya penuh! Cari kantong kresek sana!" << endl;
     }
     else {
         cout << "Selamat Datang di Bacin Mart" << endl;
+        cout << "Berikut merupakan barang yang bisa kamu beli" << endl;
 
-        // TINGGAL JUAL KE TOKO
+        bool isWalikota;
+        if(Util::instanceof<Walikota>(this)){
+            isWalikota = true;
+        }else{
+            isWalikota = false;
+
+        }
+        toko.tampilBarang(isWalikota);
+        cout << endl;
+
+        cout << "Uang Anda : " << uang << endl;
+        cout << "Slot penyimpanan tersedia: " << peti.jumlahSlotKosong() << endl;
+        cout << endl;
+
+        int num, kuantitas;
+        cout << "Barang ingin dibeli : ";
+        cin >> num;
+        cout << "Kuantitas : ";
+        cin >> kuantitas;
+
+        if (kuantitas > this->jumlah_slot_kosong_peti()) {
+            cout << "Slot penyimpanan tidak cukup" << endl;
+        } else {
+            shared_ptr<Entitas> barang = toko.dapatkan_entitas(num);
+            if (kuantitas*barang->dapatkan_harga() > uang) {
+                cout << "Uang tidak cukup" << endl;
+            } else {
+                if (Util::instanceof<Produk>(barang.get())) {
+                    toko.kurangi_produk(dynamic_pointer_cast<Produk>(barang));
+                } else if (Util::instanceof<Bangunan>(barang.get())) {
+                    toko.kurangi_bangunan(dynamic_pointer_cast<Bangunan>(barang));
+                }
+
+                uang -= kuantitas*barang->dapatkan_harga();
+                cout << "Selamat Anda berhasil membeli " << kuantitas << " " << barang->dapatkan_nama() << ".";
+                cout << " Uang Anda tersisa " << uang << " gulden." << endl;
+                cout << endl;
+
+                cout << "Pilih slot untuk menyimpan barang yang Anda beli!" << endl;
+                this->cetak_peti();
+
+                cout << "Petak slot: ";
+                string slot_masukan;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getline(cin, slot_masukan);
+
+                istringstream iss(slot_masukan);
+                vector<string> list_slot_masukan;
+
+                string slot;
+                while (getline(iss, slot, ',')) {
+                    slot.erase(0, slot.find_first_not_of(" \t"));
+                    slot.erase(slot.find_last_not_of(" \t") + 1);
+                    list_slot_masukan.push_back(slot);
+                }
+
+                for (const string& cell : list_slot_masukan) {
+                    int row = Util::indeks_baris_slot(cell);
+                    int col = Util::indeks_kolom_slot(cell);
+                    if (peti.apakahIndexValid(row, col)) {
+                        if (peti.apakahSlotKosong(row, col)) {
+                            peti.editElemen(row, col, barang.get());
+                        } else{
+                            throw "Slot yang dipilih sudah terisi";
+                        }
+                    } else {
+                        throw "Slot yang dipilih tidak valid";
+                    }
+                }
+                
+                cout << barang->dapatkan_nama() << " berhasil disimpan dalam penyimpanan!" << endl;
+            }
+        }
     }
 }
 

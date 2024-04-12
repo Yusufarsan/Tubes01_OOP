@@ -27,7 +27,9 @@ public:
     bool cek_slot_ladang_valid(const string& slot);
     bool cek_ladang_penuh();
     bool cek_ladang_kosong();
+    int jumlah_slot_efektif_ladang();
     int jumlah_slot_kosong_ladang();
+    Matrix<Tanaman> dapatkan_ladang();
 
     void tanam();
     void tambah_ladang(string slot, Tanaman& val);
@@ -49,6 +51,7 @@ public:
     }
     void panen();
     void next_umur();     // Nambahin semua umur tanaman yg di tanem sebanyak 1 karena efek command next
+    int hitung_pajak();
 };
 
 #endif

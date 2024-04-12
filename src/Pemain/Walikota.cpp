@@ -10,52 +10,73 @@ Walikota::Walikota(const Walikota& other) : Pemain(other.nama, other.uang, other
 
 Walikota::~Walikota() {}
 
-void Walikota::tambahPemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int,int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan){
-    if(uang>=50){
+void Walikota::tambahPemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int, int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan) {
+    if (uang >= 50) {
         string namaPemain;
         string jenisPemain;
 
-        cout << "Masukan nama pemain: " ;
+        cout << "Masukan nama pemain: ";
         cin >> namaPemain;
         cout << "Masukan jenis pemain: ";
         cin >> jenisPemain;
 
         bool isFound = false;
         int i = 0;
-        while(isFound && i<daftarPemain->size()){
-            if((*daftarPemain)[i]->dapatkan_nama()==namaPemain){
+        while (isFound && i < daftarPemain->size()) {
+            if ((*daftarPemain)[i]->dapatkan_nama() == namaPemain) {
                 isFound = true;
             }
             i++;
         }
-        if(!isFound){
-            if(Util::strComp(jenisPemain, "peternak")){
+        if (!isFound) {
+            if (Util::strComp(jenisPemain, "peternak")) {
                 shared_ptr<Pemain> pemainBaru = make_unique<Peternak>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_peternakan);
                 daftarPemain->push_back(pemainBaru);
                 this->uang -= 50;
-                cout<<"Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
-            }else if(Util::strComp(jenisPemain, "petani")){
+                cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
+            }
+            else if (Util::strComp(jenisPemain, "petani")) {
                 shared_ptr<Pemain> pemainBaru = make_unique<Petani>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_lahan);
                 daftarPemain->push_back(pemainBaru);
                 this->uang -= 50;
-                cout<<"Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
-            }else if(Util::strComp(jenisPemain, "walikota")){
-                cout<<"Walikota nya satu aja yah, biar ga berantem" << endl;
-            }else{
-                cout<<"Role ini tidak tersedia" << endl;
+                cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
             }
-        }else{
+            else if (Util::strComp(jenisPemain, "walikota")) {
+                cout << "Walikota nya satu aja yah, biar ga berantem" << endl;
+            }
+            else {
+                cout << "Role ini tidak tersedia" << endl;
+            }
+        }
+        else {
             cout << "Ups, namanya sudah digunakan nih..." << endl;
         }
-    }else{
-        cout<<"Uang tidak cukup!" << endl;
+    }
+    else {
+        cout << "Uang tidak cukup!" << endl;
     }
 }
 bool Walikota::bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::shared_ptr<Pemain>& b) {
-    return a->hitung_pajak() > b->hitung_pajak();
+    int pajak_a = 0;
+    int pajak_b = 0;
+    if (Util::instanceof<Petani>(a.get())) {
+        shared_ptr<Petani> petani_a = dynamic_pointer_cast<Petani>(a);
+        pajak_a = petani_a->hitung_pajak();
+    } else if (Util::instanceof<Peternak>(a.get())) {
+        shared_ptr<Peternak> peternak_a = dynamic_pointer_cast<Peternak>(a);
+        pajak_a = peternak_a->hitung_pajak();
+    }
+    if (Util::instanceof<Petani>(b.get())) {
+        shared_ptr<Petani> petani_b = dynamic_pointer_cast<Petani>(b);
+        pajak_b = petani_b->hitung_pajak();
+    } else if (Util::instanceof<Peternak>(b.get())) {
+        shared_ptr<Peternak> peternak_b = dynamic_pointer_cast<Peternak>(b);
+        pajak_b = peternak_b->hitung_pajak();
+    }
+    return pajak_a > pajak_b;
 }
 
-void Walikota::tagih_pajak(vector<shared_ptr<Pemain>> daftar_pemain) {
+void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain) {
     cout << "Cring cring cring..." << endl;
     cout << "Pajak sudah dipungut!" << endl;
     cout << endl;
@@ -71,7 +92,8 @@ void Walikota::tagih_pajak(vector<shared_ptr<Pemain>> daftar_pemain) {
             pajak_pemain = petani->hitung_pajak();
             petani->atur_uang(petani->dapatkan_uang() - pajak_pemain);
             cout << j << ". " << petani->dapatkan_nama() << " - Petani: " << pajak_pemain << " gulden" << endl;
-        } else if (Util::instanceof<Peternak>(daftar_pemain[i].get())) {
+        }
+        else if (Util::instanceof<Peternak>(daftar_pemain[i].get())) {
             shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(daftar_pemain[i]);
             pajak_pemain = peternak->hitung_pajak();
             peternak->atur_uang(peternak->dapatkan_uang() - pajak_pemain);
@@ -80,6 +102,7 @@ void Walikota::tagih_pajak(vector<shared_ptr<Pemain>> daftar_pemain) {
         jumlah_pajak += pajak_pemain;
         j++;
     }
+    this->uang += jumlah_pajak;
 
     cout << endl;
     cout << "Negara mendapatkan pemasukan sebesar " << jumlah_pajak << " gulden." << endl;
@@ -93,7 +116,7 @@ void Walikota::cetak_resep_semua_bangunan(vector<Bangunan> daftar_bangunan) {
         // Cetak nama dan harga bangunan
         string nama_bangunan = daftar_bangunan.at(i).dapatkan_nama();
         int harga_bangunan = daftar_bangunan.at(i).dapatkan_harga();
-        cout << "   " << i+1 << ". " << nama_bangunan << " (" << harga_bangunan << " gulden, ";
+        cout << "   " << i + 1 << ". " << nama_bangunan << " (" << harga_bangunan << " gulden, ";
 
         // Iterasi setiap bahan pada suatu bangunan
         map<string, int> map_resep = daftar_bangunan.at(i).dapatkan_resep();
@@ -116,7 +139,7 @@ bool Walikota::cek_bahan(Bangunan bangunan) {
 
     // // Inisialisasi map untuk menghitung kekurangan tiap ProdukTanamanMaterial
     // map<string, int> kekurangan_bahan;
-    
+
     // Inisialisasi jumlah setiap ProdukTanamanMaterial yg dibutuhkan menjadi 0
     for (const pair<string, int>& iterator : bangunan.dapatkan_resep()) {
         penghitung[iterator.first] = 0;

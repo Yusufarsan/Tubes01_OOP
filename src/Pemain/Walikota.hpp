@@ -1,3 +1,6 @@
+#ifndef WALIKOTA_HPP
+#define WALIKOTA_HPP
+
 #include "Pemain.hpp"
 #include "../Bangunan/Bangunan.hpp"
 #include "../Produk/ProdukTanamanMaterial.hpp"
@@ -11,8 +14,7 @@ public:
     ~Walikota(); // dtor
 
     static bool bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::shared_ptr<Pemain>& b);
-
-    static void tagih_pajak(vector<shared_ptr<Pemain>>);
+    void tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain);
     
     // Method bantuan untuk method bangun()
     void cetak_resep_semua_bangunan(vector<Bangunan> daftar_bangunan);
@@ -22,3 +24,5 @@ public:
     void tambahPemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int,int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan);
 
 };
+
+#endif

@@ -33,6 +33,7 @@ public:
     int dapatkan_uang();
     void atur_berat_badan(int berat);
     int dapatkan_berat_badan();
+    Matrix<Entitas> dapatkan_peti();
 
     void cetak_peti();
     // void tambah_peti(string slot, Entitas& val);
@@ -77,13 +78,12 @@ public:
     bool cek_slot_peti_valid(const string& slot);
     bool cek_peti_penuh();
     bool cek_peti_kosong();
+    int jumlah_slot_efektif_peti();
     int jumlah_slot_kosong_peti();
     bool cek_bisa_dimakan(const string& slot);
 
-    int hitung_pajak();
-
     void jual(Toko& toko);
-    void beli();
+    void membeli(Toko& toko);
     void makan();
 
     friend ostream& operator<<(ostream&, Pemain);

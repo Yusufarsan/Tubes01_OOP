@@ -17,6 +17,7 @@ public:
 
     static string label_baris_tabel(int indeks);
     static string label_kolom_tabel(int indeks);
+    static string label_slot_tabel(int baris, int kolom);
     static int indeks_baris_slot(const string& nama_baris);
     static int indeks_kolom_slot(const string& nama_kolom);
 
