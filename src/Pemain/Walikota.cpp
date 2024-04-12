@@ -85,4 +85,111 @@ void Walikota::tagih_pajak(vector<shared_ptr<Pemain>> daftar_pemain) {
     cout << "Negara mendapatkan pemasukan sebesar " << jumlah_pajak << " gulden." << endl;
     cout << "Gunakan dengan baik dan jangan dikorupsi ya!" << endl;
 }
-void Walikota::bangun() {}
+
+void Walikota::cetak_resep_semua_bangunan(vector<Bangunan> daftar_bangunan) {
+    // Cetak semua resep bangunan yang ada
+    cout << "Resep bangunan yang ada adalah sebagai berikut.\n";
+    for (int i = 0; i < daftar_bangunan.size(); i++) {
+        // Cetak nama dan harga bangunan
+        string nama_bangunan = daftar_bangunan.at(i).dapatkan_nama();
+        int harga_bangunan = daftar_bangunan.at(i).dapatkan_harga();
+        cout << "   " << i+1 << ". " << nama_bangunan << " (" << harga_bangunan << " gulden, ";
+
+        // Iterasi setiap bahan pada suatu bangunan
+        map<string, int> map_resep = daftar_bangunan.at(i).dapatkan_resep();
+        bool isFirst = true;
+        for (const auto& iterator : map_resep) {
+            if (!isFirst) {
+                cout << ", ";
+            }
+            cout << iterator.first << " " << iterator.second;
+            isFirst = false;
+        }
+
+        cout << ")\n";
+    }
+}
+
+bool Walikota::cek_bahan(Bangunan bangunan) {
+    // Inisialisasi map untuk menghitung jumlah tiap ProdukTanamanMaterial yang dimiliki
+    map<string, int> penghitung;    // string -> nama ProdukTanamanMaterial, int -> jumlah yang dimiliki
+
+    // // Inisialisasi map untuk menghitung kekurangan tiap ProdukTanamanMaterial
+    // map<string, int> kekurangan_bahan;
+    
+    // Inisialisasi jumlah setiap ProdukTanamanMaterial yg dibutuhkan menjadi 0
+    for (const pair<string, int>& iterator : bangunan.dapatkan_resep()) {
+        penghitung[iterator.first] = 0;
+        // kekurangan_bahan[iterator.first] = 0;
+    }
+
+    // Mendapatkan jumlah setiap ProdukTanamanMaterial yang dimiliki
+    for (int i = 0; i < this->peti.dapatkanBaris(); i++) {
+        for (int j = 0; j < this->peti.dapatkanKolom(); j++) {
+            if (Util::instanceof<ProdukTanamanMaterial>(this->peti.dapatkanElemen(i, j))) {
+                ++penghitung[this->peti.dapatkanElemen(i, j)->dapatkan_nama()];
+            }
+        }
+    }
+
+    // Mengecek tiap bahan apakah mencukupi atau tidak
+    bool bahan_cukup = true;
+    for (pair<string, int> iterator : penghitung) {
+        iterator.second -= bangunan.dapatkan_resep()[iterator.first];
+        if (iterator.second < 0) {
+            bahan_cukup = false;
+        }
+    }
+
+    // cek uang walikota cukup apa ga
+    if (this->dapatkan_uang() < bangunan.dapatkan_harga()) {
+        bahan_cukup = false;
+    }
+
+    // Kalo bahan ga cukup, cetak kekurangannya
+    if (!bahan_cukup) {
+        cout << "Kamu tidak punya sumber daya yang cukup! Masih memerlukan " << (this->dapatkan_uang() < bangunan.dapatkan_harga()) ? abs(this->uang - bangunan.dapatkan_harga()) : 0;
+        cout << " gulden, ";
+
+        // Iterasi pada map penghitung
+        bool isFirst = true;
+        for (pair<string, int> iterator : penghitung) {
+            if (!isFirst) {
+                cout << ", ";
+            }
+            cout << (iterator.second < 0) ? abs(iterator.second) : 0;
+            cout << " " << iterator.first;
+        }
+        cout << "!\n\n";
+
+        return bahan_cukup; // Udah pas false
+    }
+    return bahan_cukup; // udah pasti true
+}
+
+void Walikota::bangun(vector<Bangunan> daftar_bangunan) {               // Belom di test
+    // Cek masih punya slot kosong atau ga. Kalo ga ada, ya ga bisa bangun
+    if (this->jumlah_slot_kosong_peti() == 0) throw "Tidak bisa membangun karena ga punya slot di penyimpanan\n";
+
+    while (true) {
+        this->cetak_resep_semua_bangunan(daftar_bangunan);
+        cout << "\n";
+
+        // User milih bangunan untuk dibangun
+        string pilihan_bangunan;
+        cout << "Bangunan yang ingin dibangun: ";
+        cin >> pilihan_bangunan;
+
+        // Cek apakah pilihan_bangunan ada dalam daftar_bangunan
+        for (int i = 0; i < daftar_bangunan.size(); i++) {
+            if (daftar_bangunan.at(i).dapatkan_nama() == pilihan_bangunan) {
+                // Cek apakah material yg dimiliki mencukupi untuk membangun sekaligus mencetak kekurangan jika bahan tidak cukup
+                if (this->cek_bahan(daftar_bangunan.at(i))) cout << pilihan_bangunan << " berhasil dibangun dan telah menjadi hak milik walikota!\n";
+                break;  // untuk break for loop
+                continue;   // ke while loop selanjutnya
+            }
+        }
+        cout << "Kamu tidak punya resep bangunan tersebut!\n\n";
+    }
+
+}
