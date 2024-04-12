@@ -214,15 +214,16 @@ Tanaman* Petani::hapus_ladang(string slot) {
     return ladang.hapus(idxRow, idxCol);
 }
 
-unordered_map<string, int> Petani::frekuensi_panen() const {
+unordered_map<string, int> Petani::frekuensi_panen() {
     unordered_map<string, int> frequencyMap;
 
-    // Iterate over the elements of ladang vector
-    for (const auto& row : ladang) {
-        for (const auto& tanamanPtr : row) {
-            if (tanamanPtr && tanamanPtr.get()->bisa_panen()) {
+    // Iterate over the elements of ladang matriks
+    for (int i=0; i<ladang.dapatkanBaris(); i++) {
+        for (int j=0; j<ladang.dapatkanKolom(); j++){
+            Tanaman* tan = ladang.dapatkanElemen(i,j);
+            if (tan && tan->bisa_panen()) {
                 // Increment the frequency count for the Tanaman's name
-                frequencyMap[tanamanPtr.get()->dapatkan_nama()]++;
+                frequencyMap[tan->dapatkan_nama()]++;
             }
         }
     }

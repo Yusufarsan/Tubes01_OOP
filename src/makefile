@@ -9,6 +9,8 @@ MATRIKS = driverMatriks
 PCOLOR = driverPcolor
 PEMAIN = driverPemain
 WALIKOTA = driverWalikota
+PETANI = driverPetani
+PETERNAK = driverPeternak
 MANAJER = driverGM
 TOKO = driverToko
 
@@ -22,6 +24,8 @@ Manajer_SRCS = ManajerPermainan/ManajerPermainan.cpp
 Pcolor_SRCS = Pcolor/Pcolor.cpp
 Pemain_SRCS = Pemain/Pemain.cpp Pemain/Peternak.cpp Pemain/Petani.cpp Pemain/Walikota.cpp
 Walikota_SRCS = Pemain/Pemain.cpp Pemain/Peternak.cpp Pemain/Petani.cpp Pemain/Walikota.cpp
+Petani_SRCS = Pemain/Pemain.cpp Pemain/Peternak.cpp Pemain/Petani.cpp Pemain/Walikota.cpp
+Peternak_SRCS = Pemain/Pemain.cpp Pemain/Peternak.cpp Pemain/Petani.cpp Pemain/Walikota.cpp
 Produk_SRCS = Produk/Produk.cpp Produk/ProdukTanamanBuah.cpp Produk/ProdukTanamanMaterial.cpp Produk/ProdukHewan.cpp
 Tanaman_SRCS = Tanaman/Tanaman.cpp Tanaman/TanamanBuah.cpp Tanaman/TanamanMaterial.cpp
 Toko_SRCS = Toko/Toko.cpp
@@ -35,6 +39,8 @@ DriverMatriks_SRCS = Matriks/driverMatriks.cpp
 DriverPcolor_SRCS = Pcolor/driverPcolor.cpp
 DriverPemain_SRCS = Pemain/driverPemain.cpp
 DriverWalikota_SRCS = Pemain/driverWalikota.cpp
+DriverPetani_SRCS = Pemain/driverPetani.cpp
+DriverPeternak_SRCS = Pemain/driverPeternak.cpp
 DriverManajer_SRCS = ManajerPermainan/driverGM.cpp
 DriverToko_SRCS = Toko/driverToko.cpp
 
