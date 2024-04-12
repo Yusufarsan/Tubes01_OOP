@@ -123,7 +123,7 @@ int Peternak::jumlah_slot_kosong_peternakan() {
 
 void Peternak::ternak() {
     if (peti.kosong()) {
-        cout << "Gak punya penyimpanan kok mau tanam!" << endl;
+        cout << "Gak punya penyimpanan kok mau ternak!" << endl;
     }
     else {
         cetak_peti();
