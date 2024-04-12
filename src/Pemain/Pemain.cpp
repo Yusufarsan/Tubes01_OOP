@@ -28,6 +28,10 @@ int Pemain::dapatkan_berat_badan() {
     return this->berat_badan;
 }
 
+Matrix<Entitas> Pemain::dapatkan_peti() {
+    return this->peti;
+}
+
 void Pemain::cetak_peti() {
     int numRow = peti.dapatkanBaris();
     int numCol = peti.dapatkanKolom();
@@ -130,6 +134,10 @@ bool Pemain::cek_peti_penuh(){
 
 bool Pemain::cek_peti_kosong(){
     return peti.kosong();
+}
+
+int Pemain::jumlah_slot_efektif_peti(){
+    return peti.jumlahElement();
 }
 
 int Pemain::jumlah_slot_kosong_peti(){

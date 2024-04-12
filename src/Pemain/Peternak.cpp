@@ -117,8 +117,16 @@ bool Peternak::cek_peternakan_kosong() {
     return peternakan.kosong();
 };
 
+int Peternak::jumlah_slot_efektif_peternakan() {
+    return peternakan.jumlahElement();
+};
+
 int Peternak::jumlah_slot_kosong_peternakan() {
     return peternakan.jumlahSlotKosong();
+};
+
+Matrix<Hewan> Peternak::dapatkan_peternakan() {
+    return peternakan;
 };
 
 void Peternak::ternak() {

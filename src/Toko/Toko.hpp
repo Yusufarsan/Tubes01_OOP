@@ -28,6 +28,10 @@ public:
     void masukanEntitas(Entitas* Entitas);
     void atur_tanaman(vector<shared_ptr<Tanaman>> t);
     void atur_hewan(vector<shared_ptr<Hewan>> h);
+    int dapatkan_jumlah_produk();
+    int dapatkan_jumlah_bangunan();
+    tuple<shared_ptr<Produk>, int> dapatkan_produk(int i);
+    tuple<shared_ptr<Bangunan>, int> dapatkan_bangunan(int i);
 
     void tambah_produk(shared_ptr<Produk> p);
     void tambah_bangunan(shared_ptr<Bangunan> b);

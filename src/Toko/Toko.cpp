@@ -27,19 +27,18 @@ Toko& Toko::operator=(const Toko& other) {
     return *this;
 }
 
-void Toko::tampilBarang(bool isWalikota){
+void Toko::tampilBarang(bool isWalikota) {
 
 }
 
-void Toko::masukanEntitas(Entitas* Ent){
-    if(Util::instanceof<Bangunan>(Ent)){
+void Toko::masukanEntitas(Entitas* Ent) {
+    if (Util::instanceof<Bangunan>(Ent)) {
         shared_ptr<Bangunan> ptrBangunan(dynamic_cast<Bangunan*>(Ent));
         tambah_bangunan(ptrBangunan);
-    }else if(Util::instanceof<Produk>(Ent)){
+    }
+    else if (Util::instanceof<Produk>(Ent)) {
         shared_ptr<Produk> ptrProduk(dynamic_cast<Produk*>(Ent));
         tambah_produk(ptrProduk);
-    }else{
-
     }
 }
 
@@ -51,12 +50,32 @@ void Toko::atur_hewan(vector<shared_ptr<Hewan>> h) {
     this->hewan = h;
 }
 
+int Toko::dapatkan_jumlah_produk() {
+    return this->produk.size();
+}
+
+int Toko::dapatkan_jumlah_bangunan() {
+    return this->bangunan.size();
+}
+
+tuple<shared_ptr<Produk>, int> Toko::dapatkan_produk(int i) {
+    auto it = this->produk.begin();
+    advance(it, i);
+    return make_tuple(it->first, it->second);
+}
+
+tuple<shared_ptr<Bangunan>, int> Toko::dapatkan_bangunan(int i) {
+    auto it = this->bangunan.begin();
+    advance(it, i);
+    return make_tuple(it->first, it->second);
+}
+
 void Toko::tambah_produk(shared_ptr<Produk> p) {
-    this->produk[p] ++;
+    this->produk[p]++;
 }
 
 void Toko::tambah_bangunan(shared_ptr<Bangunan> b) {
-    this->bangunan[b] ++;
+    this->bangunan[b]++;
 }
 
 void Toko::cetak_isi_toko() {

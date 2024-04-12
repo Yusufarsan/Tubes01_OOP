@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Add the source in project root directory
 add_executable(main
-            # src/main.cpp
+            src/main.cpp
             src/Bangunan/Bangunan.cpp
             src/Entitas/Entitas.cpp
             src/Hewan/Hewan.cpp
@@ -29,7 +29,3 @@ add_executable(main
             src/Util/Util.cpp
             src/Pcolor/Pcolor.cpp
             )
-
-set_target_properties(main PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/src
-        )

@@ -112,8 +112,16 @@ bool Petani::cek_ladang_kosong() {
     return ladang.kosong();
 };
 
+int Petani::jumlah_slot_efektif_ladang() {
+    return ladang.jumlahElement();
+};
+
 int Petani::jumlah_slot_kosong_ladang() {
     return ladang.jumlahSlotKosong();
+};
+
+Matrix<Tanaman> Petani::dapatkan_ladang() {
+    return ladang;
 };
 
 bool Petani::cek_slot_ladang_valid(const string& slot) {

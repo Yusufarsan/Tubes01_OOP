@@ -22,7 +22,9 @@ public:
     bool cek_slot_peternakan_valid(string slot);
     bool cek_peternakan_penuh();
     bool cek_peternakan_kosong();
+    int jumlah_slot_efektif_peternakan();
     int jumlah_slot_kosong_peternakan();
+    Matrix<Hewan> dapatkan_peternakan();
 
     void ternak();
     void tambah_peternakan(string slot, Hewan* val);

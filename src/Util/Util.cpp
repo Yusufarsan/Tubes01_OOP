@@ -55,6 +55,10 @@ string Util::label_kolom_tabel(int indeks) {
     return nama_kolom;
 }
 
+string Util::label_slot_tabel(int baris, int kolom) {
+    return label_kolom_tabel(kolom + 1) + label_baris_tabel(baris + 1);
+}
+
 int Util::indeks_baris_slot(const string& slot) {
     size_t pos = slot.find_first_of("0123456789");
 

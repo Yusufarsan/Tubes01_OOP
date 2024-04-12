@@ -1,3 +1,6 @@
+#ifndef WALIKOTA_HPP
+#define WALIKOTA_HPP
+
 #include "Pemain.hpp"
 #include "../Bangunan/Bangunan.hpp"
 #include "../Produk/ProdukTanamanMaterial.hpp"
@@ -22,3 +25,5 @@ public:
     void tambahPemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int,int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan);
 
 };
+
+#endif

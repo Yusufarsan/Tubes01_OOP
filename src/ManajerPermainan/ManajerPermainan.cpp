@@ -29,9 +29,9 @@ void ManagerPermainan::atur_pemain(vector<shared_ptr<Pemain>> daftarPemain) {
 }
 
 void ManagerPermainan::sort_daftar_pemain() {
-    sort(this->daftar_pemain.begin(), this->daftar_pemain.end(), [](const shared_ptr<Pemain>& a, const shared_ptr<Pemain>& b){
+    sort(this->daftar_pemain.begin(), this->daftar_pemain.end(), [](const shared_ptr<Pemain>& a, const shared_ptr<Pemain>& b) {
         return a->dapatkan_nama() < b->dapatkan_nama();
-    });
+        });
 }
 
 vector<shared_ptr<Pemain>> ManagerPermainan::dapatkan_daftar_pemain() {
@@ -39,8 +39,7 @@ vector<shared_ptr<Pemain>> ManagerPermainan::dapatkan_daftar_pemain() {
 }
 
 shared_ptr<Pemain> ManagerPermainan::pemain_skrg() {
-    if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran)))
-    return p;
+    return this->daftar_pemain[this->giliran];
 }
 
 void ManagerPermainan::next() {         // Belom di test
@@ -52,7 +51,7 @@ void ManagerPermainan::next() {         // Belom di test
     }
 }
 
-tuple<int,int> ManagerPermainan::dapatkanBesarPenyimpanan() const{
+tuple<int, int> ManagerPermainan::dapatkanBesarPenyimpanan() const {
     return besar_penyimpanan;
 }
 
@@ -152,7 +151,6 @@ void ManagerPermainan::simpan() {
                 if (!peti.apakahSlotKosong(j, k)) {
                     Entitas* entitas = peti.dapatkanElemen(j, k);
                     file << entitas->dapatkan_nama() << endl;
-                    delete entitas;
                 }
             }
         }
@@ -161,11 +159,46 @@ void ManagerPermainan::simpan() {
             shared_ptr<Petani> petani = dynamic_pointer_cast<Petani>(pemain);
             int jumlah_tanaman_di_ladang = petani->jumlah_slot_efektif_ladang();
             file << jumlah_tanaman_di_ladang << endl;
-            // Lanjutin nanti
+            Matrix<Tanaman> ladang = petani->dapatkan_ladang();
+            tuple<int, int> ukuran_ladang = make_tuple(ladang.dapatkanBaris(), ladang.dapatkanKolom());
+            for (int j = 0; j < get<0>(ukuran_ladang); j++) {
+                for (int k = 0; k < get<1>(ukuran_ladang); k++) {
+                    if (!ladang.apakahSlotKosong(j, k)) {
+                        Tanaman* tanaman = ladang.dapatkanElemen(j, k);
+                        string slot = Util::label_slot_tabel(j, k);
+                        file << slot << " " << tanaman->dapatkan_nama() << " " << tanaman->dapatkan_umur() << endl;
+                    }
+                }
+            }
         }
         else if (Util::instanceof<Peternak>(pemain.get())) {
             shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(pemain);
-            // peternak->simpan_peternakan(file);
+            int jumlah_hewan_di_peternakan = peternak->jumlah_slot_efektif_peternakan();
+            file << jumlah_hewan_di_peternakan << endl;
+            Matrix<Hewan> peternakan = peternak->dapatkan_peternakan();
+            tuple<int, int> ukuran_peternakan = make_tuple(peternakan.dapatkanBaris(), peternakan.dapatkanKolom());
+            for (int j = 0; j < get<0>(ukuran_peternakan); j++) {
+                for (int k = 0; k < get<1>(ukuran_peternakan); k++) {
+                    if (!peternakan.apakahSlotKosong(j, k)) {
+                        Hewan* hewan = peternakan.dapatkanElemen(j, k);
+                        string slot = Util::label_slot_tabel(j, k);
+                        file << slot << " " << hewan->dapatkan_nama() << " " << hewan->dapatkan_berat() << endl;
+                    }
+                }
+            }
         }
+    }
+
+    int jumlah_produk_toko = this->toko.dapatkan_jumlah_produk();
+    int jumlah_bangunan_toko = this->toko.dapatkan_jumlah_bangunan();
+    file << jumlah_produk_toko + jumlah_bangunan_toko << endl;
+    for (int i = 0; i < jumlah_produk_toko; i++) {
+        tuple<shared_ptr<Produk>, int> produk = this->toko.dapatkan_produk(i);
+        file << get<0>(produk)->dapatkan_nama() << " " << get<1>(produk) << endl;
+    }
+
+    for (int i = 0; i < jumlah_bangunan_toko; i++) {
+        tuple<shared_ptr<Bangunan>, int> bangunan = this->toko.dapatkan_bangunan(i);
+        file << get<0>(bangunan)->dapatkan_nama() << " " << get<1>(bangunan) << endl;
     }
 }
