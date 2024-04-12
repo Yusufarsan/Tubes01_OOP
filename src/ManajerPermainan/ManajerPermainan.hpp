@@ -42,6 +42,10 @@ public:
     void inisialisasi_toko();
     Toko dapatkan_toko();
 
+    // Command Permainan
+    void muat();
+    void simpan();
+
     void print_konfigurasi();
 };
 
