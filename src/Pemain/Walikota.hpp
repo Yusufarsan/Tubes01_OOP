@@ -13,6 +13,7 @@ public:
     Walikota(const Walikota& other); // cctor
     ~Walikota(); // dtor
 
+    bool apakahNamaTerdaftar(vector<shared_ptr<Pemain>>* daftarPemain, string namaPemain);
     static bool bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::shared_ptr<Pemain>& b);
     void tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain);
     
@@ -21,6 +22,7 @@ public:
     bool cek_bahan(Bangunan bangunan);
     
     void bangun(vector<Bangunan> daftar_bangunan);
+    bool jenisPemainValid(string jenisPemain);
     void tambahPemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int,int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan);
 
 };
