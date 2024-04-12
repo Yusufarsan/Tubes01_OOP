@@ -212,77 +212,81 @@ void Peternak::beri_pangan() {
         cout << "Kandangnya kosong semua, mau kasih makan setan?" << endl;
     }
     else {
-        cetak_peternakan();
+        if(cek_peti_kosong()){
+            cout << "Kamu ga punya apa apa, Mau kasih makan pake angin?" << endl;
+        }else{
+            cetak_peternakan();
 
-        string slot_masukan_peti, slot_masukan_peternakan;
-        int idxRowPeti, idxColPeti, idxRowPeternakan, idxColPeternakan;
-        Entitas* produk = nullptr;
-        Hewan* hewanLapar;
+            string slot_masukan_peti, slot_masukan_peternakan;
+            int idxRowPeti, idxColPeti, idxRowPeternakan, idxColPeternakan;
+            Entitas* produk = nullptr;
+            Hewan* hewanLapar;
 
-        while (true) {
-            cout << "Pilih kandang yang akan dikasih makan" << endl;
-            cout << "Petak : ";
-            cin >> slot_masukan_peternakan;
+            while (true) {
+                cout << "Pilih kandang yang akan dikasih makan" << endl;
+                cout << "Petak : ";
+                cin >> slot_masukan_peternakan;
 
-            if (!cek_slot_peti_valid(slot_masukan_peternakan)) {
-                cout << "Slot tidak valid" << endl;
-            }
-            else {
-                idxRowPeternakan = Util::indeks_baris_slot(slot_masukan_peternakan);
-                idxColPeternakan = Util::indeks_kolom_slot(slot_masukan_peternakan);
-
-                shared_ptr<Hewan> kandang(peternakan.dapatkanElemen(idxRowPeternakan, idxColPeternakan));
-
-                if(!kandang){
-                    cout << "Slot " << slot_masukan_peti << " gak ada hewannya." << endl;
+                if (!cek_slot_peti_valid(slot_masukan_peternakan)) {
+                    cout << "Slot tidak valid" << endl;
                 }
-                else{
-                    hewanLapar = dynamic_cast<Hewan*>(kandang.get());
-                    cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk dikasih makan." << endl;
-                    break;
-                }
-            }
-        }
+                else {
+                    idxRowPeternakan = Util::indeks_baris_slot(slot_masukan_peternakan);
+                    idxColPeternakan = Util::indeks_kolom_slot(slot_masukan_peternakan);
 
-        cetak_peti();
+                    shared_ptr<Hewan> kandang(peternakan.dapatkanElemen(idxRowPeternakan, idxColPeternakan));
 
-        while (true){
-            cout << "Silakan pilih pangan yang ingin Anda berikan!" << endl;
-            cout << "Petak : ";
-            cin >> slot_masukan_peti;
-
-            if (!cek_slot_peti_valid(slot_masukan_peti)) {
-                cout << "Slot tidak valid" << endl;
-            }
-            else {
-                idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
-                idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
-                produk = peti.dapatkanElemen(idxRowPeti, idxColPeti);
-                if (!Util::instanceof<Produk>(produk)) {
-                    cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
-                }
-                else if (Util::instanceof<ProdukTanamanMaterial>(produk)){
-                    cout << "Slot " << slot_masukan_peti << " berisi produk tanaman material yang tidak bisa dimakan." << endl;
-                }
-                else{
-                    Produk* makanan = dynamic_cast<Produk*>(produk);
-                    if(Util::instanceof<Omnivora>(hewanLapar)){
-                        hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
-                    }
-                    else if(Util::instanceof<Karnivora>(hewanLapar)){
-                        if (Util::instanceof<ProdukHewan>(makanan)){
-                            hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
-                        }
+                    if(!kandang){
+                        cout << "Slot " << slot_masukan_peti << " gak ada hewannya." << endl;
                     }
                     else{
-                        if (Util::instanceof<ProdukTanamanBuah>(makanan)){
+                        hewanLapar = dynamic_cast<Hewan*>(kandang.get());
+                        cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk dikasih makan." << endl;
+                        break;
+                    }
+                }
+            }
+
+            cetak_peti();
+
+            while (true){
+                cout << "Silakan pilih pangan yang ingin Anda berikan!" << endl;
+                cout << "Petak : ";
+                cin >> slot_masukan_peti;
+
+                if (!cek_slot_peti_valid(slot_masukan_peti)) {
+                    cout << "Slot tidak valid" << endl;
+                }
+                else {
+                    idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
+                    idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
+                    produk = peti.dapatkanElemen(idxRowPeti, idxColPeti);
+                    if (!Util::instanceof<Produk>(produk)) {
+                        cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
+                    }
+                    else if (Util::instanceof<ProdukTanamanMaterial>(produk)){
+                        cout << "Slot " << slot_masukan_peti << " berisi produk tanaman material yang tidak bisa dimakan." << endl;
+                    }
+                    else{
+                        Produk* makanan = dynamic_cast<Produk*>(produk);
+                        if(Util::instanceof<Omnivora>(hewanLapar)){
                             hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
                         }
+                        else if(Util::instanceof<Karnivora>(hewanLapar)){
+                            if (Util::instanceof<ProdukHewan>(makanan)){
+                                hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                            }
+                        }
+                        else{
+                            if (Util::instanceof<ProdukTanamanBuah>(makanan)){
+                                hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                            }
+                        }
+                        cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk ditanam." << endl;
                     }
-                    cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk ditanam." << endl;
+                    
+                    break;
                 }
-                
-                break;
             }
         }
     };

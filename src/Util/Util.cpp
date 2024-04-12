@@ -79,7 +79,7 @@ int Util::indeks_kolom_slot(const string& slot) {
 
 
 // Fungsi untuk membandingkan dua string secara case insensitive
-bool Util::compareCaseInsensitive(const std::string& str1, const std::string& str2) {
+bool Util::strComp(const std::string& str1, const std::string& str2) {
     // Jika panjang kedua string tidak sama, maka string tidak sama
     if (str1.length() != str2.length()) {
         return false;

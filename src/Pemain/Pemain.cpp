@@ -156,10 +156,6 @@ int Pemain::hitung_pajak() {
     return 0;
 }
 
-int Pemain::hitung_pajak() {
-    return 0;
-}
-
 void Pemain::jual(Toko& toko) {
     cetak_peti();
 

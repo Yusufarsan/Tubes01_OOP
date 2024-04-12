@@ -7,7 +7,7 @@ public:
     Walikota(const Walikota& other); // cctor
     ~Walikota(); // dtor
 
-    bool bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::shared_ptr<Pemain>& b);
+    static bool bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::shared_ptr<Pemain>& b);
 
     static void tagih_pajak(vector<shared_ptr<Pemain>>);
     void bangun();

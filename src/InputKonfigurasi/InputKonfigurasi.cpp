@@ -353,7 +353,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                         shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(pemain);
                         shared_ptr<Hewan> hewan = daftar_hewan[k];
                         hewan->tambah_berat(berat);
-                        peternak->tambah_peternakan(slot, hewan);
+                        peternak->tambah_peternakan(slot, hewan.get());
                         found = true;
                     }
                     k++;

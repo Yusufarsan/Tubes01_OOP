@@ -23,7 +23,7 @@ public:
     void tanam();
     void tambah_ladang(string slot, Tanaman& val);
     Tanaman* hapus_ladang(string slot);
-    unordered_map<string, int> frekuensi_panen() const;
+    unordered_map<string, int> frekuensi_panen();
     void panen();
 };
 
