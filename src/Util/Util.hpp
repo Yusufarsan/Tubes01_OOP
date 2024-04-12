@@ -24,6 +24,7 @@ public:
     static inline bool instanceof(const T* ptr) {
         return dynamic_cast<const Base*>(ptr) != nullptr;
     }
+    static bool strComp(const std::string& str1, const std::string& str2);
 };
 
 #endif

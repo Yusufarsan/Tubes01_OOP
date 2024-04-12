@@ -5,10 +5,11 @@
 #include "Pemain.hpp"
 #include "../Tanaman/Tanaman.hpp"
 #include <unordered_map>
+#include "../Matriks/Matriks.hpp"
 
 class Petani : public Pemain {
 private:
-    vector<vector<shared_ptr<Tanaman>>> ladang;
+    Matrix<Tanaman> ladang;
 public:
     Petani(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti, tuple<int, int> ukuran_ladang); // ctor
     ~Petani(); // dtor

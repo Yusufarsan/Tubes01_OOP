@@ -25,8 +25,16 @@ void ManagerPermainan::atur_pemain(string path) {
     this->daftar_pemain = InputKonfigurasi::InputStatePemain(path + "/state.txt", this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko);
 }
 
+void ManagerPermainan::atur_pemain(vector<shared_ptr<Pemain>> daftarPemain) {
+    this->daftar_pemain = daftarPemain;
+}
+
 vector<shared_ptr<Pemain>> ManagerPermainan::dapatkan_daftar_pemain() {
     return this->daftar_pemain;
+}
+
+tuple<int,int> ManagerPermainan::dapatkanBesarPenyimpanan() const{
+    return besar_penyimpanan;
 }
 
 void ManagerPermainan::inisialisasi_toko() {

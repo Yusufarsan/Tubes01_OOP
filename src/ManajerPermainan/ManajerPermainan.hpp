@@ -37,10 +37,13 @@ public:
     ~ManagerPermainan();
 
     void atur_pemain(string path);
+    void atur_pemain(vector<shared_ptr<Pemain>> daftarPemain);
     vector<shared_ptr<Pemain>> dapatkan_daftar_pemain();
 
     void inisialisasi_toko();
     Toko dapatkan_toko();
+
+    tuple<int,int> dapatkanBesarPenyimpanan() const;
 
     void print_konfigurasi();
 };
