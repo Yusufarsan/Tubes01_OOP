@@ -1,4 +1,5 @@
 #include "./Toko.hpp"
+#include "../Util/Util.hpp"
 
 Toko::Toko() {}
 
@@ -26,6 +27,22 @@ Toko& Toko::operator=(const Toko& other) {
     return *this;
 }
 
+void Toko::tampilBarang(bool isWalikota){
+
+}
+
+void Toko::masukanEntitas(Entitas* Ent){
+    if(Util::instanceof<Bangunan>(Ent)){
+        shared_ptr<Bangunan> ptrBangunan(dynamic_cast<Bangunan*>(Ent));
+        tambah_bangunan(ptrBangunan);
+    }else if(Util::instanceof<Produk>(Ent)){
+        shared_ptr<Produk> ptrProduk(dynamic_cast<Produk*>(Ent));
+        tambah_produk(ptrProduk);
+    }else{
+
+    }
+}
+
 void Toko::atur_tanaman(vector<shared_ptr<Tanaman>> t) {
     this->tanaman = t;
 }
@@ -35,11 +52,11 @@ void Toko::atur_hewan(vector<shared_ptr<Hewan>> h) {
 }
 
 void Toko::tambah_produk(shared_ptr<Produk> p) {
-    this->produk[p] += 1;
+    this->produk[p] ++;
 }
 
 void Toko::tambah_bangunan(shared_ptr<Bangunan> b) {
-    this->bangunan[b] += 1;
+    this->bangunan[b] ++;
 }
 
 void Toko::cetak_isi_toko() {

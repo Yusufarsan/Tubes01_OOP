@@ -1,49 +1,54 @@
 #include "Petani.hpp"
 
-int main(){
-    cout << "constructor" << endl;
-    Petani tani("Bulog", 50, 50, make_tuple(10, 10), make_tuple(5, 5)); // ctor
-    // Petani tani("Bulog");
+int main() {
+    // Membuat objek petani
+    Petani petani("NamaPetani", 1000, 70, {5, 5}, {10, 10});
 
-    tani.cetak_ladang();
+    // Membuat beberapa tanaman
+    Tanaman tanaman1("T1", "PAD", "Padi", 50, 10);
+    Tanaman tanaman2("T2", "JAG", "Jagung", 100, 20);
+    Tanaman tanaman3("T3", "WOR", "Wortel", 75, 15);
 
-    
+    // Menambahkan tanaman ke ladang
+    petani.tambah_ladang("A1", tanaman1);
+    petani.tambah_ladang("B2", tanaman2);
+    petani.tambah_ladang("C3", tanaman3);
 
-    // cout << tani.jumlah_slot_kosong_ladang() << endl;
-    // cout << tani.cek_slot_ladang_valid("A01") << endl;
-    // cout << tani.cek_slot_ladang_valid("K11") << endl;
+    // Menambahkan tanaman ke peti
+    petani.tambah_peti(&tanaman1);
 
-    // tani.tanam();
-    // Tanaman* kaktus = new Tanaman(30);
-    // tani.tambah_ladang("A01", kaktus);
+    // Mencetak ladang
+    std::cout << "Ladang setelah penambahan tanaman:" << std::endl;
+    petani.cetak_ladang();
+    std::cout << std::endl;
 
-    // cout << tani.hapus_ladang("A01") << endl;
+    // Memeriksa apakah ladang penuh
+    if (petani.cek_ladang_penuh()) {
+        std::cout << "Ladang penuh." << std::endl;
+    } else {
+        std::cout << "Ladang belum penuh." << std::endl;
+    }
 
-    // tani.panen();
+    // Memeriksa apakah ladang kosong
+    if (petani.cek_ladang_kosong()) {
+        std::cout << "Ladang kosong." << std::endl;
+    } else {
+        std::cout << "Ladang tidak kosong." << std::endl;
+    }
 
-    // tani.cetak_ladang();
-    // cout << player;
+    // Menampilkan jumlah slot kosong di ladang
+    std::cout << "Jumlah slot kosong di ladang: " << petani.jumlah_slot_kosong_ladang() << std::endl;
 
-    // cout << "dapatkan_nama" << endl;
-    // cout << player.dapatkan_nama() << endl;
+    // Memulai proses penanaman
+    petani.tanam();
 
-    // cout << endl << "atur_uang dan dapatkan_uang" << endl;
-    // player.atur_uang(999);
-    // cout << player.dapatkan_uang() << endl;
+    // Melakukan panen
+    tanaman1.atur_umur(30);
+    petani.panen();
 
-    // cout << endl << "atur_berat_badan dan dapatkan_berat_badan" << endl;
-    // player.atur_berat_badan(60);
-    // cout << player.dapatkan_berat_badan() << endl;
+    // Mencetak ladang setelah operasi
+    std::cout << "Ladang setelah operasi:" << std::endl;
+    petani.cetak_ladang();
 
-
-    // cout << endl << "cetak_peti" << endl;
-    // player.cetak_peti();
-
-    // player.tambah_peti("AB13");
-
-    // player.jual();
-    // player.beli();
-    // player.makan();
-    
     return 0;
 }

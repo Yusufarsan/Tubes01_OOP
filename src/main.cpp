@@ -47,52 +47,34 @@
 
 
 #include "Pemain/Petani.hpp"
+#include "Pemain/Walikota.hpp"
 
 int main() {
-    // shared_ptr<Hewan> kambing = make_shared<Herbivora>("1", "GOT", "mbek", 20, 5);
-    shared_ptr<Tanaman> tomat = make_shared<TanamanBuah>("1", "TMT", "Tomat", 30, 3);
-    shared_ptr<Tanaman> apel = make_shared<TanamanBuah>("2", "APL", "Apel", 30, 2);
+    // Create a Walikota object
+    Walikota walikota("John Doe", 1000, 70, std::make_tuple(10, 10));
 
-    cout << "constructor" << endl;
-    Petani tani("Bulog", 50, 50, make_tuple(10, 10), make_tuple(5, 5)); // ctor
+    // Call the tagih_pajak method
+    walikota.tagih_pajak();
 
-    tani.cetak_peti();
+    // Create a vector of Bangunan objects
+    std::vector<Bangunan> daftar_bangunan;
+    // ... fill the vector ...
 
-    string slot_masukan;
+    // Call the cetak_resep_semua_bangunan method
+    walikota.cetak_resep_semua_bangunan(daftar_bangunan);
 
-    cin >> slot_masukan;
+    // Call the cek_bahan method with the first Bangunan in the vector
+    bool hasMaterials = walikota.cek_bahan(daftar_bangunan[0]);
+    std::cout << "Has materials: " << (hasMaterials ? "yes" : "no") << std::endl;
 
-    tani.tambah_peti(slot_masukan, apel);
+    // Call the bangun method
+    walikota.bangun(daftar_bangunan);
 
-    tani.cetak_peti();
+    // Call the tambah_petani method
+    walikota.tambah_petani("Petani 1");
 
-    cin >> slot_masukan;
-
-    tani.tambah_peti(slot_masukan, tomat);
-
-    tani.cetak_peti();
-
-    // for (int i = 0; i < 5; i++){
-    //     tomat.get()->tambah_umur();
-    //     apel.get()->tambah_umur();
-    // }
-
-    // cin >> slot_masukan;
-
-    // tani.tambah_ladang(slot_masukan, *(apel.get()));
-
-    // tani.cetak_ladang();
-
-    // cin >> slot_masukan;
-
-    // tani.tambah_ladang(slot_masukan, *(tomat.get()));
-
-    // tani.cetak_ladang();
-
-    tani.tanam();
-    tani.cetak_peti();
-    tani.cetak_ladang();
-
+    // Call the tambah_peternak method
+    walikota.tambah_peternak("Peternak 1");
 
     return 0;
 }

@@ -4,7 +4,12 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
+#include <algorithm>
+#include <string>
 #include "../Pemain/Pemain.hpp"
+#include "../Pemain/Petani.hpp"
+#include "../Pemain/Peternak.hpp"
+#include "../Pemain/Walikota.hpp"
 #include "../InputKonfigurasi/InputKonfigurasi.hpp"
 #include "../Toko/Toko.hpp"
 
@@ -37,10 +42,18 @@ public:
     ~ManagerPermainan();
 
     void atur_pemain(string path);
+    void atur_pemain(vector<shared_ptr<Pemain>> daftarPemain);
+    void sort_daftar_pemain();
     vector<shared_ptr<Pemain>> dapatkan_daftar_pemain();
+    shared_ptr<Pemain> pemain_skrg();        // Nge return pemain saat ini yg lagi gilirannya
+    // shared_ptr<Peternak> pemain_skrg();        // Nge return pemain saat ini yg lagi gilirannya
+    // shared_ptr<Walikota> pemain_skrg();        // Nge return pemain saat ini yg lagi gilirannya
+    void next();
 
     void inisialisasi_toko();
     Toko dapatkan_toko();
+
+    tuple<int,int> dapatkanBesarPenyimpanan() const;
 
     // Command Permainan
     void muat();

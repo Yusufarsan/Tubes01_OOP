@@ -24,6 +24,8 @@ public:
     Toko(const Toko& other);
     Toko& operator=(const Toko& other);
 
+    void tampilBarang(bool isWalikota);
+    void masukanEntitas(Entitas* Entitas);
     void atur_tanaman(vector<shared_ptr<Tanaman>> t);
     void atur_hewan(vector<shared_ptr<Hewan>> h);
 

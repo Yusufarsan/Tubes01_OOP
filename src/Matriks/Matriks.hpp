@@ -50,10 +50,14 @@ public:
                 cout << "Index out of bounds." << endl;
                 return nullptr;
         }else{
-            A* el = data[baris][kolom];
-            data[baris][kolom] = nullptr;
-            N_element-=1;
-            return el ;
+            if(!apakahSlotKosong(baris, kolom)){
+                A* el = data[baris][kolom];
+                data[baris][kolom] = nullptr;
+                N_element-=1;
+                return el ;
+            }else{
+                return nullptr;
+            }
         }
     }
 

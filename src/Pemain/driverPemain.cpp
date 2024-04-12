@@ -49,7 +49,8 @@ int main() {
     player.cetak_peti();
 
     cout << endl << "jualan" << endl;
-    player.jual();
+    Toko* toko = new Toko();
+    player.jual(*toko);
 
     cout << endl << "Cetak Peti" << endl;
     player.cetak_peti();

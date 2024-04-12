@@ -26,6 +26,10 @@ Entitas& Entitas::operator=(const Entitas& other) {
     return *this;
 }
 
+string Entitas::dapatkanId(){
+    return id;
+}
+
 string Entitas::dapatkan_kode_huruf() {
     return kode_huruf;
 };
@@ -37,3 +41,7 @@ string Entitas::dapatkan_nama() {
 int Entitas::dapatkan_harga() {
     return harga;
 };
+
+bool Entitas::operator==(Entitas& other){
+    return (this->id.compare(other.dapatkanId()) && this->kode_huruf.compare(other.dapatkan_kode_huruf()) && this->nama.compare(other.dapatkan_nama()) && this->harga == other.dapatkan_harga());
+}

@@ -20,10 +20,40 @@ ManagerPermainan::~ManagerPermainan() {}
 
 void ManagerPermainan::atur_pemain(string path) {
     this->daftar_pemain = InputKonfigurasi::InputStatePemain(path + "/state.txt", this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko);
+    this->sort_daftar_pemain();
+}
+
+void ManagerPermainan::atur_pemain(vector<shared_ptr<Pemain>> daftarPemain) {
+    this->daftar_pemain = daftarPemain;
+    this->sort_daftar_pemain();
+}
+
+void ManagerPermainan::sort_daftar_pemain() {
+    sort(this->daftar_pemain.begin(), this->daftar_pemain.end(), [](const shared_ptr<Pemain>& a, const shared_ptr<Pemain>& b){
+        return a->dapatkan_nama() < b->dapatkan_nama();
+    });
 }
 
 vector<shared_ptr<Pemain>> ManagerPermainan::dapatkan_daftar_pemain() {
     return this->daftar_pemain;
+}
+
+shared_ptr<Pemain> ManagerPermainan::pemain_skrg() {
+    if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran)))
+    return p;
+}
+
+void ManagerPermainan::next() {         // Belom di test
+    this->giliran = (this->giliran + 1) % this->daftar_pemain.size();
+    for (int i = 0; i < this->daftar_pemain.size(); i++) {
+        if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(i))) {
+            p->next_umur();
+        }
+    }
+}
+
+tuple<int,int> ManagerPermainan::dapatkanBesarPenyimpanan() const{
+    return besar_penyimpanan;
 }
 
 void ManagerPermainan::inisialisasi_toko() {
