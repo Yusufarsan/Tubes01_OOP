@@ -76,7 +76,7 @@ bool Walikota::bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::sha
     return pajak_a > pajak_b;
 }
 
-void Walikota::tagih_pajak(vector<shared_ptr<Pemain>> daftar_pemain) {
+void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain) {
     cout << "Cring cring cring..." << endl;
     cout << "Pajak sudah dipungut!" << endl;
     cout << endl;

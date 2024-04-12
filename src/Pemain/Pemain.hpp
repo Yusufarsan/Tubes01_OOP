@@ -84,7 +84,7 @@ public:
     bool cek_bisa_dimakan(const string& slot);
 
     void jual(Toko& toko);
-    void beli();
+    void membeli(Toko& toko);
     void makan();
 
     friend ostream& operator<<(ostream&, Pemain);

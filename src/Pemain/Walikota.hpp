@@ -14,7 +14,7 @@ public:
     ~Walikota(); // dtor
 
     static bool bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::shared_ptr<Pemain>& b);
-    void tagih_pajak(vector<shared_ptr<Pemain>>);
+    void tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain);
     
     // Method bantuan untuk method bangun()
     void cetak_resep_semua_bangunan(vector<Bangunan> daftar_bangunan);
