@@ -18,10 +18,10 @@ public:
     void tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain);
     
     // Method bantuan untuk method bangun()
-    void cetak_resep_semua_bangunan(vector<Bangunan> daftar_bangunan);
-    bool cek_bahan(Bangunan bangunan);
+    void cetak_resep_semua_bangunan(vector<shared_ptr<Bangunan>> daftar_bangunan);
+    bool cek_bahan(shared_ptr<Bangunan> bangunan);
     
-    void bangun(vector<Bangunan> daftar_bangunan);
+    void bangun(vector<shared_ptr<Bangunan>> daftar_bangunan);
     void tambahPemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int,int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan);
 
 };

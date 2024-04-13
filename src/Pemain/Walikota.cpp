@@ -109,17 +109,17 @@ void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain) {
     cout << "Gunakan dengan baik dan jangan dikorupsi ya!" << endl;
 }
 
-void Walikota::cetak_resep_semua_bangunan(vector<Bangunan> daftar_bangunan) {
+void Walikota::cetak_resep_semua_bangunan(vector<shared_ptr<Bangunan>> daftar_bangunan) {
     // Cetak semua resep bangunan yang ada
     cout << "Resep bangunan yang ada adalah sebagai berikut.\n";
     for (int i = 0; i < daftar_bangunan.size(); i++) {
         // Cetak nama dan harga bangunan
-        string nama_bangunan = daftar_bangunan.at(i).dapatkan_nama();
-        int harga_bangunan = daftar_bangunan.at(i).dapatkan_harga();
+        string nama_bangunan = daftar_bangunan.at(i)->dapatkan_nama();
+        int harga_bangunan = daftar_bangunan.at(i)->dapatkan_harga();
         cout << "   " << i + 1 << ". " << nama_bangunan << " (" << harga_bangunan << " gulden, ";
 
         // Iterasi setiap bahan pada suatu bangunan
-        map<string, int> map_resep = daftar_bangunan.at(i).dapatkan_resep();
+        map<string, int> map_resep = daftar_bangunan.at(i)->dapatkan_resep();
         bool isFirst = true;
         for (const auto& iterator : map_resep) {
             if (!isFirst) {
@@ -133,12 +133,12 @@ void Walikota::cetak_resep_semua_bangunan(vector<Bangunan> daftar_bangunan) {
     }
 }
 
-bool Walikota::cek_bahan(Bangunan bangunan) {       // Nge cek bahan cukup atau ga. Kalo cukup, return true dan bahan nya walkot dikurangi
+bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan cukup atau ga. Kalo cukup, return true dan bahan nya walkot dikurangi
     // Inisialisasi map untuk menghitung jumlah tiap ProdukTanamanMaterial yang dimiliki
     map<string, int> penghitung;    // string -> nama ProdukTanamanMaterial, int -> jumlah yang dimiliki
 
     // Inisialisasi jumlah setiap ProdukTanamanMaterial yg dibutuhkan menjadi 0
-    for (const pair<string, int>& iterator : bangunan.dapatkan_resep()) {
+    for (const pair<string, int>& iterator : bangunan->dapatkan_resep()) {
         penghitung[iterator.first] = 0;
         // kekurangan_bahan[iterator.first] = 0;
     }
@@ -161,20 +161,20 @@ bool Walikota::cek_bahan(Bangunan bangunan) {       // Nge cek bahan cukup atau 
     // Mengecek tiap bahan apakah mencukupi atau tidak
     bool bahan_cukup = true;
     for (pair<string, int> iterator : penghitung) {
-        iterator.second -= bangunan.dapatkan_resep()[iterator.first];
+        iterator.second -= bangunan->dapatkan_resep()[iterator.first];
         if (iterator.second < 0) {
             bahan_cukup = false;
         }
     }
 
     // cek uang walikota cukup apa ga
-    if (this->dapatkan_uang() < bangunan.dapatkan_harga()) {
+    if (this->dapatkan_uang() < bangunan->dapatkan_harga()) {
         bahan_cukup = false;
     }
 
     // Kalo bahan ga cukup, cetak kekurangannya
     if (!bahan_cukup) {
-        cout << "Kamu tidak punya sumber daya yang cukup! Masih memerlukan " << (this->dapatkan_uang() < bangunan.dapatkan_harga()) ? abs(this->uang - bangunan.dapatkan_harga()) : 0;
+        cout << "Kamu tidak punya sumber daya yang cukup! Masih memerlukan " << (this->dapatkan_uang() < bangunan->dapatkan_harga()) ? abs(this->uang - bangunan->dapatkan_harga()) : 0;
         cout << " gulden, ";
 
         // Iterasi pada map penghitung
@@ -207,7 +207,7 @@ bool Walikota::cek_bahan(Bangunan bangunan) {       // Nge cek bahan cukup atau 
     return bahan_cukup; // udah pasti true
 }
 
-void Walikota::bangun(vector<Bangunan> daftar_bangunan) {               // Belom di test
+void Walikota::bangun(vector<shared_ptr<Bangunan>> daftar_bangunan) {               // Belom di test
     // Ga usah di cek masih ada slot kosong atau ga
     // Karena nanti pasti ada slot material yang berkurang (based on spek docs)
 
@@ -230,7 +230,7 @@ void Walikota::bangun(vector<Bangunan> daftar_bangunan) {               // Belom
         // Cek apakah pilihan_bangunan ada dalam daftar_bangunan
         for (int i = 0; i < daftar_bangunan.size(); i++) {
             // Asumsikan ga ada nama bangunan yang sama
-            if (daftar_bangunan.at(i).dapatkan_nama() == pilihan_bangunan) {
+            if (daftar_bangunan.at(i)->dapatkan_nama() == pilihan_bangunan) {
                 // Cek apakah material yg dimiliki mencukupi untuk membangun sekaligus mencetak kekurangan jika bahan tidak cukup
                 if (this->cek_bahan(daftar_bangunan.at(i))) {
                     // method cek_bahan akan melakukan hapus peti sekaligus tambah peti
