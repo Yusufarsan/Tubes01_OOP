@@ -4,17 +4,23 @@
 ManagerPermainan::ManagerPermainan(string path) {
     this->giliran = 0;
     this->jumlah_pemain = 0;
-    this->daftar_tanaman = InputKonfigurasi::InputKonfigurasiTanaman(path + "/plant.txt");
-    this->daftar_hewan = InputKonfigurasi::InputKonfigurasiHewan(path + "/animal.txt");
-    this->daftar_produk = InputKonfigurasi::InputKonfigurasiProduk(path + "/product.txt");
-    this->daftar_bangunan = InputKonfigurasi::InputKonfigurasiResepBangunan(path + "/recipe.txt");
 
-    vector<int> misc = InputKonfigurasi::InputKonfigurasiMisc(path + "/misc.txt");
-    this->uang_pemenang = misc[0];
-    this->berat_pemenang = misc[1];
-    this->besar_penyimpanan = make_tuple(misc[2], misc[3]);
-    this->besar_lahan = make_tuple(misc[4], misc[5]);
-    this->besar_peternakan = make_tuple(misc[6], misc[7]);
+    try {
+        this->daftar_tanaman = InputKonfigurasi::InputKonfigurasiTanaman(path + "/plant.txt");
+        this->daftar_hewan = InputKonfigurasi::InputKonfigurasiHewan(path + "/animal.txt");
+        this->daftar_produk = InputKonfigurasi::InputKonfigurasiProduk(path + "/product.txt");
+        this->daftar_bangunan = InputKonfigurasi::InputKonfigurasiResepBangunan(path + "/recipe.txt");
+        vector<int> misc = InputKonfigurasi::InputKonfigurasiMisc(path + "/misc.txt");
+        this->uang_pemenang = misc[0];
+        this->berat_pemenang = misc[1];
+        this->besar_penyimpanan = make_tuple(misc[2], misc[3]);
+        this->besar_lahan = make_tuple(misc[4], misc[5]);
+        this->besar_peternakan = make_tuple(misc[6], misc[7]);
+    }
+    catch (const invalid_argument& e) {
+        cout << e.what() << '\n';
+        exit(1);
+    }
 }
 
 ManagerPermainan::~ManagerPermainan() {}
@@ -82,13 +88,6 @@ void ManagerPermainan::muat() {
     cin >> path_to_file;
     cout << endl;
 
-    ifstream file(path_to_file);
-    if (!file.is_open()) {
-        cout << "File tidak ditemukan" << endl;
-        return;
-    }
-
-    // Nanti tambahin try catch
     this->atur_pemain(InputKonfigurasi::InputStatePemain(path_to_file, this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko));
 }
 
