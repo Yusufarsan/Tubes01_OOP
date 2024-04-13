@@ -206,7 +206,8 @@ void Walikota::bangun(vector<Bangunan> daftar_bangunan) {               // Belom
     // Ga usah di cek masih ada slot kosong atau ga
     // Karena nanti pasti ada slot material yang berkurang (based on spek docs)
 
-    while (true) {
+    bool berhasil_bangun = false;
+    while (!berhasil_bangun) {
         this->cetak_resep_semua_bangunan(daftar_bangunan);
         cout << "\n";
 
@@ -215,17 +216,28 @@ void Walikota::bangun(vector<Bangunan> daftar_bangunan) {               // Belom
         cout << "Bangunan yang ingin dibangun: ";
         cin >> pilihan_bangunan;
 
+        // Cek apakah user memasukkan "BATAL", jika iya maka command BANGUN tidak jadi dijalankan
+        if (pilihan_bangunan == "BATAL") {
+            cout << "Kamu membatalkan pembangunan. Labil bgt sih.\n\n";
+            return;
+        }
+
         // Cek apakah pilihan_bangunan ada dalam daftar_bangunan
         for (int i = 0; i < daftar_bangunan.size(); i++) {
+            // Asumsikan ga ada nama bangunan yang sama
             if (daftar_bangunan.at(i).dapatkan_nama() == pilihan_bangunan) {
                 // Cek apakah material yg dimiliki mencukupi untuk membangun sekaligus mencetak kekurangan jika bahan tidak cukup
                 if (this->cek_bahan(daftar_bangunan.at(i))) {
                     // method cek_bahan akan melakukan hapus peti sekaligus tambah peti
                     cout << pilihan_bangunan << " berhasil dibangun dan telah menjadi hak milik walikota!\n";
+                    berhasil_bangun = true;
                 }
                 break;  // untuk break for loop
-                continue;   // ke while loop selanjutnya
             }
+        }
+
+        if (berhasil_bangun) {
+            break;
         }
         cout << "Kamu tidak punya resep bangunan tersebut!\n\n";
     }
