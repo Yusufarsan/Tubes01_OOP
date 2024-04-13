@@ -55,6 +55,14 @@ tuple<int, int> ManagerPermainan::dapatkanBesarPenyimpanan() const {
     return besar_penyimpanan;
 }
 
+tuple<int, int> ManagerPermainan::dapatkanBesarLahan() const {
+    return besar_lahan;
+}
+
+tuple<int, int> ManagerPermainan::dapatkanBesarPeternakan() const {
+    return besar_peternakan;
+}
+
 void ManagerPermainan::inisialisasi_toko() {
     this->toko.atur_tanaman(this->daftar_tanaman);
     this->toko.atur_hewan(this->daftar_hewan);
@@ -104,7 +112,7 @@ void ManagerPermainan::muat() {
     }
 
     // Nanti tambahin try catch
-    this->daftar_pemain = InputKonfigurasi::InputStatePemain(path_to_file, this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko);
+    this->atur_pemain(InputKonfigurasi::InputStatePemain(path_to_file, this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko));
 }
 
 void ManagerPermainan::simpan() {
@@ -201,4 +209,13 @@ void ManagerPermainan::simpan() {
         tuple<shared_ptr<Bangunan>, int> bangunan = this->toko.dapatkan_bangunan(i);
         file << get<0>(bangunan)->dapatkan_nama() << " " << get<1>(bangunan) << endl;
     }
+}
+
+void ManagerPermainan::inisialisasi_pemain() {
+    shared_ptr<Pemain> pemain1 = make_shared<Petani>("Petani1", 50, 40, besar_penyimpanan, besar_lahan);
+    shared_ptr<Pemain> pemain2 = make_shared<Peternak>("Peternak1", 50, 40, besar_penyimpanan, besar_peternakan);
+    shared_ptr<Pemain> pemain3 = make_shared<Walikota>("Walikota", 50, 40, besar_penyimpanan);
+
+    vector<shared_ptr<Pemain>> daftarPemain = { pemain1, pemain2, pemain3 };
+    this->atur_pemain(daftarPemain);
 }

@@ -48,15 +48,18 @@ public:
     shared_ptr<Pemain> pemain_skrg();        // Nge return pemain saat ini yg lagi gilirannya
     // shared_ptr<Peternak> pemain_skrg();        // Nge return pemain saat ini yg lagi gilirannya
     // shared_ptr<Walikota> pemain_skrg();        // Nge return pemain saat ini yg lagi gilirannya
-    void next();
 
     void inisialisasi_toko();
     Toko dapatkan_toko();
 
     tuple<int,int> dapatkanBesarPenyimpanan() const;
+    tuple<int,int> dapatkanBesarLahan() const;
+    tuple<int,int> dapatkanBesarPeternakan() const;
 
     // Command Permainan
+    void next();
     void muat();
+    void inisialisasi_pemain();
     void simpan();
 
     void print_konfigurasi();
