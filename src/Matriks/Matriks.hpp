@@ -1,8 +1,10 @@
 #ifndef MATRIKS_HPP
 #define MATRIKS_HPP
 
+// STL
 #include <vector>
 #include <iostream>
+
 using namespace std;
 
 template <typename A>
@@ -22,7 +24,7 @@ public:
     }
 
     // Destruktor
-    ~Matrix(){ //kalo di gw tu dia udh otomatis ngebersiin sndiri si sampahnya
+    ~Matrix() { //kalo di gw tu dia udh otomatis ngebersiin sndiri si sampahnya
         // for (int i = 0; i < rows; ++i) {
         //     for (int j = 0; j < cols; ++j) {
         //         if(!isSlotKosong(i,j)){
@@ -34,80 +36,83 @@ public:
         // }
     }
     // tambahElement pada slot kosong
-    Matrix& operator+=(A* El){
-        if(!penuh()){
+    Matrix& operator+=(A* El) {
+        if (!penuh()) {
             bool isInserted = false;
 
-            for(int i = 0; i<rows; i++){
-                for(int j=0; j<cols; j++){
-                    if(apakahSlotKosong(i,j)){
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    if (apakahSlotKosong(i, j)) {
                         editElemen(i, j, El);
                         isInserted = true;
                         break;
                     }
                 }
-                if(isInserted){
+                if (isInserted) {
                     break;
                 }
             }
-        }else{
-            cout<<"Ups udah penuh nih"<<endl;
         }
-            return *this;
+        else {
+            cout << "Ups udah penuh nih" << endl;
+        }
+        return *this;
     }
 
     // setElement
     void editElemen(int i, int j, A* value) {
-        if (!apakahIndexValid(i,j)) {
+        if (!apakahIndexValid(i, j)) {
             cout << "Index out of bounds." << endl;
             return;
         }
         data[i][j] = value;
-        N_element+=1;
+        N_element += 1;
     }
 
     // menghapus element objek menjadi nullptr
-    A* hapus(int baris, int kolom){
-        if (!apakahIndexValid(baris,kolom)) {
-                cout << "Index out of bounds." << endl;
-                return nullptr;
-        }else{
-            if(!apakahSlotKosong(baris, kolom)){
+    A* hapus(int baris, int kolom) {
+        if (!apakahIndexValid(baris, kolom)) {
+            cout << "Index out of bounds." << endl;
+            return nullptr;
+        }
+        else {
+            if (!apakahSlotKosong(baris, kolom)) {
                 A* el = data[baris][kolom];
                 data[baris][kolom] = nullptr;
-                N_element-=1;
-                return el ;
-            }else{
+                N_element -= 1;
+                return el;
+            }
+            else {
                 return nullptr;
             }
         }
     }
 
     // mengecek apakah index valid
-    bool apakahIndexValid(int baris, int kolom){
+    bool apakahIndexValid(int baris, int kolom) {
         return (!(baris < 0 || baris >= rows || kolom < 0 || kolom >= cols));
     }
 
-    bool apakahSlotKosong(int baris, int kolom){
+    bool apakahSlotKosong(int baris, int kolom) {
         return data[baris][kolom] == nullptr;
     }
 
     // memberikan nilai slot kosong pada matriks
-    int jumlahSlotKosong(){
-        return (rows*cols)-N_element;
+    int jumlahSlotKosong() {
+        return (rows * cols) - N_element;
     }
 
-    bool penuh(){
+    bool penuh() {
         return jumlahSlotKosong() == 0;
     }
 
-    bool kosong(){
+    bool kosong() {
         return N_element == 0;
     }
 
     // getElement
     A* dapatkanElemen(int baris, int kolom) {
-        if (!apakahIndexValid(baris,kolom)) {
+        if (!apakahIndexValid(baris, kolom)) {
             cout << "Index out of bounds." << endl;
             return nullptr; // Return a default value or throw an exception
         }
@@ -115,26 +120,27 @@ public:
     }
 
     // get N row
-    int dapatkanBaris() const{
+    int dapatkanBaris() const {
         return rows;
     }
 
     // get N col
-    int dapatkanKolom() const{
+    int dapatkanKolom() const {
         return cols;
     }
 
-    int jumlahElement(){
+    int jumlahElement() {
         return N_element;
     }
 
     // print
-    void cetak(){
+    void cetak() {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
-                if(!apakahSlotKosong(i,j)){
+                if (!apakahSlotKosong(i, j)) {
                     cout << data[i][j]->dapatkan_nama() << " ";
-                }else{
+                }
+                else {
                     cout << "kosong" << " ";
                 }
             }
@@ -143,6 +149,5 @@ public:
     }
 };
 
-// #include "Matriks.cpp"
 
 #endif

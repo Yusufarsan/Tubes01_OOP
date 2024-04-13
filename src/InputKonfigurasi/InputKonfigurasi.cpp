@@ -1,7 +1,6 @@
 #include "InputKonfigurasi.hpp"
-#include <memory>
 
-using namespace std;
+// Input Konfigurasi
 vector<shared_ptr<Tanaman>> InputKonfigurasi::InputKonfigurasiTanaman(string nama_file) {
     vector<shared_ptr<Tanaman>> daftar_tanaman;
     ifstream file;
@@ -107,7 +106,6 @@ vector<shared_ptr<Produk>> InputKonfigurasi::InputKonfigurasiProduk(string nama_
     return daftar_produk;
 }
 
-
 vector<shared_ptr<Bangunan>> InputKonfigurasi::InputKonfigurasiResepBangunan(string nama_file) {
     vector<shared_ptr<Bangunan>> daftar_bangunan;
     ifstream file;
@@ -187,6 +185,7 @@ vector<int> InputKonfigurasi::InputKonfigurasiMisc(string nama_file) {
     return data;
 }
 
+// Input State Pemain
 vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, vector<shared_ptr<Tanaman>> daftar_tanaman, vector<shared_ptr<Hewan>> daftar_hewan, vector<shared_ptr<Produk>> daftar_produk, vector<shared_ptr<Bangunan>> daftar_bangunan, tuple<int, int> besar_penyimpanan, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan, Toko& toko) {
     vector<shared_ptr<Pemain>> daftar_pemain;
     ifstream file;

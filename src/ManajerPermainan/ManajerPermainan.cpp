@@ -1,5 +1,6 @@
 #include "ManajerPermainan.hpp"
 
+// Constructor & Destructor
 ManagerPermainan::ManagerPermainan(string path) {
     this->giliran = 0;
     this->jumlah_pemain = 0;
@@ -18,37 +19,13 @@ ManagerPermainan::ManagerPermainan(string path) {
 
 ManagerPermainan::~ManagerPermainan() {}
 
-void ManagerPermainan::atur_pemain(string path) {
-    this->daftar_pemain = InputKonfigurasi::InputStatePemain(path + "/state.txt", this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko);
-    this->sort_daftar_pemain();
-}
-
-void ManagerPermainan::atur_pemain(vector<shared_ptr<Pemain>> daftarPemain) {
-    this->daftar_pemain = daftarPemain;
-    this->sort_daftar_pemain();
-}
-
-void ManagerPermainan::sort_daftar_pemain() {
-    sort(this->daftar_pemain.begin(), this->daftar_pemain.end(), [](const shared_ptr<Pemain>& a, const shared_ptr<Pemain>& b) {
-        return a->dapatkan_nama() < b->dapatkan_nama();
-        });
-}
-
+// Getter & Setter
 vector<shared_ptr<Pemain>> ManagerPermainan::dapatkan_daftar_pemain() {
     return this->daftar_pemain;
 }
 
 shared_ptr<Pemain> ManagerPermainan::pemain_skrg() {
     return this->daftar_pemain[this->giliran];
-}
-
-void ManagerPermainan::next() {         // Belom di test
-    this->giliran = (this->giliran + 1) % this->daftar_pemain.size();
-    for (int i = 0; i < this->daftar_pemain.size(); i++) {
-        if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(i))) {
-            p->next_umur();
-        }
-    }
 }
 
 tuple<int, int> ManagerPermainan::dapatkanBesarPenyimpanan() const {
@@ -63,42 +40,42 @@ tuple<int, int> ManagerPermainan::dapatkanBesarPeternakan() const {
     return besar_peternakan;
 }
 
+Toko ManagerPermainan::dapatkan_toko() {
+    return this->toko;
+}
+
+void ManagerPermainan::atur_pemain(string path) {
+    this->daftar_pemain = InputKonfigurasi::InputStatePemain(path + "/state.txt", this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko);
+    this->sort_daftar_pemain();
+}
+
+void ManagerPermainan::atur_pemain(vector<shared_ptr<Pemain>> daftarPemain) {
+    this->daftar_pemain = daftarPemain;
+    this->sort_daftar_pemain();
+}
+
+// Method
+void ManagerPermainan::sort_daftar_pemain() {
+    sort(this->daftar_pemain.begin(), this->daftar_pemain.end(), [](const shared_ptr<Pemain>& a, const shared_ptr<Pemain>& b) {
+        return a->dapatkan_nama() < b->dapatkan_nama();
+        });
+}
+
 void ManagerPermainan::inisialisasi_toko() {
     this->toko.atur_tanaman(this->daftar_tanaman);
     this->toko.atur_hewan(this->daftar_hewan);
 }
 
-Toko ManagerPermainan::dapatkan_toko() {
-    return this->toko;
-}
-
-void ManagerPermainan::print_konfigurasi() {
-    cout << "Daftar Tanaman:" << endl;
-    for (int i = 0; i < this->daftar_tanaman.size(); i++) {
-        this->daftar_tanaman[i]->print_info();
-        cout << endl;
-    }
-
-    cout << "Daftar Hewan:" << endl;
-    for (int i = 0; i < this->daftar_hewan.size(); i++) {
-        this->daftar_hewan[i]->print_info();
-        cout << endl;
-    }
-
-    cout << "Daftar Produk:" << endl;
-    for (int i = 0; i < this->daftar_produk.size(); i++) {
-        this->daftar_produk[i]->print_info();
-        cout << endl;
-    }
-
-    cout << "Daftar Bangunan:" << endl;
-    for (int i = 0; i < this->daftar_bangunan.size(); i++) {
-        this->daftar_bangunan[i]->print_info();
-        cout << endl;
-    }
-}
-
 // Command Permainan
+void ManagerPermainan::next() {
+    this->giliran = (this->giliran + 1) % this->daftar_pemain.size();
+    for (int i = 0; i < this->daftar_pemain.size(); i++) {
+        if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(i))) {
+            p->next_umur();
+        }
+    }
+}
+
 void ManagerPermainan::muat() {
     string path_to_file;
     cout << "Masukkan lokasi berkas state : ";
@@ -218,4 +195,31 @@ void ManagerPermainan::inisialisasi_pemain() {
 
     vector<shared_ptr<Pemain>> daftarPemain = { pemain1, pemain2, pemain3 };
     this->atur_pemain(daftarPemain);
+}
+
+// Print Info
+void ManagerPermainan::print_konfigurasi() {
+    cout << "Daftar Tanaman:" << endl;
+    for (int i = 0; i < this->daftar_tanaman.size(); i++) {
+        this->daftar_tanaman[i]->print_info();
+        cout << endl;
+    }
+
+    cout << "Daftar Hewan:" << endl;
+    for (int i = 0; i < this->daftar_hewan.size(); i++) {
+        this->daftar_hewan[i]->print_info();
+        cout << endl;
+    }
+
+    cout << "Daftar Produk:" << endl;
+    for (int i = 0; i < this->daftar_produk.size(); i++) {
+        this->daftar_produk[i]->print_info();
+        cout << endl;
+    }
+
+    cout << "Daftar Bangunan:" << endl;
+    for (int i = 0; i < this->daftar_bangunan.size(); i++) {
+        this->daftar_bangunan[i]->print_info();
+        cout << endl;
+    }
 }

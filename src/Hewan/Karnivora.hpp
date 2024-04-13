@@ -1,19 +1,27 @@
 #ifndef KARNIVORA_HPP
 #define KARNIVORA_HPP
 
+// STL
+#include <iostream>
+
+// User-defined
 #include "Hewan.hpp"
 #include "../Produk/Produk.hpp"
+#include "../Produk/ProdukHewan.hpp"
+#include "../Util/Util.hpp"
 
-class Karnivora: public Hewan {
-    private:
+using namespace std;
 
-    public:
-        Karnivora(string id, string kode_huruf, string nama, int harga, int berat_panen); // ctor (default berat = 0)
-        Karnivora(Karnivora &other); // cctor
-        ~Karnivora(); // dtor
-        Karnivora& operator=(const Karnivora &other); // operator =
+class Karnivora : public Hewan {
+public:
+    // 4 Sekawan
+    Karnivora(string id, string kode_huruf, string nama, int harga, int berat_panen); // ctor (default berat = 0)
+    Karnivora(Karnivora& other); // cctor
+    ~Karnivora(); // dtor
+    Karnivora& operator=(const Karnivora& other); // operator =
 
-        void makan(Produk *makanan);
+    // Command
+    void makan(Produk* makanan);
 };
 
 #endif

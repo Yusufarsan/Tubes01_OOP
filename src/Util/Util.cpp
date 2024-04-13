@@ -1,5 +1,6 @@
 #include "Util.hpp"
 
+// String manipulation
 vector<string> Util::SplitString(string s, string delimiter) {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
     std::string token;
@@ -32,6 +33,26 @@ void Util::trim(string& s) {
     rtrim(s);
 }
 
+// Fungsi untuk membandingkan dua string secara case insensitive
+bool Util::strComp(const std::string& str1, const std::string& str2) {
+    // Jika panjang kedua string tidak sama, maka string tidak sama
+    if (str1.length() != str2.length()) {
+        return false;
+    }
+
+    // Membandingkan karakter per karakter
+    for (size_t i = 0; i < str1.length(); ++i) {
+        // Mengonversi kedua karakter menjadi huruf kecil sebelum membandingkannya
+        if (std::tolower(str1[i]) != std::tolower(str2[i])) {
+            return false; // Jika ada karakter yang tidak sama, string tidak sama
+        }
+    }
+
+    // Jika semua karakter sama, string sama
+    return true;
+}
+
+// Matrix label conversion
 string Util::label_baris_tabel(int indeks) {
     string nama_kolom;
     indeks += 11;
@@ -80,23 +101,3 @@ int Util::indeks_kolom_slot(const string& slot) {
     }
     return index - 1;
 };
-
-
-// Fungsi untuk membandingkan dua string secara case insensitive
-bool Util::strComp(const std::string& str1, const std::string& str2) {
-    // Jika panjang kedua string tidak sama, maka string tidak sama
-    if (str1.length() != str2.length()) {
-        return false;
-    }
-
-    // Membandingkan karakter per karakter
-    for (size_t i = 0; i < str1.length(); ++i) {
-        // Mengonversi kedua karakter menjadi huruf kecil sebelum membandingkannya
-        if (std::tolower(str1[i]) != std::tolower(str2[i])) {
-            return false; // Jika ada karakter yang tidak sama, string tidak sama
-        }
-    }
-
-    // Jika semua karakter sama, string sama
-    return true;
-}

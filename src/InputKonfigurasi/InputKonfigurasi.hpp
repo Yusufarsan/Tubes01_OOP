@@ -1,10 +1,13 @@
 #ifndef INPUTKONFIGURASI_HPP
 #define INPUTKONFIGURASI_HPP
 
+// STL
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <memory>
+
+// User-defined
 #include "../Tanaman/Tanaman.hpp"
 #include "../Tanaman/TanamanMaterial.hpp"
 #include "../Tanaman/TanamanBuah.hpp"
@@ -24,17 +27,18 @@
 #include "../Toko/Toko.hpp"
 #include "../Util/Util.hpp"
 
-
 using namespace std;
 
 class InputKonfigurasi {
 public:
+    // Input Konfigurasi
     static vector<shared_ptr<Tanaman>> InputKonfigurasiTanaman(string nama_file);
     static vector<shared_ptr<Hewan>> InputKonfigurasiHewan(string nama_file);
     static vector<shared_ptr<Produk>> InputKonfigurasiProduk(string nama_file);
     static vector<shared_ptr<Bangunan>> InputKonfigurasiResepBangunan(string nama_file);
     static vector<int> InputKonfigurasiMisc(string nama_file);
 
+    // Input State Pemain
     static vector<shared_ptr<Pemain>> InputStatePemain(string nama_file, vector<shared_ptr<Tanaman>> daftar_tanaman, vector<shared_ptr<Hewan>> daftar_hewan, vector<shared_ptr<Produk>> daftar_produk, vector<shared_ptr<Bangunan>> daftar_bangunan, tuple<int, int> besar_penyimpanan, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan, Toko& toko);
 };
 
