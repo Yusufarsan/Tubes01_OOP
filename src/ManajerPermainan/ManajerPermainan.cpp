@@ -133,8 +133,8 @@ void ManagerPermainan::simpan() {
         Matrix peti = pemain->dapatkan_peti();
         for (int j = 0; j < peti.dapatkanBaris(); j++) {
             for (int k = 0; k < peti.dapatkanKolom(); k++) {
-                if (!peti.apakahSlotKosong(j, k)) {
-                    Entitas* entitas = peti.dapatkanElemen(j, k);
+                if (!peti.apakah_slot_kosong(j, k)) {
+                    Entitas* entitas = peti.dapatkan_elemen(j, k);
                     file << entitas->dapatkan_nama() << endl;
                 }
             }
@@ -148,8 +148,8 @@ void ManagerPermainan::simpan() {
             tuple<int, int> ukuran_ladang = make_tuple(ladang.dapatkanBaris(), ladang.dapatkanKolom());
             for (int j = 0; j < get<0>(ukuran_ladang); j++) {
                 for (int k = 0; k < get<1>(ukuran_ladang); k++) {
-                    if (!ladang.apakahSlotKosong(j, k)) {
-                        Tanaman* tanaman = ladang.dapatkanElemen(j, k);
+                    if (!ladang.apakah_slot_kosong(j, k)) {
+                        Tanaman* tanaman = ladang.dapatkan_elemen(j, k);
                         string slot = Util::label_slot_tabel(j, k);
                         file << slot << " " << tanaman->dapatkan_nama() << " " << tanaman->dapatkan_umur() << endl;
                     }
@@ -164,8 +164,8 @@ void ManagerPermainan::simpan() {
             tuple<int, int> ukuran_peternakan = make_tuple(peternakan.dapatkanBaris(), peternakan.dapatkanKolom());
             for (int j = 0; j < get<0>(ukuran_peternakan); j++) {
                 for (int k = 0; k < get<1>(ukuran_peternakan); k++) {
-                    if (!peternakan.apakahSlotKosong(j, k)) {
-                        Hewan* hewan = peternakan.dapatkanElemen(j, k);
+                    if (!peternakan.apakah_slot_kosong(j, k)) {
+                        Hewan* hewan = peternakan.dapatkan_elemen(j, k);
                         string slot = Util::label_slot_tabel(j, k);
                         file << slot << " " << hewan->dapatkan_nama() << " " << hewan->dapatkan_berat() << endl;
                     }

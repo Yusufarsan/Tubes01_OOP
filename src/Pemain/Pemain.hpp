@@ -37,49 +37,49 @@ public:
 
     void cetak_peti();
     // void tambah_peti(string slot, Entitas& val);
-    template<class T>
-    void tambah_peti(const string& slot, T* val) {
-        int row = Util::indeks_baris_slot(slot);
-        int col = Util::indeks_kolom_slot(slot);
-        if (peti.apakahIndexValid(row, col)) {
-            if (peti.apakahSlotKosong(row, col)) {
-                peti.editElemen(row, col, val);
-            }
-            else {
-                cout << "Ada isinya" << endl;
-            }
-        }
-        else {
-            cout << "index out of bonds" << endl;
-        }
-    }
+    // template<class T>
+    // void tambah_peti(const string& slot, T* val) {
+    //     int row = Util::indeks_baris_slot(slot);
+    //     int col = Util::indeks_kolom_slot(slot);
+    //     if (peti.apakahIndexValid(row, col)) {
+    //         if (peti.apakah_slot_kosong(row, col)) {
+    //             peti.editElemen(row, col, val);
+    //         }
+    //         else {
+    //             cout << "Ada isinya" << endl;
+    //         }
+    //     }
+    //     else {
+    //         cout << "index out of bonds" << endl;
+    //     }
+    // }
 
-    template<class T>
-    void tambah_peti(T* val) {
-        bool isInserted = false;
+    // template<class T>
+    // void tambah_peti(T* val) {
+    //     bool isInserted = false;
 
-        for (int i = 0; i < peti.dapatkanBaris(); i++) {
-            for (int j = 0; j < peti.dapatkanKolom(); j++) {
-                if (peti.apakahSlotKosong(i,j)) {
-                    peti.editElemen(i, j, val);
-                    isInserted = true;
-                    break;
-                }
-            }
+    //     for (int i = 0; i < peti.dapatkanBaris(); i++) {
+    //         for (int j = 0; j < peti.dapatkanKolom(); j++) {
+    //             if (peti.apakah_slot_kosong(i,j)) {
+    //                 peti.editElemen(i, j, val);
+    //                 isInserted = true;
+    //                 break;
+    //             }
+    //         }
 
-            if (isInserted) {
-                break;
-            }
-        }
-    }
+    //         if (isInserted) {
+    //             break;
+    //         }
+    //     }
+    // }
 
 
-    Entitas* hapus_peti(const string& slot);
-    bool cek_slot_peti_valid(const string& slot);
-    bool cek_peti_penuh();
-    bool cek_peti_kosong();
-    int jumlah_slot_efektif_peti();
-    int jumlah_slot_kosong_peti();
+    // Entitas* hapus_peti(const string& slot);
+    // bool cek_slot_peti_valid(const string& slot);
+    // bool cek_peti_penuh();
+    // bool cek_peti_kosong();
+    // int jumlah_slot_efektif_peti();
+    // int jumlah_slot_kosong_peti();
     bool cek_bisa_dimakan(const string& slot);
 
     void jual(Toko& toko);

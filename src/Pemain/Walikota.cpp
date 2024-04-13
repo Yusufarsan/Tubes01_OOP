@@ -149,8 +149,8 @@ bool Walikota::cek_bahan(Bangunan bangunan) {       // Nge cek bahan cukup atau 
     // Mendapatkan jumlah setiap ProdukTanamanMaterial yang dimiliki
     for (int i = 0; i < this->peti.dapatkanBaris(); i++) {
         for (int j = 0; j < this->peti.dapatkanKolom(); j++) {
-            if (Util::instanceof<ProdukTanamanMaterial>(this->peti.dapatkanElemen(i, j))) {
-                ++penghitung[this->peti.dapatkanElemen(i, j)->dapatkan_nama()];
+            if (Util::instanceof<ProdukTanamanMaterial>(this->peti.dapatkan_elemen(i, j).get())) {
+                ++penghitung[this->peti.dapatkan_elemen(i, j)->dapatkan_nama()];
 
                 // Membuat array of string slot material untuk dihapus dari peti jika semua bahan cukup
                 arr_slot.push_back(Util::label_slot_tabel(i, j));
@@ -193,11 +193,15 @@ bool Walikota::cek_bahan(Bangunan bangunan) {       // Nge cek bahan cukup atau 
 
     // Menghapus slot material dari peti
     for (const string iterator : arr_slot) {
-        auto temp = this->hapus_peti(iterator);
+        int idxRow = Util::indeks_baris_slot(iterator);
+        int idxCol = Util::indeks_kolom_slot(iterator);
+        auto temp = peti.hapus(idxRow, idxCol);
     }
 
     // Menambahkan Bangunan ke peti walkot
-    this->tambah_peti(&bangunan);
+    // peti+=make_shared<Entitas>(bangunan);
+    peti.tambah_elemen_matriks(make_shared<Entitas>(bangunan));
+    // this->tambah_peti(&bangunan);
     
     return bahan_cukup; // udah pasti true
 }

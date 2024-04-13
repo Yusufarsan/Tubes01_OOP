@@ -24,23 +24,23 @@ public:
     ~Petani(); // dtor
 
     void cetak_ladang();
-    bool cek_slot_ladang_valid(const string& slot);
-    bool cek_ladang_penuh();
-    bool cek_ladang_kosong();
-    int jumlah_slot_efektif_ladang();
-    int jumlah_slot_kosong_ladang();
+    // bool cek_slot_ladang_valid(const string& slot);
+    // bool cek_ladang_penuh();
+    // bool cek_ladang_kosong();
+    // int jumlah_slot_efektif_ladang();
+    // int jumlah_slot_kosong_ladang();
     Matrix<Tanaman> dapatkan_ladang();
 
     void tanam();
-    void tambah_ladang(string slot, Tanaman& val);
-    Tanaman* hapus_ladang(string slot);
+    // void tambah_ladang(string slot, Tanaman& val);
+    // Tanaman* hapus_ladang(string slot);
     unordered_map<pair<string, string>, int, pair_hash> frekuensi_panen(){
         unordered_map<pair<string, string>, int, pair_hash> frequencyMap;
 
         // Iterate over the elements of ladang matriks
         for (int i=0; i<ladang.dapatkanBaris(); i++) {
             for (int j=0; j<ladang.dapatkanKolom(); j++){
-                Tanaman* tan = ladang.dapatkanElemen(i,j);
+                Tanaman* tan = ladang.dapatkan_elemen(i,j).get();
                 if (tan!=nullptr && tan->bisa_panen()) {
                     // Increment the frequency count for the Tanaman's name
                     frequencyMap[make_pair(tan->dapatkan_kode_huruf(),tan->dapatkan_nama())]++;

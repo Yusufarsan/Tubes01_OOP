@@ -65,23 +65,23 @@ void Petani::cetak_ladang() {
         cout << label_baris << space << '|';
 
         for (int m = 0; m < numCol; m++) {
-            if (ladang.apakahSlotKosong(n - 1, m)) {
+            if (ladang.apakah_slot_kosong(n - 1, m)) {
                 cout << "     |";
                 // emptySlot++;
             }
             else {
-                Tanaman* val = ladang.dapatkanElemen(n - 1, m);
-                if (val->bisa_panen()) {
+                shared_ptr<Tanaman> val = ladang.dapatkan_elemen(n - 1, m);
+                if (val.get()->bisa_panen()) {
                     cout << " ";
 
-                    print_green(val->dapatkan_kode_huruf());
+                    print_green(val.get()->dapatkan_kode_huruf());
 
                     cout << " |";
                 }
                 else {
                     cout << " ";
 
-                    print_red(val->dapatkan_kode_huruf());
+                    print_red(val.get()->dapatkan_kode_huruf());
 
                     cout << " |";
                 }
@@ -103,38 +103,38 @@ void Petani::cetak_ladang() {
         cout << "+\n";
     };
 
-    // cout << endl << "Total slot kosong: " << ladang.jumlahSlotKosong() << endl;
+    // cout << endl << "Total slot kosong: " << ladang.jumlah_slot_kosong() << endl;
 };
 
-bool Petani::cek_ladang_penuh() {
-    return ladang.penuh();
-};
+// bool Petani::cek_ladang_penuh() {
+//     return ladang.penuh();
+// };
 
-bool Petani::cek_ladang_kosong() {
-    return ladang.kosong();
-};
+// bool Petani::cek_ladang_kosong() {
+//     return ladang.kosong();
+// };
 
-int Petani::jumlah_slot_efektif_ladang() {
-    return ladang.jumlahElement();
-};
+// int Petani::jumlah_slot_efektif_ladang() {
+//     return ladang.jumlahElement();
+// };
 
-int Petani::jumlah_slot_kosong_ladang() {
-    return ladang.jumlahSlotKosong();
-};
+// int Petani::jumlah_slot_kosong_ladang() {
+//     return ladang.jumlah_slot_kosong();
+// };
 
 Matrix<Tanaman> Petani::dapatkan_ladang() {
     return ladang;
 };
 
-bool Petani::cek_slot_ladang_valid(const string& slot) {
-    int i = Util::indeks_baris_slot(slot);
-    int j = Util::indeks_kolom_slot(slot);
+// bool Petani::cek_slot_ladang_valid(const string& slot) {
+//     int i = Util::indeks_baris_slot(slot);
+//     int j = Util::indeks_kolom_slot(slot);
 
-    return ladang.apakahIndexValid(i,j);
-};
+//     return ladang.apakah_index_valid(i,j);
+// };
 
 void Petani::tanam() {
-    if (cek_peti_kosong()) {
+    if (peti.apakah_kosong()) {
         cout << "Gak punya penyimpanan kok mau tanam!" << endl;
     }
     else {
@@ -142,27 +142,26 @@ void Petani::tanam() {
 
         string slot_masukan_peti, slot_masukan_ladang;
         int idxRowPeti, idxColPeti, idxRowLadang, idxColLadang;
-        Entitas* bibit = nullptr;
-        Tanaman* tanamanBibit;
+        shared_ptr<Entitas> bibit;
+        shared_ptr<Tanaman> tanamanBibit;
 
         while (true) {
             cout << "Silakan pilih tanaman yang ingin Anda tanam!" << endl;
             cout << "Petak : ";
             cin >> slot_masukan_peti;
 
-            if (!cek_slot_peti_valid(slot_masukan_peti)) {
+            if (!peti.apakah_slot_valid(slot_masukan_peti)) {
                 cout << "Slot tidak valid" << endl;
             }
             else {
                 idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
                 idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
-                bibit = peti.dapatkanElemen(idxRowPeti, idxColPeti);
-                if (!Util::instanceof<Tanaman>(bibit)) {
+                bibit = peti.dapatkan_elemen(idxRowPeti, idxColPeti);
+                if (!Util::instanceof<Tanaman>(bibit.get())) {
                     cout << "Slot " << slot_masukan_peti << " tidak berisi tanaman." << endl;
                 }
                 else{
-                    tanamanBibit = dynamic_cast<Tanaman*>(bibit);
-                    cout << "Kamu memilih " << bibit->dapatkan_nama() << " untuk ditanam." << endl;
+                    cout << "Kamu memilih " << bibit.get()->dapatkan_nama() << " untuk ditanam." << endl;
                     break;
                 }
             }
@@ -175,20 +174,18 @@ void Petani::tanam() {
             cout << "Petak : ";
             cin >> slot_masukan_ladang;
 
-            if (!cek_slot_peti_valid(slot_masukan_ladang)) {
+            if (!ladang.apakah_slot_valid(slot_masukan_ladang)) {
                 cout << "Slot tidak valid" << endl;
             }
             else {
-                idxRowLadang = Util::indeks_baris_slot(slot_masukan_ladang);
-                idxColLadang = Util::indeks_kolom_slot(slot_masukan_ladang);
-
-                shared_ptr<Tanaman> tanah(ladang.dapatkanElemen(idxRowLadang, idxColLadang));
-
-                if(tanah){
+                if(!ladang.apakah_slot_kosong(slot_masukan_ladang)){
                     cout << "Slot " << slot_masukan_peti << " milik tanaman lain." << endl;
                 }
                 else{
-                    ladang.editElemen(idxRowLadang, idxColLadang, tanamanBibit);
+                    idxColLadang = Util::indeks_baris_slot(slot_masukan_ladang);
+                    idxRowLadang = Util::indeks_kolom_slot(slot_masukan_ladang);
+
+                    ladang.tambah_elemen_matriks(idxRowLadang, idxColLadang, dynamic_pointer_cast<Tanaman>(bibit));
                     peti.hapus(idxRowPeti, idxColPeti);
                     cout << "Cangkul, cangkul, cangkul yang dalam!" << endl;
                     cout << tanamanBibit->dapatkan_nama() << " berhasil ditanam!" << endl;
@@ -200,29 +197,29 @@ void Petani::tanam() {
 };
 
 
-void Petani::tambah_ladang(string slot, Tanaman& val) {
-    if (cek_slot_ladang_valid(slot)) {
-        int i = Util::indeks_baris_slot(slot);
-        int j = Util::indeks_kolom_slot(slot);
+// void Petani::tambah_ladang(string slot, shared_ptr<Tanaman> val) {
+//     if (ladang.apakah_slot_valid(slot)) {
+//         int i = Util::indeks_baris_slot(slot);
+//         int j = Util::indeks_kolom_slot(slot);
 
-        if (ladang.apakahSlotKosong(i,j)) {
-            ladang.editElemen(i, j, &val);
-        }
-        else {
-            cout << "Ada isinya" << endl;
-        }
-    }
-    else {
-        cout << "index out of bonds" << endl;
-    }
-}
+//         if (ladang.apakah_slot_kosong(slot)) {
+//             ladang.tambah_elemen_matriks(i, j, val);
+//         }
+//         else {
+//             cout << "Ada isinya" << endl;
+//         }
+//     }
+//     else {
+//         cout << "index out of bonds" << endl;
+//     }
+// }
 
-Tanaman* Petani::hapus_ladang(string slot) {
-    int idxRow = Util::indeks_baris_slot(slot);
-    int idxCol = Util::indeks_kolom_slot(slot);
+// Tanaman* Petani::hapus_ladang(string slot) {
+//     int idxRow = Util::indeks_baris_slot(slot);
+//     int idxCol = Util::indeks_kolom_slot(slot);
 
-    return ladang.hapus(idxRow, idxCol);
-}
+//     return ladang.hapus(idxRow, idxCol);
+// }
 
 #include <functional> // Untuk menggunakan std::hash
 
@@ -281,7 +278,7 @@ void Petani::panen() {
                 cout << "Berapa petak yang ingin dipanen: ";
                 cin >> petak;
                 if (petak<=frequencyMap[make_pair((kode.at(nomor-1)),(nama.at(nomor-1)))] && petak>0){
-                    if(peti.jumlahSlotKosong()>=petak){
+                    if(peti.jumlah_slot_kosong()>=petak){
                         cout << "Pilih petak yang ingin dipanen: "<<endl;
                         vector<string> succ;
                         int i=0; bool isPetakValid=false;
@@ -291,14 +288,15 @@ void Petani::panen() {
                             cin >> slot;
                             int row = Util::indeks_baris_slot(slot);
                             int col = Util::indeks_kolom_slot(slot);
-                            if(ladang.apakahIndexValid(row,col)){
-                                if(!ladang.apakahSlotKosong(row, col)){
-                                    if(ladang.dapatkanElemen(row,col)->bisa_panen()){
-                                        if(Util::strComp(nama.at(nomor-1), ladang.dapatkanElemen(row, col)->dapatkan_nama())){
+                            if(ladang.apakah_index_valid(row,col)){
+                                if(!ladang.apakah_slot_kosong(slot)){
+                                    if(ladang.dapatkan_elemen(row,col)->bisa_panen()){
+                                        if(Util::strComp(nama.at(nomor-1), ladang.dapatkan_elemen(row, col)->dapatkan_nama())){
                                             // hapus dari ladang
-                                            Entitas* tumb = dynamic_cast<Entitas*>(this->ladang.hapus(row, col));
+                                            // Entitas* tumb = dynamic_cast<Entitas*>(ladang.hapus(row, col).get());
                                             // tambah ke peti penyimpanan
-                                            tambah_peti(slot, tumb);
+                                            // GAK NGERTI NANTI CEK LAGI
+                                            peti.tambah_elemen_matriks(row, col, dynamic_pointer_cast<Entitas>(ladang.hapus(row, col)));
                                             succ.push_back(slot);
                                             i++;
                                             cout<<"----Berhasil----"<<endl;
@@ -349,10 +347,10 @@ void Petani::panen() {
 }
 
 void Petani::next_umur() {
-    if (this->cek_ladang_kosong()) return;      // Kalo ladang nya kosong ya udah lah cuk, ga ngapa ngapain
+    if (ladang.apakah_kosong()) return;      // Kalo ladang nya kosong ya udah lah cuk, ga ngapa ngapain
     for (int i = 0; i < this->ladang.dapatkanBaris(); i++) {
         for (int j = 0; j < this->ladang.dapatkanKolom(); j++) {    // Kalo ladang pada petak tertentu tidak kosong (ada tanamannya), maka umur ditambah
-            if (this->ladang.dapatkanElemen(i, j) != nullptr) this->ladang.dapatkanElemen(i, j)->tambah_umur();   
+            if (this->ladang.dapatkan_elemen(i, j) != nullptr) this->ladang.dapatkan_elemen(i, j)->tambah_umur();   
         }
     }
 }
@@ -362,21 +360,21 @@ int Petani::hitung_pajak() {
     int KTKP = 13;
     int neto_kekayaan = uang;
 
-    if (!cek_ladang_kosong()) {
+    if (!ladang.apakah_kosong()) {
         for (int i=0; i<ladang.dapatkanBaris(); i++) {
             for (int j=0; j<ladang.dapatkanKolom(); j++) {
-                if (ladang.dapatkanElemen(i,j) != nullptr) {
-                    neto_kekayaan += ladang.dapatkanElemen(i,j)->dapatkan_harga();
+                if (ladang.dapatkan_elemen(i,j) != nullptr) {
+                    neto_kekayaan += ladang.dapatkan_elemen(i,j)->dapatkan_harga();
                 }
             }
         }
     }
 
-    if (!cek_peti_kosong()) {
+    if (!peti.apakah_kosong()) {
         for (int i=0; i<peti.dapatkanBaris(); i++) {
             for (int j=0; j<peti.dapatkanKolom(); j++) {
-                if (peti.dapatkanElemen(i,j) != nullptr) {
-                    neto_kekayaan += peti.dapatkanElemen(i,j)->dapatkan_harga();
+                if (peti.dapatkan_elemen(i,j) != nullptr) {
+                    neto_kekayaan += peti.dapatkan_elemen(i,j)->dapatkan_harga();
                 }
             }
         }
