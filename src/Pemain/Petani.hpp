@@ -8,21 +8,22 @@
 #include "../Matriks/Matriks.hpp"
 
 class Petani : public Pemain {
-struct pair_hash {
-    template <class T1, class T2>
-    std::size_t operator () (const std::pair<T1, T2>& pair) const {
-        // Kombinasi hash dari dua kunci dalam pair
-        return std::hash<T1>{}(pair.first) ^ std::hash<T2>{}(pair.second);
-    }
-};
 private:
     Matrix<Tanaman> ladang;
 
-    tuple<vector<string>, vector<string>, int> tampilkanPanen(unordered_map<pair<string,string>, int, pair_hash> frequencyMap);
 public:
+    class pair_hash {
+        public:
+        template <class T1, class T2>
+        std::size_t operator () (const std::pair<T1, T2>& pair) const {
+            // Kombinasi hash dari dua kunci dalam pair
+            return std::hash<T1>{}(pair.first) ^ std::hash<T2>{}(pair.second);
+        }
+    };
     Petani(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti, tuple<int, int> ukuran_ladang); // ctor
     ~Petani(); // dtor
 
+    tuple<vector<string>, vector<string>, int> tampilkanPanen(unordered_map<pair<string,string>, int, Petani::pair_hash> frequencyMap);
     void cetak_ladang();
     bool cek_slot_ladang_valid(const string& slot);
     bool cek_ladang_penuh();
@@ -32,15 +33,15 @@ public:
     Matrix<Tanaman> dapatkan_ladang();
 
     void tanam();
-    void tambah_ladang(string slot, Tanaman& val);
-    Tanaman* hapus_ladang(string slot);
-    unordered_map<pair<string, string>, int, pair_hash> frekuensi_panen(){
-        unordered_map<pair<string, string>, int, pair_hash> frequencyMap;
+    void tambah_ladang(string slot, shared_ptr<Tanaman> val);
+    // Tanaman* hapus_ladang(string slot);
+    unordered_map<pair<string, string>, int, Petani::pair_hash> frekuensi_panen(){
+        unordered_map<pair<string, string>, int, Petani::pair_hash> frequencyMap;
 
         // Iterate over the elements of ladang matriks
         for (int i=0; i<ladang.dapatkanBaris(); i++) {
             for (int j=0; j<ladang.dapatkanKolom(); j++){
-                Tanaman* tan = ladang.dapatkanElemen(i,j);
+                Tanaman* tan = ladang.dapatkan_elemen(i,j).get();
                 if (tan!=nullptr && tan->bisa_panen()) {
                     // Increment the frequency count for the Tanaman's name
                     frequencyMap[make_pair(tan->dapatkan_kode_huruf(),tan->dapatkan_nama())]++;

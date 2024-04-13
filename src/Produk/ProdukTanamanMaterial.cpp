@@ -1,5 +1,6 @@
 #include "ProdukTanamanMaterial.hpp"
 
+// 4 Sekawan
 ProdukTanamanMaterial::ProdukTanamanMaterial(string id, string kode_huruf, string nama, int harga, int berat_tambahan, string origin) : Produk(id, kode_huruf, nama, harga, berat_tambahan, origin) {}
 
 ProdukTanamanMaterial::~ProdukTanamanMaterial() {}
@@ -11,6 +12,7 @@ ProdukTanamanMaterial& ProdukTanamanMaterial::operator=(const ProdukTanamanMater
     return *this;
 }
 
+// Print Info
 void ProdukTanamanMaterial::print_info() {
     cout << "Produk Tanaman Material" << endl;
     cout << "ID: " << id << endl;

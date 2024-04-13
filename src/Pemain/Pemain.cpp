@@ -4,7 +4,12 @@
 #include "Peternak.hpp"
 #include <cmath>
 
-Pemain::Pemain(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti): nama(nama), uang(uang), berat_badan(berat_badan), peti(get<0>(ukuran_peti), get<1>(ukuran_peti)){}
+Pemain::Pemain(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti): 
+    nama(nama), 
+    uang(uang), 
+    berat_badan(berat_badan), 
+    peti(get<0>(ukuran_peti), get<1>(ukuran_peti))
+    {}
 
 string Pemain::dapatkan_nama() {
     return this->nama;
@@ -86,12 +91,12 @@ void Pemain::cetak_peti() {
         cout << label_baris << space << '|';
 
         for (int m = 0; m < numCol; m++) {
-            if (peti.apakahSlotKosong(n-1,m)) {
+            if (peti.apakah_slot_kosong(n-1, m)) {
                 cout << "     |";
             }
             else {
                 cout << " ";
-                cout << peti.dapatkanElemen(n - 1,m)->dapatkan_kode_huruf(); // kode huruf
+                cout << peti.dapatkan_elemen(n - 1, m)->dapatkan_kode_huruf(); // kode huruf
                 cout << " |";
             }
 
@@ -111,43 +116,44 @@ void Pemain::cetak_peti() {
         cout << "+\n";
     };
 
-    cout << endl << "Total slot kosong: " << peti.jumlahSlotKosong() << endl;
+    cout << endl << "Total slot kosong: " << peti.jumlah_slot_kosong() << endl;
 }
 
-Entitas* Pemain::hapus_peti(const string& slot){
-    int idxRow = Util::indeks_baris_slot(slot);
-    int idxCol = Util::indeks_kolom_slot(slot);
-    return peti.hapus(idxRow, idxCol);
-}
+// Entitas* Pemain::hapus_peti(const string& slot){
+//     int idxRow = Util::indeks_baris_slot(slot);
+//     int idxCol = Util::indeks_kolom_slot(slot);
+    
+//     return peti.hapus(idxRow, idxCol);
+// }
 
-bool Pemain::cek_slot_peti_valid(const string& slot){
-    int idxRow = Util::indeks_baris_slot(slot);
-    int idxCol = Util::indeks_kolom_slot(slot);
-    return peti.apakahIndexValid(idxRow, idxCol);
-}
+// bool Pemain::cek_slot_peti_valid(const string& slot){   
+//     int idxRow = Util::indeks_baris_slot(slot);
+//     int idxCol = Util::indeks_kolom_slot(slot);
+//     return peti.apakahIndexValid(idxRow, idxCol);
+// }
 
-bool Pemain::cek_peti_penuh(){
-    return peti.penuh();
-}
+// bool Pemain::cek_peti_penuh(){
+//     return peti.penuh();
+// }
 
-bool Pemain::cek_peti_kosong(){
-    return peti.kosong();
-}
+// bool Pemain::cek_peti_kosong(){
+//     return peti.kosong();
+// }
 
-int Pemain::jumlah_slot_efektif_peti(){
-    return peti.jumlahElement();
-}
+// int Pemain::jumlah_slot_efektif_peti(){
+//     return peti.jumlahElement();
+// }
 
-int Pemain::jumlah_slot_kosong_peti(){
-    return peti.jumlahSlotKosong();
-}
+// int Pemain::jumlah_slot_kosong_peti(){
+//     return peti.jumlah_slot_kosong();
+// }
 
 bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
     int idxRow = Util::indeks_baris_slot(slot);
     int idxCol = Util::indeks_kolom_slot(slot);
-    if (peti.apakahIndexValid(idxRow, idxCol)) {
-        if (!peti.apakahSlotKosong(idxRow, idxCol)) {
-            if (Util::instanceof<Produk>(peti.dapatkanElemen(idxRow, idxCol))) {
+    if (peti.apakah_index_valid(idxRow, idxCol)) {
+        if (!peti.apakah_slot_kosong(idxRow, idxCol)) {
+            if (Util::instanceof<Produk>(peti.dapatkan_elemen(idxRow, idxCol).get())) {
                 return true;
             }
         }
@@ -161,7 +167,7 @@ bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
 void Pemain::jual(Toko& toko) {
     cetak_peti();
 
-    if (cek_peti_kosong()) {
+    if (peti.apakah_kosong()) {
         cout << "Gak punya harta kok mau jual!" << endl;
     }
     else {
@@ -201,9 +207,9 @@ void Pemain::jual(Toko& toko) {
 
             int row = Util::indeks_baris_slot(cell);
             int col = Util::indeks_kolom_slot(cell);
-            Entitas* ent = peti.dapatkanElemen(row, col);
-            if(!peti.apakahSlotKosong(row, col)){
-                if(Util::instanceof<Bangunan>(ent)){
+            shared_ptr<Entitas> ent = peti.dapatkan_elemen(row, col);
+            if(!peti.apakah_slot_kosong(row, col)){
+                if(Util::instanceof<Bangunan>(ent.get())){
                     if(!isWalikota){
                         cout << "   Kamu gabisa jual " << ent->dapatkan_nama() << endl;
                         break;
@@ -219,7 +225,7 @@ void Pemain::jual(Toko& toko) {
                 toko.masukanEntitas(ent);
 
                 cout << "   Berhasil menjual " << ent->dapatkan_nama() << endl;
-                ent = peti.hapus(row, col);
+                peti.hapus(row, col);
             }else{
                 cout << "ups, untuk yang ini barangnya gaada nih.." << endl;
             }
@@ -230,7 +236,7 @@ void Pemain::jual(Toko& toko) {
 }
 
 void Pemain::membeli(Toko& toko) {
-    if (this->cek_peti_penuh()) {
+    if (peti.apakah_penuh()) {
         cout << "Peti nya penuh! Cari kantong kresek sana!" << endl;
     }
     else {
@@ -248,7 +254,7 @@ void Pemain::membeli(Toko& toko) {
         cout << endl;
 
         cout << "Uang Anda : " << uang << endl;
-        cout << "Slot penyimpanan tersedia: " << peti.jumlahSlotKosong() << endl;
+        cout << "Slot penyimpanan tersedia: " << peti.jumlah_slot_kosong() << endl;
         cout << endl;
 
         int num, kuantitas;
@@ -257,7 +263,7 @@ void Pemain::membeli(Toko& toko) {
         cout << "Kuantitas : ";
         cin >> kuantitas;
 
-        if (kuantitas > this->jumlah_slot_kosong_peti()) {
+        if (kuantitas >  peti.jumlah_slot_kosong()) {
             cout << "Slot penyimpanan tidak cukup" << endl;
         } else {
             shared_ptr<Entitas> barang = toko.dapatkan_entitas(num);
@@ -296,9 +302,9 @@ void Pemain::membeli(Toko& toko) {
                 for (const string& cell : list_slot_masukan) {
                     int row = Util::indeks_baris_slot(cell);
                     int col = Util::indeks_kolom_slot(cell);
-                    if (peti.apakahIndexValid(row, col)) {
-                        if (peti.apakahSlotKosong(row, col)) {
-                            peti.editElemen(row, col, barang.get());
+                    if (peti.apakah_index_valid(row, col)) {
+                        if (peti.apakah_slot_kosong(row, col)) {
+                            peti.tambah_elemen_matriks(row, col, barang);
                         } else{
                             throw "Slot yang dipilih sudah terisi";
                         }
@@ -327,12 +333,12 @@ void Pemain::makan() {       // Belom di test dan tinggal perbaikin print-an
             int row = Util::indeks_baris_slot(slot);
             int col = Util::indeks_kolom_slot(slot);
 
-            if (!peti.apakahIndexValid(row,col)) {   // Validasi slot
+            if (!peti.apakah_index_valid(row,col)) {   // Validasi slot
                 throw "Slot tidak valid\n";
             }
 
             // Validasi isi sloat kosong atau tidak
-            if (peti.apakahSlotKosong(row,col)) {
+            if (peti.apakah_slot_kosong(row,col)) {
                 throw "Slot yang dipilih kosong\n";
             }
 
@@ -341,9 +347,9 @@ void Pemain::makan() {       // Belom di test dan tinggal perbaikin print-an
                 throw "Slot yang dipilih tidak bisa dimakan\n";
             }
 
-            Entitas* makanan = peti.hapus(row, col);
+            shared_ptr<Entitas> makanan = peti.hapus(row, col);
 
-            if (Produk* produk = dynamic_cast<Produk*>(makanan)) {
+            if (Produk* produk = dynamic_cast<Produk*>(makanan.get())) {
                 this->atur_berat_badan(this->dapatkan_berat_badan() + produk->dapatkan_berat_tambahan());
             }
             else {

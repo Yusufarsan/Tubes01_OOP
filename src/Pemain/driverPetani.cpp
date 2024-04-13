@@ -1,4 +1,5 @@
 #include "Petani.hpp"
+#include "../Tanaman/Tanaman.hpp"
 
 int main() {
     // Membuat objek petani
@@ -8,14 +9,15 @@ int main() {
     Tanaman tanaman1("T1", "PAD", "Padi", 50, 10);
     Tanaman tanaman2("T2", "JAG", "Jagung", 100, 20);
     Tanaman tanaman3("T3", "WOR", "Wortel", 75, 15);
+    tanaman1.atur_umur(3000);
 
     // Menambahkan tanaman ke ladang
-    petani.tambah_ladang("A1", tanaman1);
-    petani.tambah_ladang("B2", tanaman2);
-    petani.tambah_ladang("C3", tanaman3);
+    petani.tambah_ladang("A1", make_shared<Tanaman>(tanaman1));
+    petani.tambah_ladang("B2", make_shared<Tanaman>(tanaman2));
+    petani.tambah_ladang("C3", make_shared<Tanaman>(tanaman3));
 
     // Menambahkan tanaman ke peti
-    petani.tambah_peti(&tanaman1);
+    petani.tambah_peti(make_shared<Tanaman>(tanaman1));
 
     // Mencetak ladang
     std::cout << "Ladang setelah penambahan tanaman:" << std::endl;
@@ -47,7 +49,6 @@ int main() {
     petani.cetak_peti();
 
     // Melakukan panen
-    tanaman1.atur_umur(30);
     petani.panen();
 
     // Mencetak ladang setelah operasi

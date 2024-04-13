@@ -1,5 +1,6 @@
 #include "Bangunan.hpp"
 
+// 4 Sekawan
 Bangunan::Bangunan(string id, string kode_huruf, string nama, int harga) : Entitas(id, kode_huruf, nama, harga) {}
 
 Bangunan::~Bangunan() {}
@@ -19,6 +20,8 @@ Bangunan& Bangunan::operator=(const Bangunan& other) {
     return *this;
 }
 
+
+// Getter & Setter
 map<string, int> Bangunan::dapatkan_resep() {
     return this->resep_tanaman;
 }
@@ -27,6 +30,7 @@ void Bangunan::atur_resep_tanaman(map<string, int> resep_tanaman) {
     this->resep_tanaman = resep_tanaman;
 }
 
+// Print Info
 void Bangunan::print_info() {
     cout << "ID: " << this->id << endl;
     cout << "Kode Huruf: " << this->kode_huruf << endl;

@@ -8,11 +8,12 @@ int main() {
     Herbivora herbivora("ID1", "HER", "Herbivora", 50, 10);
     Karnivora karnivora("ID2", "KAR", "Karnivora", 100, 20);
     Omnivora omnivora("ID3", "OMN", "Omnivora", 75, 15);
+    omnivora.atur_berat(100);
 
     // Menambahkan hewan ke peternakan
-    peternak.tambah_peternakan("A1", &herbivora);
-    peternak.tambah_peternakan("B2", &karnivora);
-    peternak.tambah_peternakan("C3", &omnivora);
+    peternak.tambah_peternakan("A1", make_shared<Herbivora>(herbivora));
+    peternak.tambah_peternakan("B2", make_shared<Karnivora>(karnivora));
+    peternak.tambah_peternakan("C3", make_shared<Omnivora>(omnivora));
 
     // Mencetak peternakan
     std::cout << "Peternakan setelah penambahan hewan:" << std::endl;
@@ -42,7 +43,6 @@ int main() {
     // Memberi makan hewan di peternakan
     peternak.beri_pangan();
 
-    omnivora.atur_berat(100);
 
     // Melakukan panen
     peternak.panen();

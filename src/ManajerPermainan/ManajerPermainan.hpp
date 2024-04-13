@@ -1,11 +1,14 @@
 #ifndef MANAGERPERMAINAN_HPP
 #define MANAGERPERMAINAN_HPP
 
+// STL
 #include <iostream>
 #include <vector>
 #include <tuple>
 #include <algorithm>
 #include <string>
+
+// User-defined
 #include "../Pemain/Pemain.hpp"
 #include "../Pemain/Petani.hpp"
 #include "../Pemain/Peternak.hpp"
@@ -38,27 +41,43 @@ private:
     int uang_pemenang;
     int berat_pemenang;
 public:
+    // Constructor & Destructor
     ManagerPermainan(string path);
     ~ManagerPermainan();
 
+    // Getter & Setter
+    vector<shared_ptr<Pemain>> dapatkan_daftar_pemain();
+    shared_ptr<Pemain> pemain_skrg();
+    tuple<int, int> dapatkanBesarPenyimpanan() const;
+    tuple<int, int> dapatkanBesarLahan() const;
+    tuple<int, int> dapatkanBesarPeternakan() const;
+    Toko dapatkan_toko();
     void atur_pemain(string path);
     void atur_pemain(vector<shared_ptr<Pemain>> daftarPemain);
+
+    // Method
     void sort_daftar_pemain();
-    vector<shared_ptr<Pemain>> dapatkan_daftar_pemain();
-    shared_ptr<Pemain> pemain_skrg();        // Nge return pemain saat ini yg lagi gilirannya
-    // shared_ptr<Peternak> pemain_skrg();        // Nge return pemain saat ini yg lagi gilirannya
-    // shared_ptr<Walikota> pemain_skrg();        // Nge return pemain saat ini yg lagi gilirannya
-    void next();
-
     void inisialisasi_toko();
-    Toko dapatkan_toko();
-
-    tuple<int,int> dapatkanBesarPenyimpanan() const;
 
     // Command Permainan
+    void next();
+    void cetak_penyimpanan();
+    void pungut_pajak();    // validasi user
+    void cetak_ladang();    // validasi user
+    void tanam();    // validasi user
+    void ternak();   // validasi user
+    void bangun();   // validasi user
+    void makan();
+    void kasih_makan();  // validasi user
+    void beli();
+    void jual();
+    void panen(); // ada peternak dan petani
     void muat();
+    void inisialisasi_pemain();
     void simpan();
+    void tambah_pemain();   // validasi user
 
+    // Print Info
     void print_konfigurasi();
 };
 

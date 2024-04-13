@@ -1,14 +1,13 @@
 #include "TanamanBuah.hpp"
 
-TanamanBuah::TanamanBuah(string id, string kode_huruf, string nama, int harga, int umur_panen): Tanaman(id, kode_huruf, nama, harga, umur_panen) {
-} 
+// 4 Sekawan
+TanamanBuah::TanamanBuah(string id, string kode_huruf, string nama, int harga, int umur_panen) : Tanaman(id, kode_huruf, nama, harga, umur_panen) {}
 
-TanamanBuah::TanamanBuah(const TanamanBuah &other): Tanaman(other) {
-}
+TanamanBuah::TanamanBuah(const TanamanBuah& other) : Tanaman(other) {}
 
 TanamanBuah::~TanamanBuah() {}
 
-TanamanBuah& TanamanBuah::operator=(const TanamanBuah &other) {
+TanamanBuah& TanamanBuah::operator=(const TanamanBuah& other) {
     if (this != &other) {
         this->id = other.id;
         this->kode_huruf = other.kode_huruf;
@@ -20,6 +19,7 @@ TanamanBuah& TanamanBuah::operator=(const TanamanBuah &other) {
     return *this;
 }
 
+// Print Info
 void TanamanBuah::print_info() {
     cout << "ID: " << id << endl;
     cout << "Kode Huruf: " << kode_huruf << endl;

@@ -1,14 +1,13 @@
 #include "TanamanMaterial.hpp"
 
-TanamanMaterial::TanamanMaterial(string id, string kode_huruf, string nama, int harga, int umur_panen): Tanaman(id, kode_huruf, nama, harga, umur_panen) {
-} 
+// 4 Sekawan
+TanamanMaterial::TanamanMaterial(string id, string kode_huruf, string nama, int harga, int umur_panen) : Tanaman(id, kode_huruf, nama, harga, umur_panen) {}
 
-TanamanMaterial::TanamanMaterial(const TanamanMaterial &other): Tanaman(other) {
-}
+TanamanMaterial::TanamanMaterial(const TanamanMaterial& other) : Tanaman(other) {}
 
 TanamanMaterial::~TanamanMaterial() {}
 
-TanamanMaterial& TanamanMaterial::operator=(const TanamanMaterial &other) {
+TanamanMaterial& TanamanMaterial::operator=(const TanamanMaterial& other) {
     if (this != &other) {
         this->id = other.id;
         this->kode_huruf = other.kode_huruf;
@@ -20,6 +19,7 @@ TanamanMaterial& TanamanMaterial::operator=(const TanamanMaterial &other) {
     return *this;
 }
 
+// Print Info
 void TanamanMaterial::print_info() {
     cout << "ID: " << id << endl;
     cout << "Kode Huruf: " << kode_huruf << endl;

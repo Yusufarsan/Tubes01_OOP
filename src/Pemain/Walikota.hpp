@@ -4,6 +4,7 @@
 #include "Pemain.hpp"
 #include "../Bangunan/Bangunan.hpp"
 #include "../Produk/ProdukTanamanMaterial.hpp"
+#include "../Util/Util.hpp"
 #include <cmath>
 
 class Walikota : public Pemain {
@@ -13,17 +14,17 @@ public:
     Walikota(const Walikota& other); // cctor
     ~Walikota(); // dtor
 
-    bool apakahNamaTerdaftar(vector<shared_ptr<Pemain>>* daftarPemain, string namaPemain);
+    bool apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, string namaPemain);
     static bool bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::shared_ptr<Pemain>& b);
     void tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain);
     
     // Method bantuan untuk method bangun()
-    void cetak_resep_semua_bangunan(vector<Bangunan> daftar_bangunan);
-    bool cek_bahan(Bangunan bangunan);
+    void cetak_resep_semua_bangunan(vector<shared_ptr<Bangunan>> daftar_bangunan);
+    bool cek_bahan(shared_ptr<Bangunan> bangunan);
     
-    void bangun(vector<Bangunan> daftar_bangunan);
-    bool jenisPemainValid(string jenisPemain);
-    void tambahPemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int,int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan);
+    void bangun(vector<shared_ptr<Bangunan>> daftar_bangunan);
+    bool jenis_pemain_valid(string jenisPemain);
+    void tambah_pemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int,int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan);
 
 };
 
