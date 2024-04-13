@@ -364,7 +364,7 @@ void Peternak::panen() {
                                     if(peternakan.dapatkanElemen(row,col)->bisa_panen()){
                                         if(Util::strComp(nama.at(nomor-1), peternakan.dapatkanElemen(row, col)->dapatkan_nama())){
                                             // hapus dari peternakan
-                                            Entitas* hew = dynamic_cast<Entitas*>(this->peternakan.hapus(row, col));
+                                            Produk* hew = dynamic_cast<Produk*>(this->peternakan.hapus(row, col));
                                             // tambah ke peti penyimpanan
                                             tambah_peti(slot, hew);
                                             succ.push_back(slot);

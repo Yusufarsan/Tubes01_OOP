@@ -296,7 +296,7 @@ void Petani::panen() {
                                     if(ladang.dapatkanElemen(row,col)->bisa_panen()){
                                         if(Util::strComp(nama.at(nomor-1), ladang.dapatkanElemen(row, col)->dapatkan_nama())){
                                             // hapus dari ladang
-                                            Entitas* tumb = dynamic_cast<Entitas*>(this->ladang.hapus(row, col));
+                                            Produk* tumb = dynamic_cast<Produk*>(this->ladang.hapus(row, col));
                                             // tambah ke peti penyimpanan
                                             tambah_peti(slot, tumb);
                                             succ.push_back(slot);
