@@ -38,7 +38,7 @@ public:
     void atur_hewan(vector<shared_ptr<Hewan>> h);
 
     // Method
-    void masukanEntitas(Entitas* Entitas);
+    void masukanEntitas(shared_ptr<Entitas> Entitas);
     void tambah_produk(shared_ptr<Produk> p);
     void tambah_bangunan(shared_ptr<Bangunan> b);
     void kurangi_produk(shared_ptr<Produk> p);

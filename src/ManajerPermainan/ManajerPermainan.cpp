@@ -127,13 +127,13 @@ void ManagerPermainan::simpan() {
         }
         file << pemain->dapatkan_berat_badan() << " " << pemain->dapatkan_uang() << endl;
 
-        int jumlah_item = pemain->jumlah_slot_efektif_peti();
-        file << jumlah_item << endl;
         Matrix peti = pemain->dapatkan_peti();
+        int jumlah_item = peti.jumlahElement();
+        file << jumlah_item << endl;
         for (int j = 0; j < peti.dapatkanBaris(); j++) {
             for (int k = 0; k < peti.dapatkanKolom(); k++) {
                 if (!peti.apakah_slot_kosong(j, k)) {
-                    Entitas* entitas = peti.dapatkan_elemen(j, k);
+                    shared_ptr<Entitas> entitas = peti.dapatkan_elemen(j, k);
                     file << entitas->dapatkan_nama() << endl;
                 }
             }
@@ -141,14 +141,14 @@ void ManagerPermainan::simpan() {
 
         if (Util::instanceof<Petani>(pemain.get())) {
             shared_ptr<Petani> petani = dynamic_pointer_cast<Petani>(pemain);
-            int jumlah_tanaman_di_ladang = petani->jumlah_slot_efektif_ladang();
-            file << jumlah_tanaman_di_ladang << endl;
             Matrix<Tanaman> ladang = petani->dapatkan_ladang();
+            int jumlah_tanaman_di_ladang = ladang.jumlahElement();
+            file << jumlah_tanaman_di_ladang << endl;
             tuple<int, int> ukuran_ladang = make_tuple(ladang.dapatkanBaris(), ladang.dapatkanKolom());
             for (int j = 0; j < get<0>(ukuran_ladang); j++) {
                 for (int k = 0; k < get<1>(ukuran_ladang); k++) {
                     if (!ladang.apakah_slot_kosong(j, k)) {
-                        Tanaman* tanaman = ladang.dapatkan_elemen(j, k);
+                        shared_ptr<Tanaman> tanaman = ladang.dapatkan_elemen(j, k);
                         string slot = Util::label_slot_tabel(j, k);
                         file << slot << " " << tanaman->dapatkan_nama() << " " << tanaman->dapatkan_umur() << endl;
                     }
@@ -157,14 +157,14 @@ void ManagerPermainan::simpan() {
         }
         else if (Util::instanceof<Peternak>(pemain.get())) {
             shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(pemain);
-            int jumlah_hewan_di_peternakan = peternak->jumlah_slot_efektif_peternakan();
-            file << jumlah_hewan_di_peternakan << endl;
             Matrix<Hewan> peternakan = peternak->dapatkan_peternakan();
+            int jumlah_hewan_di_peternakan = peternakan.jumlahElement();
+            file << jumlah_hewan_di_peternakan << endl;
             tuple<int, int> ukuran_peternakan = make_tuple(peternakan.dapatkanBaris(), peternakan.dapatkanKolom());
             for (int j = 0; j < get<0>(ukuran_peternakan); j++) {
                 for (int k = 0; k < get<1>(ukuran_peternakan); k++) {
                     if (!peternakan.apakah_slot_kosong(j, k)) {
-                        Hewan* hewan = peternakan.dapatkan_elemen(j, k);
+                        shared_ptr<Hewan> hewan = peternakan.dapatkan_elemen(j, k);
                         string slot = Util::label_slot_tabel(j, k);
                         file << slot << " " << hewan->dapatkan_nama() << " " << hewan->dapatkan_berat() << endl;
                     }
@@ -221,4 +221,22 @@ void ManagerPermainan::print_konfigurasi() {
         this->daftar_bangunan[i]->print_info();
         cout << endl;
     }
+
+    cout << "Daftar Pemain:" << endl;
+    for (int i = 0; i < this->daftar_pemain.size(); i++) {
+        cout << this->daftar_pemain[i]->dapatkan_nama() << endl;
+        this->daftar_pemain[i]->cetak_peti();
+
+        if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(i))) {
+            p->cetak_ladang();
+        }
+        else if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(i))) {
+            p->cetak_peternakan();
+        }
+
+        cout << endl;
+    }
+
+    cout << "Daftar Produk di Toko:" << endl;
+    this->toko.cetak_isi_toko();
 }

@@ -197,22 +197,22 @@ void Petani::tanam() {
 };
 
 
-// void Petani::tambah_ladang(string slot, shared_ptr<Tanaman> val) {
-//     if (ladang.apakah_slot_valid(slot)) {
-//         int i = Util::indeks_baris_slot(slot);
-//         int j = Util::indeks_kolom_slot(slot);
+void Petani::tambah_ladang(string slot, shared_ptr<Tanaman> val) {
+    if (ladang.apakah_slot_valid(slot)) {
+        int i = Util::indeks_baris_slot(slot);
+        int j = Util::indeks_kolom_slot(slot);
 
-//         if (ladang.apakah_slot_kosong(slot)) {
-//             ladang.tambah_elemen_matriks(i, j, val);
-//         }
-//         else {
-//             cout << "Ada isinya" << endl;
-//         }
-//     }
-//     else {
-//         cout << "index out of bonds" << endl;
-//     }
-// }
+        if (ladang.apakah_slot_kosong(slot)) {
+            ladang.tambah_elemen_matriks(i, j, val);
+        }
+        else {
+            cout << "Ada isinya" << endl;
+        }
+    }
+    else {
+        cout << "index out of bonds" << endl;
+    }
+}
 
 // Tanaman* Petani::hapus_ladang(string slot) {
 //     int idxRow = Util::indeks_baris_slot(slot);

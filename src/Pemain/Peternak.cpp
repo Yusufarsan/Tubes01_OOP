@@ -157,7 +157,7 @@ void Peternak::ternak() {
                 if (!Util::instanceof<Hewan>(bibit.get())) {
                     cout << "Slot " << slot_masukan_peti << " tidak berisi bibit hewan." << endl;
                 }
-                else{
+                else {
                     cout << "Kamu memilih " << bibit.get()->dapatkan_nama() << " untuk dipelihara." << endl;
                     break;
                 }
@@ -175,7 +175,7 @@ void Peternak::ternak() {
                 cout << "Slot tidak valid" << endl;
             }
             else {
-                if(peternakan.apakah_slot_kosong(slot_masukan_peternakan)){
+                if (peternakan.apakah_slot_kosong(slot_masukan_peternakan)) {
                     cout << "Slot " << slot_masukan_peti << " milik hewan lain." << endl;
                 }
                 else {
@@ -194,17 +194,22 @@ void Peternak::ternak() {
     };
 };
 
-// void Peternak::tambah_peternakan(string slot, Hewan* val) {
-//     int i = Util::indeks_baris_slot(slot);
-//     int j = Util::indeks_kolom_slot(slot);
+void Peternak::tambah_peternakan(string slot, shared_ptr<Hewan> val) {
+    if (peternakan.apakah_slot_valid(slot)) {
+        int i = Util::indeks_baris_slot(slot);
+        int j = Util::indeks_kolom_slot(slot);
 
-//     if (peternakan.apakah_slot_kosong(i,j)) {
-//         peternakan.tambah_elemen_matriks(i, j, val);
-//     }
-//     else {
-//         cout << "Ada isinya" << endl;
-//     }
-// };
+        if (peternakan.apakah_slot_kosong(slot)) {
+            peternakan.tambah_elemen_matriks(i, j, val);
+        }
+        else {
+            cout << "Ada isinya" << endl;
+        }
+    }
+    else {
+        cout << "index out of bonds" << endl;
+    }
+};
 
 // Hewan* Peternak::hapus_peternakan(string slot) {
 //     int idxRow = Util::indeks_baris_slot(slot);
@@ -215,11 +220,11 @@ void Peternak::ternak() {
 // };
 
 void Peternak::beri_pangan() {
-    if (peternakan.apakah_kosong()){
+    if (peternakan.apakah_kosong()) {
         cout << "Kandangnya kosong semua, mau kasih makan setan?" << endl;
     }
     else {
-        if(peti.apakah_kosong()){
+        if (peti.apakah_kosong()) {
             cout << "Kamu ga punya apa apa, Mau kasih makan pake angin?" << endl;
         }
         else {
@@ -347,9 +352,9 @@ void Peternak::panen() {
             while (!isJumlahValid && nomor < counter && nomor>0) {
                 cout << "Berapa petak yang ingin dipanen: ";
                 cin >> petak;
-                if (petak<=frequencyMap[make_pair((kode.at(nomor-1)),(nama.at(nomor-1)))] && petak>0){
-                    if(peti.jumlah_slot_kosong()>=petak){
-                        cout << "Pilih petak yang ingin dipanen: "<<endl;
+                if (petak <= frequencyMap[make_pair((kode.at(nomor - 1)), (nama.at(nomor - 1)))] && petak > 0) {
+                    if (peti.jumlah_slot_kosong() >= petak) {
+                        cout << "Pilih petak yang ingin dipanen: " << endl;
                         vector<string> succ;
                         int i = 0; bool isPetakValid = false;
                         while (i < petak) {
@@ -358,10 +363,10 @@ void Peternak::panen() {
                             cin >> slot;
                             int row = Util::indeks_baris_slot(slot);
                             int col = Util::indeks_kolom_slot(slot);
-                            if(peternakan.apakah_index_valid(row,col)){
-                                if(!peternakan.apakah_slot_kosong(row, col)){
-                                    if(peternakan.dapatkan_elemen(row,col)->bisa_panen()){
-                                        if(Util::strComp(nama.at(nomor-1), peternakan.dapatkan_elemen(row, col)->dapatkan_nama())){
+                            if (peternakan.apakah_index_valid(row, col)) {
+                                if (!peternakan.apakah_slot_kosong(row, col)) {
+                                    if (peternakan.dapatkan_elemen(row, col)->bisa_panen()) {
+                                        if (Util::strComp(nama.at(nomor - 1), peternakan.dapatkan_elemen(row, col)->dapatkan_nama())) {
                                             // hapus dari peternakan
                                             // tambah ke peti penyimpanan
                                             peti.tambah_elemen_matriks(row, col, dynamic_pointer_cast<Entitas>(peternakan.hapus(row, col)));
@@ -431,20 +436,20 @@ int Peternak::hitung_pajak() {
     int neto_kekayaan = uang;
 
     if (!peternakan.apakah_kosong()) {
-        for (int i=0; i<peternakan.dapatkanBaris(); i++) {
-            for (int j=0; j<peternakan.dapatkanKolom(); j++) {
-                if (peternakan.dapatkan_elemen(i,j) != nullptr) {
-                    neto_kekayaan += peternakan.dapatkan_elemen(i,j)->dapatkan_harga();
+        for (int i = 0; i < peternakan.dapatkanBaris(); i++) {
+            for (int j = 0; j < peternakan.dapatkanKolom(); j++) {
+                if (peternakan.dapatkan_elemen(i, j) != nullptr) {
+                    neto_kekayaan += peternakan.dapatkan_elemen(i, j)->dapatkan_harga();
                 }
             }
         }
     }
 
     if (!peti.apakah_kosong()) {
-        for (int i=0; i<peti.dapatkanBaris(); i++) {
-            for (int j=0; j<peti.dapatkanKolom(); j++) {
-                if (peti.dapatkan_elemen(i,j) != nullptr) {
-                    neto_kekayaan += peti.dapatkan_elemen(i,j)->dapatkan_harga();
+        for (int i = 0; i < peti.dapatkanBaris(); i++) {
+            for (int j = 0; j < peti.dapatkanKolom(); j++) {
+                if (peti.dapatkan_elemen(i, j) != nullptr) {
+                    neto_kekayaan += peti.dapatkan_elemen(i, j)->dapatkan_harga();
                 }
             }
         }

@@ -54,24 +54,10 @@ public:
     //     }
     // }
 
-    // template<class T>
-    // void tambah_peti(T* val) {
-    //     bool isInserted = false;
-
-    //     for (int i = 0; i < peti.dapatkanBaris(); i++) {
-    //         for (int j = 0; j < peti.dapatkanKolom(); j++) {
-    //             if (peti.apakah_slot_kosong(i,j)) {
-    //                 peti.editElemen(i, j, val);
-    //                 isInserted = true;
-    //                 break;
-    //             }
-    //         }
-
-    //         if (isInserted) {
-    //             break;
-    //         }
-    //     }
-    // }
+    template<class T>
+    void tambah_peti(shared_ptr<T> val) {
+        peti += val;
+    }
 
 
     // Entitas* hapus_peti(const string& slot);

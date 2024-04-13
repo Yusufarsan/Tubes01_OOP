@@ -36,8 +36,8 @@ public:
         // }
     }
     // tambahElement pada slot kosong
-    Matrix& operator+=(A* El) {
-        if (!penuh()) {
+    Matrix& operator+=(shared_ptr<A> El) {
+        if (!apakah_penuh()) {
             bool isInserted = false;
 
             for(int i = 0; i<rows; i++){
@@ -113,7 +113,7 @@ public:
 
     bool apakah_slot_kosong(int idxRow, int idxCol){        
         if(apakah_index_valid(idxRow, idxCol)){
-            return data[baris][kolom] == nullptr
+            return data[idxRow][idxCol] == nullptr;
         }
 
         return false;
@@ -124,7 +124,7 @@ public:
         int idxCol = Util::indeks_kolom_slot(slot);
         
         if(apakah_index_valid(idxRow, idxCol)){
-            return data[baris][kolom] == nullptr
+            return data[idxRow][idxCol] == nullptr;
         }
 
         return false;

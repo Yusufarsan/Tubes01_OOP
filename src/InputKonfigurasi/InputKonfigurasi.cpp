@@ -69,9 +69,9 @@ vector<shared_ptr<Hewan>> InputKonfigurasi::InputKonfigurasiHewan(string nama_fi
             shared_ptr<Hewan> hewan = make_unique<Omnivora>(id, kode_huruf, nama, harga, berat);
             daftar_hewan.push_back(move(hewan));
         }
-
-        file.close();
     }
+
+    file.close();
 
     return daftar_hewan;
 }
@@ -238,7 +238,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 int k = 0;
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_tanaman[k].get());
+                        pemain->tambah_peti(daftar_tanaman[k]);
                         found = true;
                     }
                     k++;
@@ -247,7 +247,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_hewan.size()) {
                     if (daftar_hewan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_hewan[k].get());
+                        pemain->tambah_peti(daftar_hewan[k]);
                         found = true;
                     }
                     k++;
@@ -256,7 +256,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_produk.size()) {
                     if (daftar_produk[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_produk[k].get());
+                        pemain->tambah_peti(daftar_produk[k]);
                         found = true;
                     }
                     k++;
@@ -265,7 +265,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_bangunan.size()) {
                     if (daftar_bangunan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_bangunan[k].get());
+                        pemain->tambah_peti(daftar_bangunan[k]);
                         found = true;
                     }
                     k++;
@@ -293,7 +293,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                             tanaman->tambah_umur();
                             umur--;
                         }
-                        petani->tambah_ladang(slot, *tanaman);
+                        petani->tambah_ladang(slot, tanaman);
                         found = true;
                     }
                     k++;
@@ -316,7 +316,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 int k = 0;
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_tanaman[k].get());
+                        pemain->tambah_peti(daftar_tanaman[k]);
                         found = true;
                     }
                     k++;
@@ -325,7 +325,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_hewan.size()) {
                     if (daftar_hewan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_hewan[k].get());
+                        pemain->tambah_peti(daftar_hewan[k]);
                         found = true;
                     }
                     k++;
@@ -334,7 +334,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_produk.size()) {
                     if (daftar_produk[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_produk[k].get());
+                        pemain->tambah_peti(daftar_produk[k]);
                         found = true;
                     }
                     k++;
@@ -343,7 +343,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_bangunan.size()) {
                     if (daftar_bangunan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_bangunan[k].get());
+                        pemain->tambah_peti(daftar_bangunan[k]);
                         found = true;
                     }
                     k++;
@@ -368,7 +368,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                         shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(pemain);
                         shared_ptr<Hewan> hewan = daftar_hewan[k];
                         hewan->tambah_berat(berat);
-                        peternak->tambah_peternakan(slot, hewan.get());
+                        peternak->tambah_peternakan(slot, hewan);
                         found = true;
                     }
                     k++;
@@ -391,7 +391,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 int k = 0;
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_tanaman[k].get());
+                        pemain->tambah_peti(daftar_tanaman[k]);
                         found = true;
                     }
                     k++;
@@ -400,7 +400,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_hewan.size()) {
                     if (daftar_hewan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_hewan[k].get());
+                        pemain->tambah_peti(daftar_hewan[k]);
                         found = true;
                     }
                     k++;
@@ -409,7 +409,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_produk.size()) {
                     if (daftar_produk[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_produk[k].get());
+                        pemain->tambah_peti(daftar_produk[k]);
                         found = true;
                     }
                     k++;
@@ -418,7 +418,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_bangunan.size()) {
                     if (daftar_bangunan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_bangunan[k].get());
+                        pemain->tambah_peti(daftar_bangunan[k]);
                         found = true;
                     }
                     k++;

@@ -153,7 +153,7 @@ bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
     int idxCol = Util::indeks_kolom_slot(slot);
     if (peti.apakah_index_valid(idxRow, idxCol)) {
         if (!peti.apakah_slot_kosong(idxRow, idxCol)) {
-            if (Util::instanceof<Produk>(peti.dapatkan_elemen(idxRow, idxCol))) {
+            if (Util::instanceof<Produk>(peti.dapatkan_elemen(idxRow, idxCol).get())) {
                 return true;
             }
         }
@@ -207,9 +207,9 @@ void Pemain::jual(Toko& toko) {
 
             int row = Util::indeks_baris_slot(cell);
             int col = Util::indeks_kolom_slot(cell);
-            Entitas* ent = peti.dapatkan_elemen(row, col);
+            shared_ptr<Entitas> ent = peti.dapatkan_elemen(row, col);
             if(!peti.apakah_slot_kosong(row, col)){
-                if(Util::instanceof<Bangunan>(ent)){
+                if(Util::instanceof<Bangunan>(ent.get())){
                     if(!isWalikota){
                         cout << "   Kamu gabisa jual " << ent->dapatkan_nama() << endl;
                         break;

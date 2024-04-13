@@ -38,7 +38,7 @@ public:
     Matrix<Hewan> dapatkan_peternakan();
 
     void ternak();
-    // void tambah_peternakan(string slot, Hewan* val);
+    void tambah_peternakan(string slot, shared_ptr<Hewan> val);
     
     unordered_map<pair<string, string>, int, pair_hash> frekuensi_panen(){
         unordered_map<pair<string, string>, int, pair_hash> frequencyMap;

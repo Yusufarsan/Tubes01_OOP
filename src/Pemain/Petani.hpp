@@ -32,7 +32,7 @@ public:
     Matrix<Tanaman> dapatkan_ladang();
 
     void tanam();
-    // void tambah_ladang(string slot, Tanaman& val);
+    void tambah_ladang(string slot, shared_ptr<Tanaman> val);
     // Tanaman* hapus_ladang(string slot);
     unordered_map<pair<string, string>, int, pair_hash> frekuensi_panen(){
         unordered_map<pair<string, string>, int, pair_hash> frequencyMap;

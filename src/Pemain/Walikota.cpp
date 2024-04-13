@@ -200,7 +200,8 @@ bool Walikota::cek_bahan(Bangunan bangunan) {       // Nge cek bahan cukup atau 
 
     // Menambahkan Bangunan ke peti walkot
     // peti+=make_shared<Entitas>(bangunan);
-    peti.tambah_elemen_matriks(make_shared<Entitas>(bangunan));
+    shared_ptr<Entitas> entitas = make_shared<Bangunan>(bangunan);
+    peti.tambah_elemen_matriks(entitas);
     // this->tambah_peti(&bangunan);
     
     return bahan_cukup; // udah pasti true
