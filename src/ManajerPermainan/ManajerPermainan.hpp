@@ -61,9 +61,21 @@ public:
 
     // Command Permainan
     void next();
+    void cetak_penyimpanan();
+    void pungut_pajak();    // validasi user
+    void cetak_ladang();    // validasi user
+    void tanam();    // validasi user
+    void ternak();   // validasi user
+    void bangun();   // validasi user
+    void makan();
+    void kasih_makan();  // validasi user
+    void beli();
+    void jual();
+    void panen(); // ada peternak dan petani
     void muat();
     void inisialisasi_pemain();
     void simpan();
+    void tambah_pemain();   // validasi user
 
     // Print Info
     void print_konfigurasi();

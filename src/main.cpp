@@ -13,17 +13,23 @@ int main() {
 
     cout << "Selamat datang di permainan Kelola Kerajaan Bersama Labpro!\n\n";
 
-    cout << "Apakah Anda ingin memuat state? (y/n) ";
-    cin >> input;
-    cout << endl;
+    while (true) {
+        cout << "Apakah Anda ingin memuat state? (y/n) ";
+        cin >> input;
+        cout << endl;
 
-    if (input == "y") {
-        mp.muat();
-    }
-    else {
-        cout << "Inisialisasi pemain..." << endl;
-        mp.inisialisasi_pemain();
-        cout << "Berhasil menginisialisasi pemain Petani1, Peternak1, dan Walikota\n\n";
+        if (input == "y") {
+            mp.muat();
+            break;
+        }
+        else if (input == "n") {
+            cout << "Inisialisasi pemain..." << endl;
+            mp.inisialisasi_pemain();
+            cout << "Berhasil menginisialisasi pemain Petani1, Peternak1, dan Walikota\n\n";
+            break;
+        }
+        
+        cout << "Ngomong apa si, coba masukkin ulang dah\n\n";
     }
 
     cout << "Permainan sudah dapat dimulai! Selamat bermain!!" << endl;
@@ -36,7 +42,13 @@ int main() {
         if (input == "NEXT") {
             cout << "Pemain " << mp.pemain_skrg()->dapatkan_nama() << " mengakhiri gilirannya" << endl;
             mp.next();
-            cout << "Giliran dilanjut ke pemain " << mp.pemain_skrg()->dapatkan_nama() << endl;
+            cout << "Giliran dilanjut ke pemain " << mp.pemain_skrg()->dapatkan_nama() << endl << endl;
+        }
+        else if (input == "CETAK_PENYIMPANAN") {
+            mp.pemain_skrg()->cetak_peti();
+        }
+        else if (input == "PUNGUT_PAJAK") {
+
         }
         else if (input == "SIMPAN") {
             mp.simpan();
@@ -44,6 +56,9 @@ int main() {
         else if (input == "KELUAR") {
             cout << "Terima kasih telah bermain!" << endl;
             break;
+        }
+        else {
+            cout << "Command apa itu? Coba masukin command lain\n";
         }
 
         cout << endl;
