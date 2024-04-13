@@ -133,12 +133,9 @@ void Walikota::cetak_resep_semua_bangunan(vector<Bangunan> daftar_bangunan) {
     }
 }
 
-bool Walikota::cek_bahan(Bangunan bangunan) {
+bool Walikota::cek_bahan(Bangunan bangunan) {       // Nge cek bahan cukup atau ga. Kalo cukup, return true dan bahan nya walkot dikurangi
     // Inisialisasi map untuk menghitung jumlah tiap ProdukTanamanMaterial yang dimiliki
     map<string, int> penghitung;    // string -> nama ProdukTanamanMaterial, int -> jumlah yang dimiliki
-
-    // // Inisialisasi map untuk menghitung kekurangan tiap ProdukTanamanMaterial
-    // map<string, int> kekurangan_bahan;
 
     // Inisialisasi jumlah setiap ProdukTanamanMaterial yg dibutuhkan menjadi 0
     for (const pair<string, int>& iterator : bangunan.dapatkan_resep()) {
@@ -146,11 +143,17 @@ bool Walikota::cek_bahan(Bangunan bangunan) {
         // kekurangan_bahan[iterator.first] = 0;
     }
 
+    // Inisialisasi array of string slot material
+    vector<string> arr_slot;
+
     // Mendapatkan jumlah setiap ProdukTanamanMaterial yang dimiliki
     for (int i = 0; i < this->peti.dapatkanBaris(); i++) {
         for (int j = 0; j < this->peti.dapatkanKolom(); j++) {
             if (Util::instanceof<ProdukTanamanMaterial>(this->peti.dapatkanElemen(i, j))) {
                 ++penghitung[this->peti.dapatkanElemen(i, j)->dapatkan_nama()];
+
+                // Membuat array of string slot material untuk dihapus dari peti jika semua bahan cukup
+                arr_slot.push_back(Util::label_slot_tabel(i, j));
             }
         }
     }
@@ -187,12 +190,21 @@ bool Walikota::cek_bahan(Bangunan bangunan) {
 
         return bahan_cukup; // Udah pas false
     }
+
+    // Menghapus slot material dari peti
+    for (const string iterator : arr_slot) {
+        auto temp = this->hapus_peti(iterator);
+    }
+
+    // Menambahkan Bangunan ke peti walkot
+    this->tambah_peti(&bangunan);
+    
     return bahan_cukup; // udah pasti true
 }
 
 void Walikota::bangun(vector<Bangunan> daftar_bangunan) {               // Belom di test
-    // Cek masih punya slot kosong atau ga. Kalo ga ada, ya ga bisa bangun
-    if (this->jumlah_slot_kosong_peti() == 0) throw "Tidak bisa membangun karena ga punya slot di penyimpanan\n";
+    // Ga usah di cek masih ada slot kosong atau ga
+    // Karena nanti pasti ada slot material yang berkurang (based on spek docs)
 
     while (true) {
         this->cetak_resep_semua_bangunan(daftar_bangunan);
@@ -207,12 +219,17 @@ void Walikota::bangun(vector<Bangunan> daftar_bangunan) {               // Belom
         for (int i = 0; i < daftar_bangunan.size(); i++) {
             if (daftar_bangunan.at(i).dapatkan_nama() == pilihan_bangunan) {
                 // Cek apakah material yg dimiliki mencukupi untuk membangun sekaligus mencetak kekurangan jika bahan tidak cukup
-                if (this->cek_bahan(daftar_bangunan.at(i))) cout << pilihan_bangunan << " berhasil dibangun dan telah menjadi hak milik walikota!\n";
+                if (this->cek_bahan(daftar_bangunan.at(i))) {
+                    // method cek_bahan akan melakukan hapus peti sekaligus tambah peti
+                    cout << pilihan_bangunan << " berhasil dibangun dan telah menjadi hak milik walikota!\n";
+                }
                 break;  // untuk break for loop
                 continue;   // ke while loop selanjutnya
             }
         }
         cout << "Kamu tidak punya resep bangunan tersebut!\n\n";
     }
+
+
 
 }
