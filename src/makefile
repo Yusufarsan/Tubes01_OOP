@@ -32,7 +32,7 @@ Toko_SRCS = Toko/Toko.cpp
 Util_SRCS = Util/Util.cpp
 
 # File sumber driver
-DriverMain_SRCS = driverMain.cpp 
+DriverMain_SRCS = main.cpp 
 DriverHewan_SRCS = Hewan/driverHewan.cpp
 DriverInput_SRCS = InputKonfigurasi/driverInput.cpp
 DriverMatriks_SRCS = Matriks/driverMatriks.cpp

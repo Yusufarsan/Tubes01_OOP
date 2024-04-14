@@ -39,21 +39,21 @@ int main() {
         cin >> input;
 
 
-        if (input == "NEXT") {
+        if (Util::strComp(input, "NEXT")){
             cout << "Pemain " << mp.pemain_skrg()->dapatkan_nama() << " mengakhiri gilirannya" << endl;
             mp.next();
             cout << "Giliran dilanjut ke pemain " << mp.pemain_skrg()->dapatkan_nama() << endl << endl;
         }
-        else if (input == "CETAK_PENYIMPANAN") {
+        else if (Util::strComp(input, "CETAK_PENYIMPANAN")) {
             mp.pemain_skrg()->cetak_peti();
         }
-        else if (input == "PUNGUT_PAJAK") {
+        else if (Util::strComp(input, "PUNGUT_PAJAK")) {
 
         }
-        else if (input == "SIMPAN") {
+        else if (Util::strComp(input, "SIMPAN")) {
             mp.simpan();
         }
-        else if (input == "KELUAR") {
+        else if (Util::strComp(input, "KELUAR")) {
             mp.keluar();
             break;
         }
