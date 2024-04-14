@@ -1,19 +1,14 @@
 #include "Walikota.hpp"
-#include "Peternak.hpp"
-#include "Petani.hpp"
-#include "../Util/Util.hpp"
-#include <algorithm>
-#include <iostream>
 
-using namespace std;
-
+// 4 Sekawan
 Walikota::Walikota(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti) : Pemain(nama, uang, berat_badan, ukuran_peti) {}
 
 Walikota::Walikota(const Walikota& other) : Pemain(other.nama, other.uang, other.berat_badan, tuple<int, int>(other.peti.dapatkanBaris(), other.peti.dapatkanKolom())) {}
 
 Walikota::~Walikota() {}
 
-bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, string namaPemain){
+// Method
+bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, string namaPemain) {
     bool isFound = false;
     int i = 0;
     while (!isFound && i < daftarPemain->size()) {
@@ -27,106 +22,30 @@ bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, s
     return isFound;
 }
 
-bool Walikota::jenis_pemain_valid(string jenisPemain){
+bool Walikota::jenis_pemain_valid(string jenisPemain) {
     return Util::strComp(jenisPemain, "peternak") || Util::strComp(jenisPemain, "petani");
 }
 
-void Walikota::tambah_pemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int, int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan) {
-    if (uang >= 50) {
-        string namaPemain;
-        string jenisPemain;
-
-
-        bool namaValid = false;
-        while(!namaValid){
-            cout << "Masukan nama pemain: ";
-            cin >> namaPemain;
-
-            bool jenisValid = false;
-            while(!apakah_nama_terdaftar(daftarPemain, namaPemain) && !jenisValid){
-                cout << "Masukan jenis pemain: ";
-                cin >> jenisPemain;
-
-                if(jenis_pemain_valid(jenisPemain)){
-                    jenisValid = true; namaValid = true;
-                    if (Util::strComp(jenisPemain, "peternak")) {
-                        shared_ptr<Pemain> pemainBaru = make_unique<Peternak>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_peternakan);
-                        daftarPemain->push_back(pemainBaru);
-                        this->uang -= 50;
-                        cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
-                        break;
-                    }else{ //petani
-                        shared_ptr<Pemain> pemainBaru = make_unique<Petani>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_lahan);
-                        daftarPemain->push_back(pemainBaru);
-                        this->uang -= 50;
-                        cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
-                        break;
-                    }
-                }else{
-                    if (Util::strComp(jenisPemain, "walikota")) {
-                        cout << "Walikota nya satu aja yah, biar ga berantem" << endl;
-                    }else{
-                        cout << "Role ini tidak tersedia" << endl;
-                    }
-                }
-            }
-        }
-    }
-    else {
-        cout << "Uang tidak cukup!" << endl;
-    }
-}
 bool Walikota::bandingkan_pajak(const std::shared_ptr<Pemain>& a, const std::shared_ptr<Pemain>& b) {
     int pajak_a = 0;
     int pajak_b = 0;
     if (Util::instanceof<Petani>(a.get())) {
         shared_ptr<Petani> petani_a = dynamic_pointer_cast<Petani>(a);
         pajak_a = petani_a->hitung_pajak();
-    } else if (Util::instanceof<Peternak>(a.get())) {
+    }
+    else if (Util::instanceof<Peternak>(a.get())) {
         shared_ptr<Peternak> peternak_a = dynamic_pointer_cast<Peternak>(a);
         pajak_a = peternak_a->hitung_pajak();
     }
     if (Util::instanceof<Petani>(b.get())) {
         shared_ptr<Petani> petani_b = dynamic_pointer_cast<Petani>(b);
         pajak_b = petani_b->hitung_pajak();
-    } else if (Util::instanceof<Peternak>(b.get())) {
+    }
+    else if (Util::instanceof<Peternak>(b.get())) {
         shared_ptr<Peternak> peternak_b = dynamic_pointer_cast<Peternak>(b);
         pajak_b = peternak_b->hitung_pajak();
     }
     return pajak_a > pajak_b;
-}
-
-void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain) {
-    cout << "Cring cring cring..." << endl;
-    cout << "Pajak sudah dipungut!" << endl;
-    cout << endl;
-    cout << "Berikut adalah detil dari pemungutan pajak:" << endl;
-
-    int pajak_pemain = 0;
-    int jumlah_pajak = 0;
-    sort(daftar_pemain.begin(), daftar_pemain.end(), bandingkan_pajak);
-    for (int i = 0; i < daftar_pemain.size(); i++) {
-        int j = 1;
-        if (Util::instanceof<Petani>(daftar_pemain[i].get())) {
-            shared_ptr<Petani> petani = dynamic_pointer_cast<Petani>(daftar_pemain[i]);
-            pajak_pemain = petani->hitung_pajak();
-            petani->atur_uang(petani->dapatkan_uang() - pajak_pemain);
-            cout << j << ". " << petani->dapatkan_nama() << " - Petani: " << pajak_pemain << " gulden" << endl;
-        }
-        else if (Util::instanceof<Peternak>(daftar_pemain[i].get())) {
-            shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(daftar_pemain[i]);
-            pajak_pemain = peternak->hitung_pajak();
-            peternak->atur_uang(peternak->dapatkan_uang() - pajak_pemain);
-            cout << j << ". " << peternak->dapatkan_nama() << " - Peternak: " << pajak_pemain << " gulden" << endl;
-        }
-        jumlah_pajak += pajak_pemain;
-        j++;
-    }
-    this->uang += jumlah_pajak;
-
-    cout << endl;
-    cout << "Negara mendapatkan pemasukan sebesar " << jumlah_pajak << " gulden." << endl;
-    cout << "Gunakan dengan baik dan jangan dikorupsi ya!" << endl;
 }
 
 void Walikota::cetak_resep_semua_bangunan(vector<shared_ptr<Bangunan>> daftar_bangunan) {
@@ -223,8 +142,42 @@ bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan
     // shared_ptr<Entitas> entitas = make_shared<Bangunan>(bangunan);
     peti.tambah_elemen_matriks(dynamic_pointer_cast<Entitas>(bangunan));
     // this->tambah_peti(&bangunan);
-    
+
     return bahan_cukup; // udah pasti true
+}
+
+// Command
+void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain) {
+    cout << "Cring cring cring..." << endl;
+    cout << "Pajak sudah dipungut!" << endl;
+    cout << endl;
+    cout << "Berikut adalah detil dari pemungutan pajak:" << endl;
+
+    int pajak_pemain = 0;
+    int jumlah_pajak = 0;
+    sort(daftar_pemain.begin(), daftar_pemain.end(), bandingkan_pajak);
+    for (int i = 0; i < daftar_pemain.size(); i++) {
+        int j = 1;
+        if (Util::instanceof<Petani>(daftar_pemain[i].get())) {
+            shared_ptr<Petani> petani = dynamic_pointer_cast<Petani>(daftar_pemain[i]);
+            pajak_pemain = petani->hitung_pajak();
+            petani->atur_uang(petani->dapatkan_uang() - pajak_pemain);
+            cout << j << ". " << petani->dapatkan_nama() << " - Petani: " << pajak_pemain << " gulden" << endl;
+        }
+        else if (Util::instanceof<Peternak>(daftar_pemain[i].get())) {
+            shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(daftar_pemain[i]);
+            pajak_pemain = peternak->hitung_pajak();
+            peternak->atur_uang(peternak->dapatkan_uang() - pajak_pemain);
+            cout << j << ". " << peternak->dapatkan_nama() << " - Peternak: " << pajak_pemain << " gulden" << endl;
+        }
+        jumlah_pajak += pajak_pemain;
+        j++;
+    }
+    this->uang += jumlah_pajak;
+
+    cout << endl;
+    cout << "Negara mendapatkan pemasukan sebesar " << jumlah_pajak << " gulden." << endl;
+    cout << "Gunakan dengan baik dan jangan dikorupsi ya!" << endl;
 }
 
 void Walikota::bangun(vector<shared_ptr<Bangunan>> daftar_bangunan) {               // Belom di test
@@ -266,7 +219,53 @@ void Walikota::bangun(vector<shared_ptr<Bangunan>> daftar_bangunan) {           
         }
         cout << "Kamu tidak punya resep bangunan tersebut!\n\n";
     }
+}
+
+void Walikota::tambah_pemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int, int> ukuranPenyimpanan, int beratAwal, tuple<int, int> besar_lahan, tuple<int, int> besar_peternakan) {
+    if (uang >= 50) {
+        string namaPemain;
+        string jenisPemain;
 
 
+        bool namaValid = false;
+        while (!namaValid) {
+            cout << "Masukan nama pemain: ";
+            cin >> namaPemain;
 
+            bool jenisValid = false;
+            while (!apakah_nama_terdaftar(daftarPemain, namaPemain) && !jenisValid) {
+                cout << "Masukan jenis pemain: ";
+                cin >> jenisPemain;
+
+                if (jenis_pemain_valid(jenisPemain)) {
+                    jenisValid = true; namaValid = true;
+                    if (Util::strComp(jenisPemain, "peternak")) {
+                        shared_ptr<Pemain> pemainBaru = make_unique<Peternak>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_peternakan);
+                        daftarPemain->push_back(pemainBaru);
+                        this->uang -= 50;
+                        cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
+                        break;
+                    }
+                    else { //petani
+                        shared_ptr<Pemain> pemainBaru = make_unique<Petani>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_lahan);
+                        daftarPemain->push_back(pemainBaru);
+                        this->uang -= 50;
+                        cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
+                        break;
+                    }
+                }
+                else {
+                    if (Util::strComp(jenisPemain, "walikota")) {
+                        cout << "Walikota nya satu aja yah, biar ga berantem" << endl;
+                    }
+                    else {
+                        cout << "Role ini tidak tersedia" << endl;
+                    }
+                }
+            }
+        }
+    }
+    else {
+        cout << "Uang tidak cukup!" << endl;
+    }
 }

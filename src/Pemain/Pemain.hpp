@@ -1,6 +1,13 @@
 #ifndef PEMAIN_HPP
 #define PEMAIN_HPP
 
+// STL
+#include <iostream>
+#include <vector>
+#include <memory>
+#include <cmath>
+
+// User-defined
 #include "../Entitas/Entitas.hpp"
 #include "../Hewan/Hewan.hpp"
 #include "../Tanaman/TanamanBuah.hpp"
@@ -10,9 +17,6 @@
 #include "../Util/Util.hpp"
 #include "../Matriks/Matriks.hpp"
 #include "../Toko/Toko.hpp"
-#include <iostream>
-#include <vector>
-#include <memory>
 
 using namespace std;
 
@@ -25,54 +29,36 @@ protected:
     int berat_badan;
 
 public:
+    // Constructor & Destructor
     Pemain(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti);
     virtual ~Pemain() {};
 
+    // Getter & Setter
     string dapatkan_nama();
+    int dapatkan_berat_badan();
+    Matrix<Entitas> dapatkan_peti();
     void atur_uang(int uang);
     int dapatkan_uang();
     void atur_berat_badan(int berat);
-    int dapatkan_berat_badan();
-    Matrix<Entitas> dapatkan_peti();
 
-    void cetak_peti();
-    // void tambah_peti(string slot, Entitas& val);
-    // template<class T>
-    // void tambah_peti(const string& slot, T* val) {
-    //     int row = Util::indeks_baris_slot(slot);
-    //     int col = Util::indeks_kolom_slot(slot);
-    //     if (peti.apakahIndexValid(row, col)) {
-    //         if (peti.apakah_slot_kosong(row, col)) {
-    //             peti.editElemen(row, col, val);
-    //         }
-    //         else {
-    //             cout << "Ada isinya" << endl;
-    //         }
-    //     }
-    //     else {
-    //         cout << "index out of bonds" << endl;
-    //     }
-    // }
-
+    // Method
     template<class T>
     void tambah_peti(shared_ptr<T> val) {
         peti += val;
     }
 
-
-    // Entitas* hapus_peti(const string& slot);
-    // bool cek_slot_peti_valid(const string& slot);
-    // bool cek_peti_penuh();
-    // bool cek_peti_kosong();
-    // int jumlah_slot_efektif_peti();
-    // int jumlah_slot_kosong_peti();
     bool cek_bisa_dimakan(const string& slot);
 
+    // Command
     void jual(Toko& toko);
     void membeli(Toko& toko);
     void makan();
 
+    // Operator Overloading
     friend ostream& operator<<(ostream&, Pemain);
+
+    // Print Info
+    void cetak_peti();
 };
 
 #endif
