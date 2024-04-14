@@ -54,11 +54,11 @@ int main() {
             mp.simpan();
         }
         else if (input == "KELUAR") {
-            cout << "Terima kasih telah bermain!" << endl;
+            mp.keluar();
             break;
         }
         else {
-            cout << "Command apa itu? Coba masukin command lain\n";
+            cout << "Command apa itu? Coba masukin command lain yg ada di spek\n";
         }
 
         cout << endl;
