@@ -1,5 +1,6 @@
 #include "Produk.hpp"
 #include "../Util/Util.hpp"
+#include "../InputKonfigurasi/InputKonfigurasi.hpp"
 
 int Produk::jumlah_produk = 0;
 
@@ -8,7 +9,7 @@ Produk::Produk(string id, string kode_huruf, string nama, int harga, int berat_t
     jumlah_produk++;
 }
 
-Produk::Produk(string nama, string kode, string origin, int berat_tambahan): origin(origin), berat_tambahan(berat_tambahan), Entitas(to_string(dapatkan_jumlah_produk_saat_ini()), kode, nama, Util::angka_acak(7, 9)){
+Produk::Produk(string nama, string kode, string origin, int berat_tambahan, int harga): origin(origin), berat_tambahan(berat_tambahan), Entitas(to_string(dapatkan_jumlah_produk_saat_ini()), kode, nama, harga){
     jumlah_produk++;
 }
 

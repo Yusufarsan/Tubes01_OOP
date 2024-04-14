@@ -9,7 +9,7 @@ class ProdukTanamanMaterial : public Produk {
 public:
     // 4 Sekawan
     ProdukTanamanMaterial(string id, string kode_huruf, string nama, int harga, int berat_tambahan, string origin); // ctor
-    ProdukTanamanMaterial(string origin): Produk("Kayu " + origin, "K"+Util::dapatkan_kode(origin), origin, 0){};
+    ProdukTanamanMaterial(string origin, int berat, int harga): Produk(origin+"_WOOD", Util::dapatkan_kode(origin)+"W", origin+"_TREE", 0, harga){};
     ~ProdukTanamanMaterial(); // dtor
     ProdukTanamanMaterial(const ProdukTanamanMaterial& other); // cctor
     ProdukTanamanMaterial& operator=(const ProdukTanamanMaterial& other); // operator=

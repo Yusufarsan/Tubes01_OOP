@@ -1,14 +1,19 @@
 #include "Peternak.hpp"
+#include "../InputKonfigurasi/InputKonfigurasi.hpp"
 
 int main() {
+    // load konfig 
+    vector<shared_ptr<Produk>> daftarProduk;
+    daftarProduk = InputKonfigurasi::InputKonfigurasiProduk("Pemain/confprod.txt");
+
     // Membuat objek peternak
     Peternak peternak("NamaPeternak", 1000, 70, {5, 5}, {10, 10});
 
     // Membuat beberapa hewan
-    Herbivora herbivora("ID1", "HER", "Herbivora", 50, 10);
-    Karnivora karnivora("ID2", "KAR", "Karnivora", 100, 20);
-    Omnivora omnivora("ID3", "OMN", "Omnivora", 75, 15);
-    omnivora.atur_berat(100);
+    Herbivora herbivora("1", "COW", "COW" , 20, 6);
+    Karnivora karnivora("2", "SNK", "SNAKE", 13, 4);
+    Omnivora omnivora("3", "CHK", "CHICKEN", 12, 3);
+    herbivora.atur_berat(100);
 
     // Menambahkan hewan ke peternakan
     peternak.tambah_peternakan("A1", make_shared<Herbivora>(herbivora));
@@ -45,7 +50,7 @@ int main() {
 
 
     // Melakukan panen
-    peternak.panen();
+    peternak.panen(daftarProduk);
 
     // Mencetak peternakan setelah operasi
     std::cout << "Peternakan setelah operasi:" << std::endl;

@@ -9,7 +9,7 @@ class ProdukHewan : public Produk {
 public:
     // 4 Sekawan
     ProdukHewan(string id, string kode_huruf, string nama, int harga, int berat_tambahan, string origin); // ctor
-    ProdukHewan(string origin): Produk("Daging " + origin, "D"+Util::dapatkan_kode(origin), origin, Util::angka_acak(7,10)){};
+    ProdukHewan(string origin, int berat, int harga): Produk(origin+"_MEAT", Util::dapatkan_kode(origin)+"M", origin, berat, harga){};
     ~ProdukHewan(); // dtor
     ProdukHewan(const ProdukHewan& other); // cctor
     ProdukHewan& operator=(const ProdukHewan& other); // operator=

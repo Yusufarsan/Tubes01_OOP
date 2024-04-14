@@ -1,12 +1,380 @@
 #include "Peternak.hpp"
-#include "../Pcolor/Pcolor.hpp"
-#include <cmath>
 
-using namespace std;
+// Constructor & Destructor
 Peternak::Peternak(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti, tuple<int, int> ukuran_peternakan) : Pemain(nama, uang, berat_badan, ukuran_peti), peternakan(get<0>(ukuran_peternakan), get<1>(ukuran_peternakan)) {}
 
 Peternak::~Peternak() {};
 
+// Getter
+Matrix<Hewan> Peternak::dapatkan_peternakan() {
+    return peternakan;
+};
+
+// Method
+bool Peternak::cek_slot_peternakan_valid(string slot) {
+    int i = Util::indeks_baris_slot(slot);
+    int j = Util::indeks_kolom_slot(slot);
+
+    return peternakan.apakah_index_valid(i, j);
+};
+
+bool Peternak::cek_peternakan_penuh() {
+    return peternakan.apakah_penuh();
+};
+
+bool Peternak::cek_peternakan_kosong() {
+    return peternakan.apakah_kosong();
+};
+
+int Peternak::jumlah_slot_efektif_peternakan() {
+    return peternakan.jumlahElement();
+};
+
+int Peternak::jumlah_slot_kosong_peternakan() {
+    return peternakan.jumlah_slot_kosong();
+};
+
+void Peternak::tambah_peternakan(string slot, shared_ptr<Hewan> val) {
+    if (peternakan.apakah_slot_valid(slot)) {
+        int i = Util::indeks_baris_slot(slot);
+        int j = Util::indeks_kolom_slot(slot);
+
+        if (peternakan.apakah_slot_kosong(slot)) {
+            peternakan.tambah_elemen_matriks(i, j, val);
+        }
+        else {
+            cout << "Ada isinya" << endl;
+        }
+    }
+    else {
+        cout << "index out of bonds" << endl;
+    }
+};
+
+unordered_map<pair<string, string>, int, Peternak::pair_hash> Peternak::frekuensi_panen() {
+    unordered_map<pair<string, string>, int, Peternak::pair_hash> frequencyMap;
+
+    // Iterate over the elements of Peternakan matriks
+    for (int i = 0; i < peternakan.dapatkanBaris(); i++) {
+        for (int j = 0; j < peternakan.dapatkanKolom(); j++) {
+            shared_ptr<Hewan> hew = peternakan.dapatkan_elemen(i, j);
+            if (hew != nullptr && hew.get()->bisa_panen()) {
+                // Increment the frequency count for the  hewan's name
+                frequencyMap[make_pair(hew.get()->dapatkan_kode_huruf(), hew.get()->dapatkan_nama())]++;
+            }
+        }
+    }
+    return frequencyMap;
+}
+
+// Command
+void Peternak::beri_pangan() {
+    if (peternakan.apakah_kosong()) {
+        cout << "Kandangnya kosong semua, mau kasih makan setan?" << endl;
+    }
+    else {
+        if (peti.apakah_kosong()) {
+            cout << "Kamu ga punya apa apa, Mau kasih makan pake angin?" << endl;
+        }
+        else {
+            cetak_peternakan();
+
+            string slot_masukan_peti, slot_masukan_peternakan;
+            int idxRowPeti, idxColPeti, idxRowPeternakan, idxColPeternakan;
+            Entitas* produk = nullptr;
+            Hewan* hewanLapar;
+
+            while (true) {
+                cout << "Pilih kandang yang akan dikasih makan" << endl;
+                cout << "Petak : ";
+                cin >> slot_masukan_peternakan;
+
+                if (!peti.apakah_slot_valid(slot_masukan_peternakan)) {
+                    cout << "Slot tidak valid" << endl;
+                }
+                else {
+                    idxRowPeternakan = Util::indeks_baris_slot(slot_masukan_peternakan);
+                    idxColPeternakan = Util::indeks_kolom_slot(slot_masukan_peternakan);
+
+                    shared_ptr<Hewan> kandang(peternakan.dapatkan_elemen(idxRowPeternakan, idxColPeternakan));
+
+                    if (!kandang) {
+                        cout << "Slot " << slot_masukan_peti << " gak ada hewannya." << endl;
+                    }
+                    else {
+                        hewanLapar = dynamic_cast<Hewan*>(kandang.get());
+                        cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk dikasih makan." << endl;
+                        break;
+                    }
+                }
+            }
+
+            cetak_peti();
+
+            while (true) {
+                cout << "Silakan pilih pangan yang ingin Anda berikan!" << endl;
+                cout << "Petak : ";
+                cin >> slot_masukan_peti;
+
+                if (!peti.apakah_slot_valid(slot_masukan_peti)) {
+                    cout << "Slot tidak valid" << endl;
+                }
+                else {
+                    idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
+                    idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
+                    produk = peti.dapatkan_elemen(idxRowPeti, idxColPeti).get();
+                    if (!Util::instanceof<Produk>(produk)) {
+                        cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
+                    }
+                    else if (Util::instanceof<ProdukTanamanMaterial>(produk)) {
+                        cout << "Slot " << slot_masukan_peti << " berisi produk tanaman material yang tidak bisa dimakan." << endl;
+                    }
+                    else {
+                        Produk* makanan = dynamic_cast<Produk*>(produk);
+                        if (Util::instanceof<Omnivora>(hewanLapar)) {
+                            hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                        }
+                        else if (Util::instanceof<Karnivora>(hewanLapar)) {
+                            if (Util::instanceof<ProdukHewan>(makanan)) {
+                                hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                            }
+                        }
+                        else {
+                            if (Util::instanceof<ProdukTanamanBuah>(makanan)) {
+                                hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                            }
+                        }
+                        cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk ditanam." << endl;
+                    }
+
+                    break;
+                }
+            }
+        }
+    };
+};
+
+void Peternak::ternak() {
+    if (peti.apakah_kosong()) {
+        cout << "Gak punya penyimpanan kok mau ternak!" << endl;
+    }
+    else {
+        cetak_peti();
+
+        string slot_masukan_peti, slot_masukan_peternakan;
+        int idxRowPeti, idxColPeti, idxRowPeternakan, idxColPeternakan;
+        shared_ptr<Entitas> bibit;
+        shared_ptr<Hewan> hewanBibit;
+
+        while (true) {
+            cout << "Silakan pilih hewan yang ingin Anda ternak!" << endl;
+            cout << "Petak : ";
+            cin >> slot_masukan_peti;
+
+            if (!peti.apakah_slot_valid(slot_masukan_peti)) {
+                cout << "Slot tidak valid" << endl;
+            }
+            else {
+                idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
+                idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
+                bibit = peti.dapatkan_elemen(idxRowPeti, idxColPeti);
+                if (!Util::instanceof<Hewan>(bibit.get())) {
+                    cout << "Slot " << slot_masukan_peti << " tidak berisi bibit hewan." << endl;
+                }
+                else {
+                    cout << "Kamu memilih " << bibit.get()->dapatkan_nama() << " untuk dipelihara." << endl;
+                    break;
+                }
+            }
+        }
+
+        cetak_peternakan();
+
+        while (true) {
+            cout << "Pilih petak tanah yang akan ditinggali" << endl;
+            cout << "Petak : ";
+            cin >> slot_masukan_peternakan;
+
+            if (!peternakan.apakah_slot_valid(slot_masukan_peternakan)) {
+                cout << "Slot tidak valid" << endl;
+            }
+            else {
+                if (peternakan.apakah_slot_kosong(slot_masukan_peternakan)) {
+                    cout << "Slot " << slot_masukan_peti << " milik hewan lain." << endl;
+                }
+                else {
+                    // peternakan[idxRowPeternakan][idxColPeternakan] = make_shared<Karnivora>(hewanBibit);
+                    idxColPeternakan = Util::indeks_baris_slot(slot_masukan_peternakan);
+                    idxRowPeternakan = Util::indeks_kolom_slot(slot_masukan_peternakan);
+
+                    peternakan.tambah_elemen_matriks(idxRowPeternakan, idxColPeternakan, dynamic_pointer_cast<Hewan>(bibit));
+                    peti.hapus(idxRowPeti, idxColPeti);
+                    cout << "Ternak, ternak, ternak yang banyak!" << endl;
+                    cout << bibit->dapatkan_nama() << " berhasil diternak!" << endl;
+                    break;
+                }
+            }
+        }
+    };
+};
+
+
+void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
+    cetak_peternakan();
+    unordered_map<pair<string, string>, int, pair_hash> frequencyMap = frekuensi_panen();
+    if (frequencyMap.size() != 0) {
+        auto res = tampilkanPanen(frequencyMap);
+        vector<string> kode = get<0>(res);
+        vector<string> nama = get<1>(res);
+        int counter = get<2>(res);
+        bool isNumValid = false;
+        int nomor, petak;
+        while (!isNumValid) {
+            bool isJumlahValid = false;
+            cout << "Nomor hewan yang ingin dipanen: ";
+            cin >> nomor;
+            if (nomor >= counter || nomor <= 0) {
+                cout << "---Masukkan nomor yang valid!---" << endl;
+            }
+            while (!isJumlahValid && nomor < counter && nomor>0) {
+                cout << "Berapa petak yang ingin dipanen: ";
+                cin >> petak;
+                if (petak <= frequencyMap[make_pair((kode.at(nomor - 1)), (nama.at(nomor - 1)))] && petak > 0) {
+                    if (peti.jumlah_slot_kosong() >= petak) {
+                        cout << "Pilih petak yang ingin dipanen: " << endl;
+                        vector<string> succ;
+                        int i = 0; bool isPetakValid = false;
+                        while (i < petak) {
+                            string slot;
+                            cout << "   Petak ke-" << i + 1 << " : ";
+                            cin >> slot;
+                            int row = Util::indeks_baris_slot(slot);
+                            int col = Util::indeks_kolom_slot(slot);
+                            if (peternakan.apakah_index_valid(row, col)) {
+                                if (!peternakan.apakah_slot_kosong(row, col)) {
+                                    if (peternakan.dapatkan_elemen(row, col)->bisa_panen()) {
+                                        if (Util::strComp(nama.at(nomor - 1), peternakan.dapatkan_elemen(row, col)->dapatkan_nama())) {
+                                            // hapus dari ladang dan konversi dari Tanaman -> Entitas -> Produk
+                                            shared_ptr<Entitas> ent = peternakan.hapus(row, col);
+                                            shared_ptr<Entitas> prod;
+
+                                            auto res = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama());
+
+                                            prod = make_shared<ProdukHewan>(ent->dapatkan_nama(), get<0>(res), get<1>(res));
+
+                                            // tambah ke peti penyimpanan
+                                            peti += (prod);
+                                            succ.push_back(slot);
+                                            i++;
+                                            cout << "----Berhasil----" << endl;
+                                        }
+                                        else {
+                                            cout << "Katanya mau panen " << nama.at(nomor - 1) << endl;
+                                        }
+
+                                    }
+                                    else {
+                                        cout << "--Itu belum bisa dipanen---" << endl;
+                                    }
+
+                                }
+                                else {
+                                    cout << "Kamu ga punya tanaman di situ" << endl;
+                                }
+                            }
+                            else {
+                                cout << "Weitts kelebihan tu petaknya" << endl;
+                            }
+                        }
+                        cout << petak << " petak tanaman " << nama.at(nomor - 1) << " pada petak ";
+                        for (auto& each : succ) {
+                            cout << each << " ";
+                        }
+                        cout << "telah dipanen!" << endl;
+                        isJumlahValid = true;
+                        isNumValid = true;
+                    }
+                    else {
+                        cout << "---Penyimpanan kamu ga cukup hey---" << endl;
+                        isJumlahValid = true;
+                    }
+                }
+                else if (petak > frequencyMap[make_pair(kode.at(nomor - 1), nama.at(nomor - 1))]) {
+                    cout << "Kamu hanya memiliki " << nama.at(nomor - 1) << " sebanyak " << frequencyMap[make_pair(kode.at(nomor - 1), nama.at(nomor - 1))] << endl;
+                }
+                else {
+                    if (petak == -1) {
+                        // kembali ke pemilihan nomor
+                        isJumlahValid = true;
+                    }
+                    else {
+                        cout << "---Masukan petak yang valid!--- (-1 for back)" << endl;
+                    }
+                }
+            }
+
+        }
+
+    }
+    else {
+        cout << "Kamu belum punya hewan siap panen nih, ayo semangat bekerja!" << endl;
+    }
+
+}
+
+int Peternak::hitung_pajak() {
+    int KKP, pajak;
+    int KTKP = 11;
+    int neto_kekayaan = uang;
+
+    if (!peternakan.apakah_kosong()) {
+        for (int i = 0; i < peternakan.dapatkanBaris(); i++) {
+            for (int j = 0; j < peternakan.dapatkanKolom(); j++) {
+                if (peternakan.dapatkan_elemen(i, j) != nullptr) {
+                    neto_kekayaan += peternakan.dapatkan_elemen(i, j)->dapatkan_harga();
+                }
+            }
+        }
+    }
+
+    if (!peti.apakah_kosong()) {
+        for (int i = 0; i < peti.dapatkanBaris(); i++) {
+            for (int j = 0; j < peti.dapatkanKolom(); j++) {
+                if (peti.dapatkan_elemen(i, j) != nullptr) {
+                    neto_kekayaan += peti.dapatkan_elemen(i, j)->dapatkan_harga();
+                }
+            }
+        }
+    }
+
+    KKP = neto_kekayaan - KTKP;
+    if (KKP <= 0) {
+        pajak = 0;
+    }
+    else if (KKP <= 6) {
+        pajak = round(KKP * 0.05);
+    }
+    else if (KKP <= 25) {
+        pajak = round(KKP * 0.15);
+    }
+    else if (KKP <= 50) {
+        pajak = round(KKP * 0.25);
+    }
+    else if (KKP <= 500) {
+        pajak = round(KKP * 0.3);
+    }
+    else {
+        pajak = round(KKP * 0.35);
+    }
+
+    if (pajak > uang) {
+        pajak = uang;
+    }
+
+    return pajak;
+}
+
+// Print Info
 void Peternak::cetak_peternakan() {
     int numRow = peternakan.dapatkanBaris();
     int numCol = peternakan.dapatkanKolom();
@@ -103,209 +471,6 @@ void Peternak::cetak_peternakan() {
     cout << endl << "Total slot kosong: " << peternakan.jumlah_slot_kosong() << endl;
 };
 
-bool Peternak::cek_slot_peternakan_valid(string slot) {
-    int i = Util::indeks_baris_slot(slot);
-    int j = Util::indeks_kolom_slot(slot);
-
-    return peternakan.apakah_index_valid(i,j);
-};
-
-bool Peternak::cek_peternakan_penuh() {
-    return peternakan.apakah_penuh();
-};
-
-bool Peternak::cek_peternakan_kosong() {
-    return peternakan.apakah_kosong();
-};
-
-int Peternak::jumlah_slot_efektif_peternakan() {
-    return peternakan.jumlahElement();
-};
-
-int Peternak::jumlah_slot_kosong_peternakan() {
-    return peternakan.jumlah_slot_kosong();
-};
-
-Matrix<Hewan> Peternak::dapatkan_peternakan() {
-    return peternakan;
-};
-
-void Peternak::ternak() {
-    if (peti.apakah_kosong()) {
-        cout << "Gak punya penyimpanan kok mau ternak!" << endl;
-    }
-    else {
-        cetak_peti();
-
-        string slot_masukan_peti, slot_masukan_peternakan;
-        int idxRowPeti, idxColPeti, idxRowPeternakan, idxColPeternakan;
-        shared_ptr<Entitas> bibit;
-        shared_ptr<Hewan> hewanBibit;
-
-        while (true) {
-            cout << "Silakan pilih hewan yang ingin Anda ternak!" << endl;
-            cout << "Petak : ";
-            cin >> slot_masukan_peti;
-
-            if (!peti.apakah_slot_valid(slot_masukan_peti)) {
-                cout << "Slot tidak valid" << endl;
-            }
-            else {
-                idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
-                idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
-                bibit = peti.dapatkan_elemen(idxRowPeti, idxColPeti);
-                if (!Util::instanceof<Hewan>(bibit.get())) {
-                    cout << "Slot " << slot_masukan_peti << " tidak berisi bibit hewan." << endl;
-                }
-                else {
-                    cout << "Kamu memilih " << bibit.get()->dapatkan_nama() << " untuk dipelihara." << endl;
-                    break;
-                }
-            }
-        }
-
-        cetak_peternakan();
-
-        while (true) {
-            cout << "Pilih petak tanah yang akan ditinggali" << endl;
-            cout << "Petak : ";
-            cin >> slot_masukan_peternakan;
-
-            if (!peternakan.apakah_slot_valid(slot_masukan_peternakan)) {
-                cout << "Slot tidak valid" << endl;
-            }
-            else {
-                if (peternakan.apakah_slot_kosong(slot_masukan_peternakan)) {
-                    cout << "Slot " << slot_masukan_peti << " milik hewan lain." << endl;
-                }
-                else {
-                    // peternakan[idxRowPeternakan][idxColPeternakan] = make_shared<Karnivora>(hewanBibit);
-                    idxColPeternakan = Util::indeks_baris_slot(slot_masukan_peternakan);
-                    idxRowPeternakan = Util::indeks_kolom_slot(slot_masukan_peternakan);
-
-                    peternakan.tambah_elemen_matriks(idxRowPeternakan, idxColPeternakan, dynamic_pointer_cast<Hewan>(bibit));
-                    peti.hapus(idxRowPeti, idxColPeti);
-                    cout << "Ternak, ternak, ternak yang banyak!" << endl;
-                    cout << bibit->dapatkan_nama() << " berhasil diternak!" << endl;
-                    break;
-                }
-            }
-        }
-    };
-};
-
-void Peternak::tambah_peternakan(string slot, shared_ptr<Hewan> val) {
-    if (peternakan.apakah_slot_valid(slot)) {
-        int i = Util::indeks_baris_slot(slot);
-        int j = Util::indeks_kolom_slot(slot);
-
-        if (peternakan.apakah_slot_kosong(slot)) {
-            peternakan.tambah_elemen_matriks(i, j, val);
-        }
-        else {
-            cout << "Ada isinya" << endl;
-        }
-    }
-    else {
-        cout << "index out of bonds" << endl;
-    }
-};
-
-// Hewan* Peternak::hapus_peternakan(string slot) {
-//     int idxRow = Util::indeks_baris_slot(slot);
-//     int idxCol = Util::indeks_kolom_slot(slot);
-
-
-//     return peternakan.hapus(idxRow, idxCol);
-// };
-
-void Peternak::beri_pangan() {
-    if (peternakan.apakah_kosong()) {
-        cout << "Kandangnya kosong semua, mau kasih makan setan?" << endl;
-    }
-    else {
-        if (peti.apakah_kosong()) {
-            cout << "Kamu ga punya apa apa, Mau kasih makan pake angin?" << endl;
-        }
-        else {
-            cetak_peternakan();
-
-            string slot_masukan_peti, slot_masukan_peternakan;
-            int idxRowPeti, idxColPeti, idxRowPeternakan, idxColPeternakan;
-            Entitas* produk = nullptr;
-            Hewan* hewanLapar;
-
-            while (true) {
-                cout << "Pilih kandang yang akan dikasih makan" << endl;
-                cout << "Petak : ";
-                cin >> slot_masukan_peternakan;
-
-                if (!peti.apakah_slot_valid(slot_masukan_peternakan)) {
-                    cout << "Slot tidak valid" << endl;
-                }
-                else {
-                    idxRowPeternakan = Util::indeks_baris_slot(slot_masukan_peternakan);
-                    idxColPeternakan = Util::indeks_kolom_slot(slot_masukan_peternakan);
-
-                    shared_ptr<Hewan> kandang(peternakan.dapatkan_elemen(idxRowPeternakan, idxColPeternakan));
-
-                    if (!kandang) {
-                        cout << "Slot " << slot_masukan_peti << " gak ada hewannya." << endl;
-                    }
-                    else {
-                        hewanLapar = dynamic_cast<Hewan*>(kandang.get());
-                        cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk dikasih makan." << endl;
-                        break;
-                    }
-                }
-            }
-
-            cetak_peti();
-
-            while (true) {
-                cout << "Silakan pilih pangan yang ingin Anda berikan!" << endl;
-                cout << "Petak : ";
-                cin >> slot_masukan_peti;
-
-                if (!peti.apakah_slot_valid(slot_masukan_peti)) {
-                    cout << "Slot tidak valid" << endl;
-                }
-                else {
-                    idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
-                    idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
-                    produk = peti.dapatkan_elemen(idxRowPeti, idxColPeti).get();
-                    if (!Util::instanceof<Produk>(produk)) {
-                        cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
-                    }
-                    else if (Util::instanceof<ProdukTanamanMaterial>(produk)) {
-                        cout << "Slot " << slot_masukan_peti << " berisi produk tanaman material yang tidak bisa dimakan." << endl;
-                    }
-                    else {
-                        Produk* makanan = dynamic_cast<Produk*>(produk);
-                        if (Util::instanceof<Omnivora>(hewanLapar)) {
-                            hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
-                        }
-                        else if (Util::instanceof<Karnivora>(hewanLapar)) {
-                            if (Util::instanceof<ProdukHewan>(makanan)) {
-                                hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
-                            }
-                        }
-                        else {
-                            if (Util::instanceof<ProdukTanamanBuah>(makanan)) {
-                                hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
-                            }
-                        }
-                        cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk ditanam." << endl;
-                    }
-
-                    break;
-                }
-            }
-        }
-    };
-};
-
-
 tuple<vector<string>, vector<string>, int> Peternak::tampilkanPanen(unordered_map<pair<string, string>, int, Peternak::pair_hash> frequencyMap) {
     // Display the names and frequencies of harvest-ready Tanaman objects
 
@@ -330,157 +495,4 @@ tuple<vector<string>, vector<string>, int> Peternak::tampilkanPanen(unordered_ma
     }
     cout << endl;
     return make_tuple(kode, nama, counter);
-}
-
-void Peternak::panen() {
-    cetak_peternakan();
-    unordered_map<pair<string, string>, int, pair_hash> frequencyMap = frekuensi_panen();
-    if (frequencyMap.size() != 0) {
-        auto res = tampilkanPanen(frequencyMap);
-        vector<string> kode = get<0>(res);
-        vector<string> nama = get<1>(res);
-        int counter = get<2>(res);
-        bool isNumValid = false;
-        int nomor, petak;
-        while (!isNumValid) {
-            bool isJumlahValid = false;
-            cout << "Nomor hewan yang ingin dipanen: ";
-            cin >> nomor;
-            if (nomor >= counter || nomor <= 0) {
-                cout << "---Masukkan nomor yang valid!---" << endl;
-            }
-            while (!isJumlahValid && nomor < counter && nomor>0) {
-                cout << "Berapa petak yang ingin dipanen: ";
-                cin >> petak;
-                if (petak <= frequencyMap[make_pair((kode.at(nomor - 1)), (nama.at(nomor - 1)))] && petak > 0) {
-                    if (peti.jumlah_slot_kosong() >= petak) {
-                        cout << "Pilih petak yang ingin dipanen: " << endl;
-                        vector<string> succ;
-                        int i = 0; bool isPetakValid = false;
-                        while (i < petak) {
-                            string slot;
-                            cout << "   Petak ke-" << i + 1 << " : ";
-                            cin >> slot;
-                            int row = Util::indeks_baris_slot(slot);
-                            int col = Util::indeks_kolom_slot(slot);
-                            if (peternakan.apakah_index_valid(row, col)) {
-                                if (!peternakan.apakah_slot_kosong(row, col)) {
-                                    if (peternakan.dapatkan_elemen(row, col)->bisa_panen()) {
-                                        if (Util::strComp(nama.at(nomor - 1), peternakan.dapatkan_elemen(row, col)->dapatkan_nama())) {
-                                            // hapus dari ladang dan konversi dari Tanaman -> Entitas -> Produk
-                                            shared_ptr<Entitas> ent = peternakan.hapus(row, col);
-                                            shared_ptr<Entitas> prod;
-                                            prod = make_shared<ProdukHewan>(ent->dapatkan_nama());
-                                            
-                                            // tambah ke peti penyimpanan
-                                            peti+=(prod);
-                                            succ.push_back(slot);
-                                            i++;
-                                            cout << "----Berhasil----" << endl;
-                                        }
-                                        else {
-                                            cout << "Katanya mau panen " << nama.at(nomor - 1) << endl;
-                                        }
-
-                                    }
-                                    else {
-                                        cout << "--Itu belum bisa dipanen---" << endl;
-                                    }
-
-                                }
-                                else {
-                                    cout << "Kamu ga punya tanaman di situ" << endl;
-                                }
-                            }
-                            else {
-                                cout << "Weitts kelebihan tu petaknya" << endl;
-                            }
-                        }
-                        cout << petak << " petak tanaman " << nama.at(nomor - 1) << " pada petak ";
-                        for (auto& each : succ) {
-                            cout << each << " ";
-                        }
-                        cout << "telah dipanen!" << endl;
-                        isJumlahValid = true;
-                        isNumValid = true;
-                    }
-                    else {
-                        cout << "---Penyimpanan kamu ga cukup hey---" << endl;
-                        isJumlahValid = true;
-                    }
-                }
-                else if (petak > frequencyMap[make_pair(kode.at(nomor - 1), nama.at(nomor - 1))]) {
-                    cout << "Kamu hanya memiliki " << nama.at(nomor - 1) << " sebanyak " << frequencyMap[make_pair(kode.at(nomor - 1), nama.at(nomor - 1))] << endl;
-                }
-                else {
-                    if (petak == -1) {
-                        // kembali ke pemilihan nomor
-                        isJumlahValid = true;
-                    }
-                    else {
-                        cout << "---Masukan petak yang valid!--- (-1 for back)" << endl;
-                    }
-                }
-            }
-
-        }
-
-    }
-    else {
-        cout << "Kamu belum punya hewan siap panen nih, ayo semangat bekerja!" << endl;
-    }
-
-}
-
-
-int Peternak::hitung_pajak() {
-    int KKP, pajak;
-    int KTKP = 11;
-    int neto_kekayaan = uang;
-
-    if (!peternakan.apakah_kosong()) {
-        for (int i = 0; i < peternakan.dapatkanBaris(); i++) {
-            for (int j = 0; j < peternakan.dapatkanKolom(); j++) {
-                if (peternakan.dapatkan_elemen(i, j) != nullptr) {
-                    neto_kekayaan += peternakan.dapatkan_elemen(i, j)->dapatkan_harga();
-                }
-            }
-        }
-    }
-
-    if (!peti.apakah_kosong()) {
-        for (int i = 0; i < peti.dapatkanBaris(); i++) {
-            for (int j = 0; j < peti.dapatkanKolom(); j++) {
-                if (peti.dapatkan_elemen(i, j) != nullptr) {
-                    neto_kekayaan += peti.dapatkan_elemen(i, j)->dapatkan_harga();
-                }
-            }
-        }
-    }
-
-    KKP = neto_kekayaan - KTKP;
-    if (KKP <= 0) {
-        pajak = 0;
-    }
-    else if (KKP <= 6) {
-        pajak = round(KKP * 0.05);
-    }
-    else if (KKP <= 25) {
-        pajak = round(KKP * 0.15);
-    }
-    else if (KKP <= 50) {
-        pajak = round(KKP * 0.25);
-    }
-    else if (KKP <= 500) {
-        pajak = round(KKP * 0.3);
-    }
-    else {
-        pajak = round(KKP * 0.35);
-    }
-
-    if (pajak > uang) {
-        pajak = uang;
-    }
-
-    return pajak;
 }

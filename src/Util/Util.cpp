@@ -117,10 +117,14 @@ string Util::dapatkan_kode(string nama){
     kode += nama[0];
     for(size_t i=1; i<nama.length(); i++){
         if(isalpha(nama[i])){
-            if(apakah_vokal(nama[i])){
-                kode += toupper(nama[i+1]);
+            if(nama.length()>3){
+                if(apakah_vokal(nama[i])){
+                    kode += toupper(nama[i+1]);
+                }else{
+                    kode += toupper(nama[i]);
+                }
             }else{
-                kode += toupper(nama[i]);
+                kode += nama[1];
             }
             break;
         }

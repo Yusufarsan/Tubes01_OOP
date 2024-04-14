@@ -18,7 +18,7 @@ protected:
 public:
     // 4 Sekawan
     Produk(string id, string kode_huruf, string nama, int harga, int berat_tambahan, string origin);      // ctor
-    Produk(string nama, string kode, string origin, int berat_tambahan);
+    Produk(string nama, string kode, string origin, int berat_tambahan, int harga);
     ~Produk();                                      // dtor
     Produk& operator=(const Produk& produk);        // operator=
 

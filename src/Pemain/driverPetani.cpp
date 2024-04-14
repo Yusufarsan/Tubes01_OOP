@@ -1,20 +1,26 @@
 #include "Petani.hpp"
 #include "../Tanaman/Tanaman.hpp"
+#include "../InputKonfigurasi/InputKonfigurasi.hpp"
 
 int main() {
+    // load konfig
+    vector<shared_ptr<Produk>> daftarProduk;
+    daftarProduk = InputKonfigurasi::InputKonfigurasiProduk("Pemain/confprod.txt");
+
+
     // Membuat objek petani
     Petani petani("NamaPetani", 1000, 70, {5, 5}, {5, 5});
 
     // Membuat beberapa tanaman
-    Tanaman tanaman1("T1", "PAD", "Padi", 50, 10);
-    Tanaman tanaman2("T2", "JAG", "Jagung", 100, 20);
-    Tanaman tanaman3("T3", "WOR", "Wortel", 75, 15);
+    TanamanMaterial tanaman1("1", "TEK", "TEAK_TREE", 15, 5);
+    TanamanBuah tanaman2("2", "APL", "APPLE_TREE", 13, 4);
+    TanamanBuah tanaman3("3", "WOR", "WORTEL_TREE", 75, 15);
     tanaman1.atur_umur(3000);
 
     // Menambahkan tanaman ke ladang
-    petani.tambah_ladang("A1", make_shared<Tanaman>(tanaman1));
-    petani.tambah_ladang("B2", make_shared<Tanaman>(tanaman2));
-    petani.tambah_ladang("C3", make_shared<Tanaman>(tanaman3));
+    petani.tambah_ladang("A1", make_shared<TanamanMaterial>(tanaman1));
+    petani.tambah_ladang("B2", make_shared<TanamanBuah>(tanaman2));
+    petani.tambah_ladang("C3", make_shared<TanamanBuah>(tanaman3));
 
     // Menambahkan tanaman ke peti
     petani.tambah_peti(make_shared<Tanaman>(tanaman1));
@@ -49,7 +55,7 @@ int main() {
     petani.cetak_peti();
 
     // Melakukan panen
-    petani.panen();
+    petani.panen(daftarProduk);
 
     // Mencetak ladang setelah operasi
     std::cout << "Ladang setelah operasi:" << std::endl;
