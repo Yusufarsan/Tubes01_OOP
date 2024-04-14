@@ -178,18 +178,11 @@ void Pemain::membeli(Toko& toko) {
                 cout << "Uang tidak cukup" << endl;
             }
             else {
-                if (Util::instanceof<Produk>(barang.get())) {
-                    toko.kurangi_produk(dynamic_pointer_cast<Produk>(barang));
-                }
-                else if (Util::instanceof<Bangunan>(barang.get())) {
-                    toko.kurangi_bangunan(dynamic_pointer_cast<Bangunan>(barang));
-                }
-
-                uang -= kuantitas * barang->dapatkan_harga();
                 cout << "Selamat Anda berhasil membeli " << kuantitas << " " << barang->dapatkan_nama() << ".";
-                cout << " Uang Anda tersisa " << uang << " gulden." << endl;
+                cout << " Uang Anda tersisa " << uang - (kuantitas * barang->dapatkan_harga()) << " gulden." << endl;
                 cout << endl;
 
+                // Menyimpan barang yang dibeli ke dalam peti
                 cout << "Pilih slot untuk menyimpan barang yang Anda beli!" << endl;
                 this->cetak_peti();
 
@@ -223,6 +216,17 @@ void Pemain::membeli(Toko& toko) {
                         throw "Slot yang dipilih tidak valid";
                     }
                 }
+
+                // Kurangi barang yang dibeli dari toko
+                if (Util::instanceof<Produk>(barang.get())) {
+                    toko.kurangi_produk(dynamic_pointer_cast<Produk>(barang));
+                }
+                else if (Util::instanceof<Bangunan>(barang.get())) {
+                    toko.kurangi_bangunan(dynamic_pointer_cast<Bangunan>(barang));
+                }
+
+                // Kurangi uang
+                uang -= kuantitas * barang->dapatkan_harga();
 
                 cout << barang->dapatkan_nama() << " berhasil disimpan dalam penyimpanan!" << endl;
             }
