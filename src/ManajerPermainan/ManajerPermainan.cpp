@@ -100,13 +100,21 @@ void ManagerPermainan::cetak_ladang() {
     if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran))) {
         p->cetak_ladang();
     }
-    else if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(this->giliran))) {
+    else {
+        // throw BukanPetaniException("Hanya Petani yang dapat mencetak ladang\n");
+        cout << "Hanya Petani yang dapat mencetak ladang" << endl;
+    }
+}
+
+void ManagerPermainan::cetak_peternakan() {
+    if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(this->giliran))) {
         p->cetak_peternakan();
     }
     else {
-        // throw BukanPetaniPeternakException("Hanya Petani atau Peternak yang dapat mencetak ladang\n");
-        cout << "Hanya Petani atau Peternak yang dapat mencetak ladang" << endl;
+        // throw BukanPeternakException("Hanya Peternak yang dapat mencetak peternakan\n");
+        cout << "Hanya Peternak yang dapat mencetak peternakan" << endl;
     }
+
 }
 
 void ManagerPermainan::tanam() {

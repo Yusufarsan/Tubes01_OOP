@@ -18,18 +18,26 @@ int main() {
         cin >> input;
         cout << endl;
 
-        if (input == "y") {
-            mp.muat();
-            break;
+        try {
+            if (input == "y") {
+                mp.muat();
+                break;
+            }
+            else if (input == "n") {
+                cout << "Inisialisasi pemain..." << endl;
+                mp.inisialisasi_pemain();
+                cout << "Berhasil menginisialisasi pemain Petani1, Peternak1, dan Walikota\n\n";
+                break;
+            }
+            
+            cout << "Ngomong apa si, coba masukkin ulang dah\n";
+        } catch (const invalid_argument& e) {
+        cout << e.what() << endl;
         }
-        else if (input == "n") {
-            cout << "Inisialisasi pemain..." << endl;
-            mp.inisialisasi_pemain();
-            cout << "Berhasil menginisialisasi pemain Petani1, Peternak1, dan Walikota\n\n";
-            break;
+        catch (...) {
+            cout << "Terjadi kesalahan dalam memuat state. Silakan coba lagi." << endl;
         }
-        
-        cout << "Ngomong apa si, coba masukkin ulang dah\n\n";
+        cout << endl;
     }
 
     cout << "Permainan sudah dapat dimulai! Selamat bermain!!" << endl;
@@ -38,31 +46,79 @@ int main() {
         cout << "> ";
         cin >> input;
 
-
-        if (Util::strComp(input, "NEXT")){
-            cout << "Pemain " << mp.pemain_skrg()->dapatkan_nama() << " mengakhiri gilirannya" << endl;
-            mp.next();
-            cout << "Giliran dilanjut ke pemain " << mp.pemain_skrg()->dapatkan_nama() << endl << endl;
+        try {
+            if (Util::strComp(input, "NEXT")){
+                cout << "Pemain " << mp.pemain_skrg()->dapatkan_nama() << " mengakhiri gilirannya" << endl;
+                mp.next();
+                cout << "Giliran dilanjut ke pemain " << mp.pemain_skrg()->dapatkan_nama() << endl << endl;
+            }
+            else if (input == "CETAK_PENYIMPANAN") {
+                mp.cetak_penyimpanan();
+            }
+            else if (input == "PUNGUT_PAJAK") {
+                mp.pungut_pajak();  
+            }
+            else if (input == "CETAK_LADANG") {
+                mp.cetak_ladang();
+            }
+            else if (input == "CETAK_PETERNAKAN") {
+                mp.cetak_peternakan();
+            }
+            else if (input == "TANAM") {
+                mp.tanam();
+            }
+            else if (input == "TERNAK") {
+                mp.ternak();
+            }
+            else if (input == "BANGUN") {
+                mp.bangun();
+            }
+            else if (input == "MAKAN") {
+                mp.makan();
+            }
+            else if (input == "KASIH_MAKAN") {
+                mp.kasih_makan();
+            }
+            else if (input == "BELI") {
+                mp.beli();
+            }
+            else if (input == "JUAL") {
+                mp.jual();
+            }
+            else if (input == "PANEN") {
+                mp.panen();
+            }
+            else if (input == "SIMPAN") {
+                mp.simpan();
+            }
+            else if (Util::strComp(input, "KELUAR")) {
+                mp.keluar();
+                break;
+            }
+            else {
+                cout << "Command apa itu? Coba masukin command lain yg ada di spek\n";
+            }
+        } catch (const invalid_argument& e) {
+            cout << e.what() << endl;
         }
-        else if (Util::strComp(input, "CETAK_PENYIMPANAN")) {
-            mp.pemain_skrg()->cetak_peti();
-        }
-        else if (Util::strComp(input, "PUNGUT_PAJAK")) {
-
-        }
-        else if (Util::strComp(input, "SIMPAN")) {
-            mp.simpan();
-        }
-        else if (Util::strComp(input, "KELUAR")) {
-            mp.keluar();
-            break;
-        }
-        else {
-            cout << "Command apa itu? Coba masukin command lain yg ada di spek\n";
+        // catch (const Saad& e) {     // NANTI LENGKAPIN SEMUA EXCEPTION NYA DISINI
+        //     cout << e.what() << endl;
+        // }
+        // catch (const Iki& e) {
+        //     cout << e.what() << endl;
+        // }
+        // catch (const Dapur& e) {
+        //     cout << e.what() << endl;
+        // }
+        // catch (const Ucup& e) {
+        //     cout << e.what() << endl;
+        // }
+        catch (...) {           // INI KAYAK ELSE NYA EXCEPTION BAGI GW, jadi kalo ada case yg bocor, masuknya kesini   
+            cout << "Terjadi kesalahan dalam menjalankan command. Silakan coba lagi." << endl;
         }
 
         cout << endl;
     }
-
+    
     return 0;
 }
