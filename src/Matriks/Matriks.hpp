@@ -2,6 +2,7 @@
 #define MATRIKS_HPP
 
 #include "../Util/Util.hpp"
+#include "../Exception/ExceptionMatrix.hpp"
 
 // STL
 #include <vector>
@@ -50,11 +51,13 @@ public:
                         isInserted = true;
                         break;
                     }
-                }
-                if (isInserted) {
-                    break;
+                    if (isInserted) {
+                        break;
+                    }
                 }
             }
+        }else{
+            throw tidakBisaTambahElemen(", sudah penuh");
         }
 
         return *this;
@@ -77,6 +80,8 @@ public:
                     break;
                 }
             }
+        }else{
+            throw tidakBisaTambahElemen(", sudah penuh");
         }
     }
 
@@ -87,8 +92,14 @@ public:
                 if (apakah_slot_kosong(i, j)){
                     data[i][j] = val;
                     N_element+=1;
+                }else{
+                    throw tidakBisaTambahElemen(", sudah terisi");
                 }
+            }else{
+                throw aksesTidakValid(i,j);
             }
+        }else{
+            throw tidakBisaTambahElemen(", sudah penuh");
         }
     }
 
@@ -101,6 +112,8 @@ public:
                 N_element-=1;
                 return delVal ;
             }
+        }else{
+            throw aksesTidakValid(baris,kolom);
         }
 
         return nullptr;
@@ -135,8 +148,6 @@ public:
     // mengecek apakah index valid
     bool apakah_index_valid(int baris, int kolom){
         if (baris < 0 || baris >= rows || kolom < 0 || kolom >= cols) {
-            cout << "Invalid slot" << endl;
-            
             return false;
         }
         return true;
@@ -158,7 +169,7 @@ public:
     // getElement
     shared_ptr<A> dapatkan_elemen(int baris, int kolom) {
         if (!apakah_index_valid(baris,kolom)) {
-            return nullptr;
+            throw aksesTidakValid(baris, kolom);
         }
         
         return data[baris][kolom];

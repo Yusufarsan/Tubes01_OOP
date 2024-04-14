@@ -6,6 +6,8 @@
 #include "../Hewan/Karnivora.hpp"
 #include "../Hewan/Herbivora.hpp"
 #include "../Hewan/Omnivora.hpp"
+#include <exception>
+#include "../Exception/ExceptionMatrix.hpp"
 
 using namespace std;
 
@@ -18,6 +20,8 @@ int main() {
     shared_ptr<Hewan> ular = make_shared<Karnivora>("4", "SNK", "ular", 200, 10);
     shared_ptr<Hewan> beruang = make_shared<Omnivora>("5", "BER", "beruang", 200, 10);
 
+
+    try{
     // Print the matrix
     cout << "Init Matrix:" << endl;
     zoo.cetak();
@@ -115,6 +119,11 @@ int main() {
 
     cout << "Apakah kosong: ";
     cout << zoo.apakah_kosong() << endl;
+
+    }
+    catch(const exception& e){
+        cout<<e.what()<<endl;
+    }
 
     return 0;
 }
