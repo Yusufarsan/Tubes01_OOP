@@ -238,7 +238,8 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 int k = 0;
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_tanaman[k]);
+                        shared_ptr<Tanaman> tanaman = make_unique<Tanaman>(*daftar_tanaman[k]);
+                        pemain->tambah_peti(tanaman);
                         found = true;
                     }
                     k++;
@@ -247,7 +248,18 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_hewan.size()) {
                     if (daftar_hewan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_hewan[k]);
+                        shared_ptr<Hewan> hewan;
+                        if (Util::instanceof<Herbivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Herbivora>(*dynamic_pointer_cast<Herbivora>(daftar_hewan[k]));
+                        }
+                        else if (Util::instanceof<Karnivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Karnivora>(*dynamic_pointer_cast<Karnivora>(daftar_hewan[k]));
+                        }
+                        else if (Util::instanceof<Omnivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Omnivora>(*dynamic_pointer_cast<Omnivora>(daftar_hewan[k]));
+                        }
+
+                        pemain->tambah_peti(hewan);
                         found = true;
                     }
                     k++;
@@ -256,7 +268,8 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_produk.size()) {
                     if (daftar_produk[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_produk[k]);
+                        shared_ptr<Produk> produk = make_unique<Produk>(*daftar_produk[k]);
+                        pemain->tambah_peti(produk);
                         found = true;
                     }
                     k++;
@@ -265,7 +278,8 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_bangunan.size()) {
                     if (daftar_bangunan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_bangunan[k]);
+                        shared_ptr<Bangunan> bangunan = make_unique<Bangunan>(*daftar_bangunan[k]);
+                        pemain->tambah_peti(bangunan);
                         found = true;
                     }
                     k++;
@@ -288,7 +302,7 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == nama_tanaman) {
                         shared_ptr<Petani> petani = dynamic_pointer_cast<Petani>(pemain);
-                        shared_ptr<Tanaman> tanaman = daftar_tanaman[k];
+                        shared_ptr<Tanaman> tanaman = make_unique<Tanaman>(*daftar_tanaman[k]);
                         while (umur > 0) {
                             tanaman->tambah_umur();
                             umur--;
@@ -316,7 +330,8 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 int k = 0;
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_tanaman[k]);
+                        shared_ptr<Tanaman> tanaman = make_unique<Tanaman>(*daftar_tanaman[k]);
+                        pemain->tambah_peti(tanaman);
                         found = true;
                     }
                     k++;
@@ -325,7 +340,17 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_hewan.size()) {
                     if (daftar_hewan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_hewan[k]);
+                        shared_ptr<Hewan> hewan;
+                        if (Util::instanceof<Herbivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Herbivora>(*dynamic_pointer_cast<Herbivora>(daftar_hewan[k]));
+                        }
+                        else if (Util::instanceof<Karnivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Karnivora>(*dynamic_pointer_cast<Karnivora>(daftar_hewan[k]));
+                        }
+                        else if (Util::instanceof<Omnivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Omnivora>(*dynamic_pointer_cast<Omnivora>(daftar_hewan[k]));
+                        }
+                        pemain->tambah_peti(hewan);
                         found = true;
                     }
                     k++;
@@ -334,7 +359,8 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_produk.size()) {
                     if (daftar_produk[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_produk[k]);
+                        shared_ptr<Produk> produk = make_unique<Produk>(*daftar_produk[k]);
+                        pemain->tambah_peti(produk);
                         found = true;
                     }
                     k++;
@@ -343,7 +369,8 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_bangunan.size()) {
                     if (daftar_bangunan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_bangunan[k]);
+                        shared_ptr<Bangunan> bangunan = make_unique<Bangunan>(*daftar_bangunan[k]);
+                        pemain->tambah_peti(bangunan);
                         found = true;
                     }
                     k++;
@@ -366,7 +393,16 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 while (!found && k < daftar_hewan.size()) {
                     if (daftar_hewan[k]->dapatkan_nama() == nama_hewan) {
                         shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(pemain);
-                        shared_ptr<Hewan> hewan = daftar_hewan[k];
+                        shared_ptr<Hewan> hewan;
+                        if (Util::instanceof<Herbivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Herbivora>(*dynamic_pointer_cast<Herbivora>(daftar_hewan[k]));
+                        }
+                        else if (Util::instanceof<Karnivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Karnivora>(*dynamic_pointer_cast<Karnivora>(daftar_hewan[k]));
+                        }
+                        else if (Util::instanceof<Omnivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Omnivora>(*dynamic_pointer_cast<Omnivora>(daftar_hewan[k]));
+                        }
                         hewan->tambah_berat(berat);
                         peternak->tambah_peternakan(slot, hewan);
                         found = true;
@@ -391,7 +427,8 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 int k = 0;
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_tanaman[k]);
+                        shared_ptr<Tanaman> tanaman = make_unique<Tanaman>(*daftar_tanaman[k]);
+                        pemain->tambah_peti(tanaman);
                         found = true;
                     }
                     k++;
@@ -400,7 +437,18 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_hewan.size()) {
                     if (daftar_hewan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_hewan[k]);
+                        shared_ptr<Hewan> hewan;
+                        if (Util::instanceof<Herbivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Herbivora>(*dynamic_pointer_cast<Herbivora>(daftar_hewan[k]));
+                        }
+                        else if (Util::instanceof<Karnivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Karnivora>(*dynamic_pointer_cast<Karnivora>(daftar_hewan[k]));
+                        }
+                        else if (Util::instanceof<Omnivora>(daftar_hewan[k].get())) {
+                            hewan = make_unique<Omnivora>(*dynamic_pointer_cast<Omnivora>(daftar_hewan[k]));
+                        }
+
+                        pemain->tambah_peti(hewan);
                         found = true;
                     }
                     k++;
@@ -409,7 +457,8 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_produk.size()) {
                     if (daftar_produk[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_produk[k]);
+                        shared_ptr<Produk> produk = make_unique<Produk>(*daftar_produk[k]);
+                        pemain->tambah_peti(produk);
                         found = true;
                     }
                     k++;
@@ -418,7 +467,8 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_bangunan.size()) {
                     if (daftar_bangunan[k]->dapatkan_nama() == line) {
-                        pemain->tambah_peti(daftar_bangunan[k]);
+                        shared_ptr<Bangunan> bangunan = make_unique<Bangunan>(*daftar_bangunan[k]);
+                        pemain->tambah_peti(bangunan);
                         found = true;
                     }
                     k++;
