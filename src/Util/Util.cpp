@@ -135,3 +135,17 @@ int Util::angka_acak(int awal, int akhir){
     std::uniform_int_distribution<> dis(awal, akhir);
     return dis(gen);
 }
+
+string Util::dapatkan_nama_tumb(string nama){
+    // Mencari posisi _TREE dalam string
+    size_t pos = nama.find("_TREE");
+    
+    // Jika _TREE tidak ditemukan atau berada di awal string, kembalikan string kosong
+    if (pos == std::string::npos || pos == 0) {
+        return "";
+    }
+
+    // Ambil substring sebelum _TREE
+    return nama.substr(0, pos);
+
+}

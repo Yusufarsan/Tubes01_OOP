@@ -303,9 +303,9 @@ void Petani::panen() {
                                             shared_ptr<Entitas> ent = ladang.hapus(row, col);
                                             shared_ptr<Entitas> prod;
                                             if(Util::instanceof<TanamanMaterial>(ent.get())){
-                                                prod = make_shared<ProdukTanamanMaterial>(ent->dapatkan_nama());
+                                                prod = make_shared<ProdukTanamanMaterial>(Util::dapatkan_nama_tumb(ent->dapatkan_nama()));
                                             }else{
-                                                prod = make_shared<ProdukTanamanBuah>(ent->dapatkan_nama());
+                                                prod = make_shared<ProdukTanamanBuah>(Util::dapatkan_nama_tumb(ent->dapatkan_nama()));
                                             }
                                             
                                             // tambah ke peti penyimpanan

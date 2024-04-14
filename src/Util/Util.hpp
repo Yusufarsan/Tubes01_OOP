@@ -36,6 +36,7 @@ public:
     // Generator
     static string dapatkan_kode(string nama);
     static int angka_acak(int awal, int akhir);
+    static string dapatkan_nama_tumb(string nama);
 };
 
 #endif
