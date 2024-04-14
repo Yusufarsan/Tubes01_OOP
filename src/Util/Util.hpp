@@ -17,6 +17,7 @@ public:
     static void rtrim(string& s);
     static void trim(string& s);
     static bool strComp(const std::string& str1, const std::string& str2);
+    static bool apakah_vokal(char c);
 
     // Matrix label conversion
     static string label_baris_tabel(int indeks);
@@ -30,6 +31,11 @@ public:
     static inline bool instanceof(const T* ptr) {
         return dynamic_cast<const Base*>(ptr) != nullptr;
     }
+
+
+    // Generator
+    static string dapatkan_kode(string nama);
+    static int angka_acak(int awal, int akhir);
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "Util.hpp"
+#include <random>
 
 // String manipulation
 vector<string> Util::SplitString(string s, string delimiter) {
@@ -101,3 +102,36 @@ int Util::indeks_kolom_slot(const string& slot) {
     }
     return index - 1;
 };
+
+bool Util::apakah_vokal(char c){
+    // Mengubah huruf menjadi huruf kecil untuk memudahkan perbandingan
+    c = std::tolower(c);
+    
+    // Mengecek apakah karakter merupakan vokal
+    return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
+}
+
+string Util::dapatkan_kode(string nama){
+    string kode;
+
+    kode += nama[0];
+    for(size_t i=1; i<nama.length(); i++){
+        if(isalpha(nama[i])){
+            if(apakah_vokal(nama[i])){
+                kode += toupper(nama[i+1]);
+            }else{
+                kode += toupper(nama[i]);
+            }
+            break;
+        }
+    }
+
+    return kode;
+}
+
+int Util::angka_acak(int awal, int akhir){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(awal, akhir);
+    return dis(gen);
+}

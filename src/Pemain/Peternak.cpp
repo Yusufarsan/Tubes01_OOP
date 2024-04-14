@@ -367,21 +367,10 @@ void Peternak::panen() {
                                 if (!peternakan.apakah_slot_kosong(row, col)) {
                                     if (peternakan.dapatkan_elemen(row, col)->bisa_panen()) {
                                         if (Util::strComp(nama.at(nomor - 1), peternakan.dapatkan_elemen(row, col)->dapatkan_nama())) {
-                                            // Menentukan berat yang ditambahkan ketika sudah di panen
-                                            int berat;
-
-                                            // jika mau berat random
-                                            // std::random_device rd;
-                                            // std::mt19937 gen(rd());
-                                            // std::uniform_int_distribution<> dis(2, 9);
-                                            // berat = dis(gen);
-
-                                            berat = peternakan.dapatkan_elemen(row,col)->dapatkan_berat();
-                                            
                                             // hapus dari ladang dan konversi dari Tanaman -> Entitas -> Produk
-                                            Entitas* ent = dynamic_cast<Entitas*>(peternakan.hapus(row, col).get());
-                                            Produk* prod_obj = new Produk(ent, berat);
-                                            shared_ptr<Entitas> prod = make_shared<Produk>(prod_obj, berat);
+                                            shared_ptr<Entitas> ent = peternakan.hapus(row, col);
+                                            shared_ptr<Entitas> prod;
+                                            prod = make_shared<ProdukHewan>(ent->dapatkan_nama());
                                             
                                             // tambah ke peti penyimpanan
                                             peti+=(prod);
