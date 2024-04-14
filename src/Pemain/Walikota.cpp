@@ -139,8 +139,8 @@ bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan
 
     // Menambahkan Bangunan ke peti walkot
     // peti+=make_shared<Entitas>(bangunan);
-    // shared_ptr<Entitas> entitas = make_shared<Bangunan>(bangunan);
-    peti.tambah_elemen_matriks(dynamic_pointer_cast<Entitas>(bangunan));
+    shared_ptr<Entitas> entitas = make_unique<Bangunan>(*dynamic_pointer_cast<Bangunan>(bangunan));
+    peti.tambah_elemen_matriks(entitas);
     // this->tambah_peti(&bangunan);
 
     return bahan_cukup; // udah pasti true

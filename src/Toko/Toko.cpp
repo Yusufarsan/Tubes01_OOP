@@ -25,24 +25,37 @@ Toko& Toko::operator=(const Toko& other) {
 // Getter & Setter
 shared_ptr<Entitas> Toko::dapatkan_entitas(int num) {
     if (num <= this->tanaman.size()) {
-        return this->tanaman[num - 1];
+        shared_ptr<Entitas> ptrTanaman = make_unique<Tanaman>(*this->tanaman[num - 1]);
+        return ptrTanaman;
     }
     else if (num <= this->tanaman.size() + this->hewan.size()) {
-        return this->hewan[num - 1 - this->tanaman.size()];
+        shared_ptr<Entitas> ptrHewan;
+        if (Util::instanceof<Karnivora>(this->hewan[num - 1 - this->tanaman.size()].get())) {
+            ptrHewan = make_unique<Karnivora>(*dynamic_pointer_cast<Karnivora>(this->hewan[num - 1 - this->tanaman.size()]));
+        }
+        else if (Util::instanceof<Herbivora>(this->hewan[num - 1 - this->tanaman.size()].get())) {
+            ptrHewan = make_unique<Herbivora>(*dynamic_pointer_cast<Herbivora>(this->hewan[num - 1 - this->tanaman.size()]));
+        }
+        else if (Util::instanceof<Omnivora>(this->hewan[num - 1 - this->tanaman.size()].get())) {
+            ptrHewan = make_unique<Omnivora>(*dynamic_pointer_cast<Omnivora>(this->hewan[num - 1 - this->tanaman.size()]));
+        }
+        return ptrHewan;
     }
     else if (num <= this->tanaman.size() + this->hewan.size() + this->produk.size()) {
         auto it = this->produk.begin();
         for (int i = 0; i < num - this->tanaman.size() - this->hewan.size() - 1; i++) {
             it++;
         }
-        return it->first;
+        shared_ptr<Entitas> ptrProduk = make_unique<Produk>(*it->first);
+        return ptrProduk;
     }
     else {
         auto it = this->bangunan.begin();
         for (int i = 0; i < num - this->tanaman.size() - this->hewan.size() - this->produk.size() - 1; i++) {
             it++;
         }
-        return it->first;
+        shared_ptr<Entitas> ptrBangunan = make_unique<Bangunan>(*it->first);
+        return ptrBangunan;
     }
 }
 

@@ -8,6 +8,9 @@
 
 // User-defined
 #include "../Hewan/Hewan.hpp"
+#include "../Hewan/Herbivora.hpp"
+#include "../Hewan/Karnivora.hpp"
+#include "../Hewan/Omnivora.hpp"
 #include "../Tanaman/Tanaman.hpp"
 #include "../Produk/Produk.hpp"
 #include "../Bangunan/Bangunan.hpp"
