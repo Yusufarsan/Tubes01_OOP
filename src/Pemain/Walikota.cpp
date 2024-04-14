@@ -263,6 +263,9 @@ void Walikota::tambah_pemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int
                     }
                 }
             }
+
+            // Kondisi saat nama yg diberikan tidak unik
+            cout << "Nama yang diberikan sudah digunakan, coba lagi" << endl << endl;
         }
     }
     else {
