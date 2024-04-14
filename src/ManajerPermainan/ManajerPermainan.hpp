@@ -64,6 +64,7 @@ public:
     void cetak_penyimpanan();
     void pungut_pajak();    // validasi user
     void cetak_ladang();    // validasi user
+    void cetak_peternakan();    // validasi user
     void tanam();    // validasi user
     void ternak();   // validasi user
     void bangun();   // validasi user
@@ -76,6 +77,7 @@ public:
     void inisialisasi_pemain();
     void simpan();
     void tambah_pemain();   // validasi user
+    void keluar();
 
     // Print Info
     void print_konfigurasi();

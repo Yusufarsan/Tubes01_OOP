@@ -82,6 +82,122 @@ void ManagerPermainan::next() {
     }
 }
 
+void ManagerPermainan::cetak_penyimpanan() {
+    this->daftar_pemain.at(this->giliran)->cetak_peti();
+}
+
+void ManagerPermainan::pungut_pajak() {
+    if (shared_ptr<Walikota> p = dynamic_pointer_cast<Walikota>(this->daftar_pemain.at(this->giliran))) {
+        p->tagih_pajak(this->daftar_pemain);
+    }
+    else {
+        // throw BukanWalkotException("Hanya Walikota yang dapat mengumpulkan pajak\n");
+        cout << "Hanya Walikota yang dapat mengumpulkan pajak" << endl;
+    }
+}
+
+void ManagerPermainan::cetak_ladang() {
+    if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran))) {
+        p->cetak_ladang();
+    }
+    else if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(this->giliran))) {
+        p->cetak_peternakan();
+    }
+    else {
+        // throw BukanPetaniPeternakException("Hanya Petani atau Peternak yang dapat mencetak ladang\n");
+        cout << "Hanya Petani atau Peternak yang dapat mencetak ladang" << endl;
+    }
+}
+
+void ManagerPermainan::tanam() {
+    if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran))) {
+        p->tanam();
+    }
+    else {
+        // throw BukanPetaniException("Hanya Petani yang dapat menanam\n");
+        cout << "Hanya Petani yang dapat menanam" << endl;
+    }
+}
+
+void ManagerPermainan::ternak() {
+    if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(this->giliran))) {
+        p->ternak();
+    }
+    else {
+        // throw BukanPeternakException("Hanya Peternak yang dapat beternak\n");
+        cout << "Hanya Peternak yang dapat beternak" << endl;
+    }
+}
+
+void ManagerPermainan::bangun() {
+    if (shared_ptr<Walikota> p = dynamic_pointer_cast<Walikota>(this->daftar_pemain.at(this->giliran))) {
+        p->bangun(this->daftar_bangunan);
+    }
+    else {
+        // throw BukanWalkotException("Hanya Walikota yang dapat membangun\n");
+        cout << "Hanya Walikota yang dapat membangun" << endl;
+    }
+}
+
+void ManagerPermainan::makan() {
+    this->daftar_pemain.at(this->giliran)->makan();
+}
+
+void ManagerPermainan::kasih_makan() {
+    if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(this->giliran))) {
+        p->beri_pangan();
+    }
+    else {
+        // throw BukanPeternakException("Hanya Peternak yang dapat memberi makan\n");
+        cout << "Hanya Peternak yang dapat memberi makan" << endl;
+    }
+}
+
+void ManagerPermainan::beli() {
+    if (shared_ptr<Walikota> p = dynamic_pointer_cast<Walikota>(this->daftar_pemain.at(this->giliran))) {
+        p->membeli(this->toko);
+    }
+    else if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran))) {
+        p->membeli(this->toko);
+    }
+    else if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(this->giliran))) {
+        p->membeli(this->toko);
+    }
+    else {
+        // throw BukanWalkotException("Hanya Walikota yang dapat membeli\n");
+        cout << "Terdapat kesalahan saat melakukan downcast class Pemain" << endl;
+    }
+}
+
+void ManagerPermainan::jual() {
+    if (shared_ptr<Walikota> p = dynamic_pointer_cast<Walikota>(this->daftar_pemain.at(this->giliran))) {
+        p->jual(this->toko);
+    }
+    else if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran))) {
+        p->jual(this->toko);
+    }
+    else if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(this->giliran))) {
+        p->jual(this->toko);
+    }
+    else {
+        // throw BukanWalkotException("Hanya Walikota yang dapat menjual\n");
+        cout << "Terdapat kesalahan saat melakukan downcast class Pemain" << endl;
+    }
+}
+
+void ManagerPermainan::panen() {
+    if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran))) {
+        p->panen();
+    }
+    else if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(this->giliran))) {
+        p->panen();
+    }
+    else {
+        // throw BukanPetaniPeternakException("Hanya Petani atau Peternak yang dapat memanen\n");
+        cout << "Hanya Petani atau Peternak yang dapat memanen" << endl;
+    }
+}
+
 void ManagerPermainan::muat() {
     string path_to_file;
     cout << "Masukkan lokasi berkas state : ";
@@ -89,6 +205,15 @@ void ManagerPermainan::muat() {
     cout << endl;
 
     this->atur_pemain(InputKonfigurasi::InputStatePemain(path_to_file, this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko));
+}
+
+void ManagerPermainan::inisialisasi_pemain() {
+    shared_ptr<Pemain> pemain1 = make_shared<Petani>("Petani1", 50, 40, besar_penyimpanan, besar_lahan);
+    shared_ptr<Pemain> pemain2 = make_shared<Peternak>("Peternak1", 50, 40, besar_penyimpanan, besar_peternakan);
+    shared_ptr<Pemain> pemain3 = make_shared<Walikota>("Walikota", 50, 40, besar_penyimpanan);
+
+    vector<shared_ptr<Pemain>> daftarPemain = { pemain1, pemain2, pemain3 };
+    this->atur_pemain(daftarPemain);
 }
 
 void ManagerPermainan::simpan() {
@@ -187,13 +312,18 @@ void ManagerPermainan::simpan() {
     }
 }
 
-void ManagerPermainan::inisialisasi_pemain() {
-    shared_ptr<Pemain> pemain1 = make_shared<Petani>("Petani1", 50, 40, besar_penyimpanan, besar_lahan);
-    shared_ptr<Pemain> pemain2 = make_shared<Peternak>("Peternak1", 50, 40, besar_penyimpanan, besar_peternakan);
-    shared_ptr<Pemain> pemain3 = make_shared<Walikota>("Walikota", 50, 40, besar_penyimpanan);
+void ManagerPermainan::tambah_pemain() {
+    if (shared_ptr<Walikota> p = dynamic_pointer_cast<Walikota>(this->daftar_pemain.at(this->giliran))) {
+        p->tambah_pemain(&this->daftar_pemain, this->besar_penyimpanan, 40, this->besar_lahan, this->besar_peternakan);
+    }
+    else {
+        // throw BukanWalkotException("Hanya Walikota yang dapat menambah pemain\n");
+        cout << "Hanya Walikota yang dapat menambah pemain" << endl;
+    }
+}
 
-    vector<shared_ptr<Pemain>> daftarPemain = { pemain1, pemain2, pemain3 };
-    this->atur_pemain(daftarPemain);
+void ManagerPermainan::keluar() {
+    cout << "Terima kasih telah bermain!" << endl;
 }
 
 // Print Info
