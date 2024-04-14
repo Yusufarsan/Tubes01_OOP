@@ -1,6 +1,8 @@
 #ifndef MATRIKS_HPP
 #define MATRIKS_HPP
 
+#include "../Util/Util.hpp"
+
 // STL
 #include <vector>
 #include <iostream>
@@ -35,6 +37,7 @@ public:
         //     }
         // }
     }
+
     // tambahElement pada slot kosong
     Matrix& operator+=(shared_ptr<A> El) {
         if (!apakah_penuh()) {
@@ -53,55 +56,54 @@ public:
                 }
             }
         }
-        else {
-            cout << "Ups udah penuh nih" << endl;
-        }
+
         return *this;
     }
 
     void tambah_elemen_matriks(shared_ptr<A> val) {
-        bool isInserted = false;
+        if (!apakah_penuh()) {
+            bool isInserted = false;
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (apakah_slot_kosong(i,j)) {
-                    tambah_elemen_matriks(i, j, val);
-                    isInserted = true;
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    if (apakah_slot_kosong(i,j)) {
+                        tambah_elemen_matriks(i, j, val);
+                        isInserted = true;
+                        break;
+                    }
+                }
+
+                if (isInserted) {
                     break;
                 }
-            }
-
-            if (isInserted) {
-                break;
             }
         }
     }
 
     // setElement
     void tambah_elemen_matriks(int i, int j, shared_ptr<A> val) {
-        if (!apakah_index_valid(i,j)) {
-            cout << "Index out of bounds." << endl;
-            return;
+        if (!apakah_penuh()) {
+            if (apakah_index_valid(i,j)) {
+                if (apakah_slot_kosong(i, j)){
+                    data[i][j] = val;
+                    N_element+=1;
+                }
+            }
         }
-        data[i][j] = val;
-        N_element+=1;
     }
 
     // menghapus element objek menjadi nullptr
     shared_ptr<A> hapus(int baris, int kolom){
-        if (!apakah_index_valid(baris,kolom)) {
-                cout << "Index out of bounds." << endl;
-                return nullptr;
-        }else{
+        if (apakah_index_valid(baris,kolom)){
             if(!apakah_slot_kosong(baris, kolom)){
                 shared_ptr<A> delVal = data[baris][kolom];
                 data[baris][kolom].reset();
                 N_element-=1;
                 return delVal ;
-            }else{
-                return nullptr;
             }
         }
+
+        return nullptr;
     }
 
     bool apakah_slot_valid(const string& slot){   
@@ -132,7 +134,12 @@ public:
 
     // mengecek apakah index valid
     bool apakah_index_valid(int baris, int kolom){
-        return (!(baris < 0 || baris >= rows || kolom < 0 || kolom >= cols));
+        if (baris < 0 || baris >= rows || kolom < 0 || kolom >= cols) {
+            cout << "Invalid slot" << endl;
+            
+            return false;
+        }
+        return true;
     }
 
     // memberikan nilai slot kosong pada matriks
@@ -151,9 +158,9 @@ public:
     // getElement
     shared_ptr<A> dapatkan_elemen(int baris, int kolom) {
         if (!apakah_index_valid(baris,kolom)) {
-            cout << "Index out of bounds." << endl;
-            return nullptr; // Return a default value or throw an exception
+            return nullptr;
         }
+        
         return data[baris][kolom];
     }
 
@@ -178,7 +185,7 @@ public:
                 if(!apakah_slot_kosong(i,j)){
                     cout << data[i][j]->dapatkan_kode_huruf() << " ";
                 }else{
-                    cout << "kosong" << " ";
+                    cout << "..." << " ";
                 }
             }
             cout << endl;

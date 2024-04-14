@@ -28,20 +28,10 @@ int Petani::jumlah_slot_kosong_ladang() {
 };
 
 void Petani::tambah_ladang(string slot, shared_ptr<Tanaman> val) {
-    if (ladang.apakah_slot_valid(slot)) {
-        int i = Util::indeks_baris_slot(slot);
-        int j = Util::indeks_kolom_slot(slot);
-
-        if (ladang.apakah_slot_kosong(slot)) {
-            ladang.tambah_elemen_matriks(i, j, val);
-        }
-        else {
-            cout << "Ada isinya" << endl;
-        }
-    }
-    else {
-        cout << "index out of bonds" << endl;
-    }
+    int idxRow = Util::indeks_baris_slot(slot);
+    int idxCol = Util::indeks_kolom_slot(slot);
+    
+    ladang.tambah_elemen_matriks(idxRow, idxCol, val);
 }
 
 void Petani::next_umur() {
@@ -84,8 +74,10 @@ void Petani::panen(vector<shared_ptr<Produk>> daftarProduk) {
             bool isJumlahValid = false;
             cout << "Nomor tanaman yang ingin dipanen: ";
             cin >> nomor;
-            if (nomor >= counter || nomor <= 0) {
+            if (cin.fail() || nomor >= counter || nomor <= 0) {
                 cout << "---Masukkan nomor yang valid!---" << endl;
+                cin.clear(); // Clear the error flag
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
             }
             while (!isJumlahValid && nomor < counter && nomor>0) {
                 cout << "Berapa petak yang ingin dipanen: ";
@@ -162,6 +154,11 @@ void Petani::panen(vector<shared_ptr<Produk>> daftarProduk) {
                         isJumlahValid = true;
                     }
                     else {
+                        if (cin.fail()){
+                            cin.clear(); // Clear the error flag
+                            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+                        }
+                        
                         cout << "---Masukan petak yang valid!--- (-1 for back)" << endl;
                     }
                 }
@@ -186,17 +183,14 @@ void Petani::tanam() {
         string slot_masukan_peti, slot_masukan_ladang;
         int idxRowPeti, idxColPeti, idxRowLadang, idxColLadang;
         shared_ptr<Entitas> bibit;
-        shared_ptr<Tanaman> tanamanBibit;
 
         while (true) {
             cout << "Silakan pilih tanaman yang ingin Anda tanam!" << endl;
             cout << "Petak : ";
             cin >> slot_masukan_peti;
 
-            if (!peti.apakah_slot_valid(slot_masukan_peti)) {
-                cout << "Slot tidak valid" << endl;
-            }
-            else {
+
+            if (peti.apakah_slot_valid(slot_masukan_peti)) {
                 idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
                 idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
                 bibit = peti.dapatkan_elemen(idxRowPeti, idxColPeti);
@@ -217,21 +211,15 @@ void Petani::tanam() {
             cout << "Petak : ";
             cin >> slot_masukan_ladang;
 
-            if (!ladang.apakah_slot_valid(slot_masukan_ladang)) {
-                cout << "Slot tidak valid" << endl;
-            }
-            else {
+            if (ladang.apakah_slot_valid(slot_masukan_ladang)) {
                 if (!ladang.apakah_slot_kosong(slot_masukan_ladang)) {
-                    cout << "Slot " << slot_masukan_peti << " milik tanaman lain." << endl;
+                    cout << "Slot " << slot_masukan_ladang << " milik tanaman lain." << endl;
                 }
                 else {
-                    idxColLadang = Util::indeks_baris_slot(slot_masukan_ladang);
-                    idxRowLadang = Util::indeks_kolom_slot(slot_masukan_ladang);
-
-                    ladang.tambah_elemen_matriks(idxRowLadang, idxColLadang, dynamic_pointer_cast<Tanaman>(bibit));
-                    peti.hapus(idxRowPeti, idxColPeti);
+                    bibit = peti.hapus(idxRowPeti, idxColPeti);
+                    tambah_ladang(slot_masukan_ladang, dynamic_pointer_cast<Tanaman>(bibit));
                     cout << "Cangkul, cangkul, cangkul yang dalam!" << endl;
-                    cout << tanamanBibit->dapatkan_nama() << " berhasil ditanam!" << endl;
+                    cout << bibit.get()->dapatkan_nama() << " berhasil ditanam!" << endl;
                     break;
                 }
             }

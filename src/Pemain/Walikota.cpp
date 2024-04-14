@@ -134,13 +134,13 @@ bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan
     for (const string iterator : arr_slot) {
         int idxRow = Util::indeks_baris_slot(iterator);
         int idxCol = Util::indeks_kolom_slot(iterator);
-        auto temp = peti.hapus(idxRow, idxCol);
+        peti.hapus(idxRow, idxCol);
     }
 
     // Menambahkan Bangunan ke peti walkot
     // peti+=make_shared<Entitas>(bangunan);
-    shared_ptr<Entitas> entitas = make_unique<Bangunan>(*dynamic_pointer_cast<Bangunan>(bangunan));
-    peti.tambah_elemen_matriks(entitas);
+    shared_ptr<Entitas> copied_bangunan = make_unique<Bangunan>(*dynamic_pointer_cast<Bangunan>(bangunan));
+    peti.tambah_elemen_matriks(copied_bangunan);
     // this->tambah_peti(&bangunan);
 
     return bahan_cukup; // udah pasti true

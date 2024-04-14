@@ -49,6 +49,91 @@ tuple<int,int> Pemain::dapatkan_konfig_produk(vector<shared_ptr<Produk>> daftarP
     }
 }
 
+// Print Info
+void Pemain::cetak_peti() {
+    int numRow = peti.dapatkanBaris();
+    int numCol = peti.dapatkanKolom();
+
+    //  Cari tau label terpanjang
+    int maxLengthRowCode = Util::label_baris_tabel(numRow).length();
+    int maxLengthColCode = Util::label_kolom_tabel(numCol).length();
+
+    // Cetak judul tabel
+    cout << "    ================[ Penyimpanan ]==================\n\n";
+
+    // cetak nama kolom
+    for (int n = 1; n <= numCol; ++n) {
+        if (n == 1) {
+            string spaces(maxLengthRowCode + 1, ' ');
+            cout << spaces;
+        }
+
+        string label_kolom = Util::label_kolom_tabel(n);
+        int pad1Length = round(double(6 - label_kolom.length()) / 2);
+        int pad2Length;
+
+        if ((6 - label_kolom.length()) % 2 == 1) {
+            pad2Length = pad1Length - 1;
+        }
+        else {
+            pad2Length = pad1Length;
+        }
+
+        string pad1(pad1Length, ' ');
+        string pad2(pad2Length, ' ');
+
+        cout << pad1 << label_kolom << pad2;
+    }
+    cout << endl;
+
+    // first +---+
+    for (int n = 1; n <= numCol; n++) {
+        if (n == 1) {
+            string spaces(maxLengthRowCode + 1, ' ');
+            cout << spaces;
+        }
+
+        string dash(5, '-');
+        cout << "+" << dash;
+    }
+    cout << "+\n";
+
+    // Cetak nama baris dan isi elemennya
+    for (int n = 1; n <= numRow; n++) {
+        string label_baris = Util::label_baris_tabel(n);
+        string space(maxLengthRowCode + 1 - label_baris.length(), ' ');
+
+        cout << label_baris << space << '|';
+
+        for (int m = 0; m < numCol; m++) {
+            if (peti.apakah_slot_kosong(n - 1, m)) {
+                cout << "     |";
+            }
+            else {
+                cout << " ";
+                cout << peti.dapatkan_elemen(n - 1, m)->dapatkan_kode_huruf(); // kode huruf
+                cout << " |";
+            }
+
+        }
+        cout << endl;
+
+        // cetak +---+
+        for (int n = 1; n <= numCol; n++) {
+            if (n == 1) {
+                string spaces(maxLengthRowCode + 1, ' ');
+                cout << spaces;
+            }
+
+            string dash(5, '-');
+            cout << "+" << dash;
+        }
+        cout << "+\n";
+    };
+
+    cout << endl << "Total slot kosong: " << peti.jumlah_slot_kosong() << endl;
+}
+
 bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
     int idxRow = Util::indeks_baris_slot(slot);
     int idxCol = Util::indeks_kolom_slot(slot);
@@ -293,89 +378,4 @@ ostream& operator<<(ostream& out, Pemain p) {
     out << endl;
 
     return out;
-}
-
-// Print Info
-void Pemain::cetak_peti() {
-    int numRow = peti.dapatkanBaris();
-    int numCol = peti.dapatkanKolom();
-
-    //  Cari tau label terpanjang
-    int maxLengthRowCode = Util::label_baris_tabel(numRow).length();
-    int maxLengthColCode = Util::label_kolom_tabel(numCol).length();
-
-    // Cetak judul tabel
-    cout << "    ================[ Penyimpanan ]==================\n\n";
-
-    // cetak nama kolom
-    for (int n = 1; n <= numCol; ++n) {
-        if (n == 1) {
-            string spaces(maxLengthRowCode + 1, ' ');
-            cout << spaces;
-        }
-
-        string label_kolom = Util::label_kolom_tabel(n);
-        int pad1Length = round(double(6 - label_kolom.length()) / 2);
-        int pad2Length;
-
-        if ((6 - label_kolom.length()) % 2 == 1) {
-            pad2Length = pad1Length - 1;
-        }
-        else {
-            pad2Length = pad1Length;
-        }
-
-        string pad1(pad1Length, ' ');
-        string pad2(pad2Length, ' ');
-
-        cout << pad1 << label_kolom << pad2;
-    }
-    cout << endl;
-
-    // first +---+
-    for (int n = 1; n <= numCol; n++) {
-        if (n == 1) {
-            string spaces(maxLengthRowCode + 1, ' ');
-            cout << spaces;
-        }
-
-        string dash(5, '-');
-        cout << "+" << dash;
-    }
-    cout << "+\n";
-
-    // Cetak nama baris dan isi elemennya
-    for (int n = 1; n <= numRow; n++) {
-        string label_baris = Util::label_baris_tabel(n);
-        string space(maxLengthRowCode + 1 - label_baris.length(), ' ');
-
-        cout << label_baris << space << '|';
-
-        for (int m = 0; m < numCol; m++) {
-            if (peti.apakah_slot_kosong(n - 1, m)) {
-                cout << "     |";
-            }
-            else {
-                cout << " ";
-                cout << peti.dapatkan_elemen(n - 1, m)->dapatkan_kode_huruf(); // kode huruf
-                cout << " |";
-            }
-
-        }
-        cout << endl;
-
-        // cetak +---+
-        for (int n = 1; n <= numCol; n++) {
-            if (n == 1) {
-                string spaces(maxLengthRowCode + 1, ' ');
-                cout << spaces;
-            }
-
-            string dash(5, '-');
-            cout << "+" << dash;
-        }
-        cout << "+\n";
-    };
-
-    cout << endl << "Total slot kosong: " << peti.jumlah_slot_kosong() << endl;
 }

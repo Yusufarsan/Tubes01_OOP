@@ -1,16 +1,15 @@
 #include "Pemain.hpp"
 
 int main() {
-    // shared_ptr<Entitas> kambing = make_shared<Herbivora>("1", "GOT", "mbek", 20, 5);
-    // shared_ptr<Entitas> tomat = make_shared<TanamanBuah>("1", "TMT", "Tomat", 30, 20);
-
-    Herbivora* sapi = new Herbivora("1", "COW", "sapi", 200, 10);
-    Karnivora* ular = new Karnivora("1", "SNK", "ular", 200, 10);
-    // Omnivora* beruang = new Omnivora("1", "S", "beruang", 200, 10);
+    shared_ptr<Hewan> kambing = make_shared<Herbivora>("1", "GOT", "mbek", 20, 5);
+    shared_ptr<Hewan> ayam = make_shared<Omnivora>("2", "CHK", "ayam", 200, 10);
+    shared_ptr<Hewan> sapi = make_shared<Herbivora>("3", "COW", "sapi", 200, 10);
+    shared_ptr<Hewan> ular = make_shared<Karnivora>("4", "SNK", "ular", 200, 10);
+    shared_ptr<Hewan> beruang = make_shared<Omnivora>("5", "BER", "beruang", 200, 10);
 
     cout << "constructor" << endl;
     Pemain player("player", 1000, 50, make_tuple(2, 2));
-    cout << player;
+    // cout << player;
 
     cout << "dapatkan_nama" << endl;
     cout << player.dapatkan_nama() << endl;
@@ -25,10 +24,10 @@ int main() {
 
     string slot_masukan;
 
-    cin >> slot_masukan;
+    // cin >> slot_masukan;
 
 
-    player.tambah_peti(slot_masukan, sapi);
+    // player.tambah_peti(slot_masukan, sapi);
 
     cout << endl << "cetak_peti" << endl;
     player.cetak_peti();
@@ -39,11 +38,11 @@ int main() {
 
     player.cetak_peti();
 
+    cout << "hapus" << endl;
     cin >> slot_masukan;
 
-    cout << "hapus" << endl;
 
-    player.hapus_peti(slot_masukan);
+    // player.hapus_peti(slot_masukan);
 
     
     player.cetak_peti();
@@ -54,7 +53,7 @@ int main() {
 
     cout << endl << "Cetak Peti" << endl;
     player.cetak_peti();
-    cout << player << endl;
+    // cout << player << endl;
     // player.beli();
 
     // cout << endl << "makan" << endl;

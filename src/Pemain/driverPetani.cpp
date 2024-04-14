@@ -9,7 +9,7 @@ int main() {
 
 
     // Membuat objek petani
-    Petani petani("NamaPetani", 1000, 70, {5, 5}, {5, 5});
+    Petani paktani("NamaPetani", 1000, 70, {5, 5}, {5, 5});
 
     // Membuat beberapa tanaman
     TanamanMaterial tanaman1("1", "TEK", "TEAK_TREE", 15, 5);
@@ -23,44 +23,65 @@ int main() {
     petani.tambah_ladang("C3", make_shared<TanamanBuah>(tanaman3));
 
     // Menambahkan tanaman ke peti
-    petani.tambah_peti(make_shared<Tanaman>(tanaman1));
+    cout << "Penambahan Tanaman ke Peti" << endl;
+    paktani.tambah_peti(tanaman1);
+    paktani.tambah_peti(tanaman2);
+    paktani.tambah_peti(tanaman3);
 
-    // Mencetak ladang
-    std::cout << "Ladang setelah penambahan tanaman:" << std::endl;
-    petani.cetak_ladang();
-    std::cout << std::endl;
 
+    paktani.cetak_peti();
+
+    paktani.cetak_ladang();
     // Memeriksa apakah ladang penuh
-    if (petani.cek_ladang_penuh()) {
-        std::cout << "Ladang penuh." << std::endl;
+    if (paktani.cek_ladang_penuh()) {
+        cout << "Ladang penuh." << endl;
     } else {
-        std::cout << "Ladang belum penuh." << std::endl;
+        cout << "Ladang belum penuh." << endl;
     }
 
     // Memeriksa apakah ladang kosong
-    if (petani.cek_ladang_kosong()) {
-        std::cout << "Ladang kosong." << std::endl;
+    if (paktani.cek_ladang_kosong()) {
+        cout << "Ladang kosong." << endl;
     } else {
-        std::cout << "Ladang tidak kosong." << std::endl;
+        cout << "Ladang tidak kosong." << endl;
     }
 
     // Menampilkan jumlah slot kosong di ladang
-    std::cout << "Jumlah slot kosong di ladang: " << petani.jumlah_slot_kosong_ladang() << std::endl;
+    cout << "Jumlah slot kosong di ladang: " << paktani.jumlah_slot_kosong_ladang() << endl;
 
     // Melakukan penghapusan 
 
 
     // Memulai proses penanaman
-    // petani.tanam();
-    petani.cetak_peti();
+    paktani.tanam();
+    paktani.tanam();
+    paktani.cetak_peti();
+    paktani.cetak_ladang();
 
+    // paktani.dapatkan_ladang().dapatkan_elemen(0, 0).get()->atur_umur(300);
+    tanaman1.get()->atur_umur(8);
+
+    cout << "Perubahan umur Tanaman1 = 8/10" << endl;
+    paktani.cetak_ladang();
+
+    cout << "Belum Ada Yg Bisa Dipanen" << endl;
+    // Melakukan panen
+    paktani.panen();
+
+    cout << paktani.dapatkan_ladang().dapatkan_elemen(2, 2).get()->dapatkan_umur() << endl;
+    cout << "+1x2 Umur" << endl;
+    paktani.next_umur();
+
+    cout << paktani.dapatkan_ladang().dapatkan_elemen(2, 2).get()->dapatkan_umur() << endl;
+    paktani.next_umur();
+    cout << paktani.dapatkan_ladang().dapatkan_elemen(2, 2).get()->dapatkan_umur() << endl;
     // Melakukan panen
     petani.panen(daftarProduk);
 
     // Mencetak ladang setelah operasi
-    std::cout << "Ladang setelah operasi:" << std::endl;
-    petani.cetak_ladang();
-    petani.cetak_peti();
+    cout << "Ladang setelah operasi:" << endl;
+    paktani.cetak_ladang();
+    paktani.cetak_peti();
 
     return 0;
 }

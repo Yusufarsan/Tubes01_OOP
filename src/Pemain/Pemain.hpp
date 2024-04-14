@@ -13,6 +13,7 @@
 #include "../Tanaman/TanamanBuah.hpp"
 #include "../Hewan/Herbivora.hpp"
 #include "../Hewan/Karnivora.hpp"
+#include "../Hewan/Omnivora.hpp"
 #include "../Bangunan/Bangunan.hpp"
 #include "../Util/Util.hpp"
 #include "../Matriks/Matriks.hpp"
@@ -42,11 +43,18 @@ public:
     void atur_berat_badan(int berat);
 
     // Method
-    template<class T>
-    void tambah_peti(shared_ptr<T> val) {
+    void tambah_peti(shared_ptr<Entitas> val) {
         peti += val;
     }
     tuple<int,int> dapatkan_konfig_produk(vector<shared_ptr<Produk>> daftarProduk, string nama);
+
+    void tambah_peti(string slot, shared_ptr<Entitas> val) {
+        int idxRow = Util::indeks_baris_slot(slot);
+        int idxCol = Util::indeks_kolom_slot(slot);
+    
+        peti.tambah_elemen_matriks(idxRow, idxCol, val);
+    }
+
     bool cek_bisa_dimakan(const string& slot);
 
     // Command
