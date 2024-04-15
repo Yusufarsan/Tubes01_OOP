@@ -12,8 +12,9 @@ int main() {
     // Membuat beberapa hewan
     Herbivora herbivora("1", "COW", "COW" , 20, 6);
     Karnivora karnivora("2", "SNK", "SNAKE", 13, 4);
-    Omnivora omnivora("3", "CHK", "CHICKEN", 12, 3);
+    Omnivora omnivora("3", "CHK", "CHICKEN", 50, 3);
     herbivora.atur_berat(100);
+    omnivora.atur_berat(100);
 
     // Menambahkan hewan ke peternakan
     peternak.tambah_peternakan("A1", make_shared<Herbivora>(herbivora));

@@ -93,43 +93,44 @@ void Petani::panen(vector<shared_ptr<Produk>> daftarProduk) {
                             cin >> slot;
                             int row = Util::indeks_baris_slot(slot);
                             int col = Util::indeks_kolom_slot(slot);
-                            if (ladang.apakah_index_valid(row, col)) {
+                            try{
+                                if (!ladang.apakah_index_valid(row, col)) {
+                                    throw aksesTidakValid(row, col);
+                                }
                                 if (!ladang.apakah_slot_kosong(slot)) {
-                                    if (ladang.dapatkan_elemen(row, col)->bisa_panen()) {
-                                        if (Util::strComp(nama.at(nomor - 1), ladang.dapatkan_elemen(row, col)->dapatkan_nama())) {
-                                            // hapus dari ladang dan konversi dari Tanaman -> Entitas -> Produk
-                                            shared_ptr<Entitas> ent = ladang.hapus(row, col);
-                                            shared_ptr<Entitas> prod;
-                                            auto conf = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama());
-                                            if (Util::instanceof<TanamanMaterial>(ent.get())) {
-                                                prod = make_shared<ProdukTanamanMaterial>(Util::dapatkan_nama_tumb(ent->dapatkan_nama()), get<0>(conf), get<1>(conf));
-                                            }
-                                            else {
-                                                prod = make_shared<ProdukTanamanBuah>(Util::dapatkan_nama_tumb(ent->dapatkan_nama()), get<0>(conf), get<1>(conf));
-                                            }
-
-                                            // tambah ke peti penyimpanan
-                                            peti += (prod);
-                                            succ.push_back(slot);
-                                            i++;
-                                            cout << "----Berhasil----" << endl;
+                                    throw tidakBisaTambahElemen(", Kamu ga punya hewan di situ");
+                                }
+                                if (ladang.dapatkan_elemen(row, col)->bisa_panen()) {
+                                    if (Util::strComp(nama.at(nomor - 1), ladang.dapatkan_elemen(row, col)->dapatkan_nama())) {
+                                        // hapus dari ladang dan konversi dari Tanaman -> Entitas -> Produk
+                                        shared_ptr<Entitas> ent = ladang.hapus(row, col);
+                                        shared_ptr<Entitas> prod;
+                                        auto conf = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama());
+                                        if (Util::instanceof<TanamanMaterial>(ent.get())) {
+                                            prod = make_shared<ProdukTanamanMaterial>(Util::dapatkan_nama_tumb(ent->dapatkan_nama()), get<0>(conf), get<1>(conf));
                                         }
                                         else {
-                                            cout << "Katanya mau panen " << nama.at(nomor - 1) << endl;
+                                            prod = make_shared<ProdukTanamanBuah>(Util::dapatkan_nama_tumb(ent->dapatkan_nama()), get<0>(conf), get<1>(conf));
                                         }
 
+                                        // tambah ke peti penyimpanan
+                                        peti += (prod);
+                                        succ.push_back(slot);
+                                        i++;
+                                        cout << "----Berhasil----" << endl;
                                     }
                                     else {
-                                        cout << "--Itu belum bisa dipanen---" << endl;
+                                        cout << "Katanya mau panen " << nama.at(nomor - 1) << endl;
                                     }
 
                                 }
                                 else {
-                                    cout << "Kamu ga punya tanaman di situ" << endl;
+                                    cout << "--Itu belum bisa dipanen---" << endl;
                                 }
-                            }
-                            else {
-                                cout << "Weitts kelebihan tu petaknya" << endl;
+                            }catch(const tidakBisaTambahElemen& e){
+                                cout << e.what() <<endl;
+                            }catch(const aksesTidakValid& e){
+                                cout << e.what();
                             }
                         }
                         cout << petak << " petak tanaman " << nama.at(nomor - 1) << " pada petak ";

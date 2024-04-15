@@ -73,7 +73,7 @@ void Peternak::beri_pangan() {
 
             string slot_masukan_peti, slot_masukan_peternakan;
             int idxRowPeti, idxColPeti, idxRowPeternakan, idxColPeternakan;
-            Entitas* produk;
+            // Entitas* produk;
             Hewan* hewanLapar;
 
             while (true) {
@@ -109,15 +109,15 @@ void Peternak::beri_pangan() {
                     idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
                     idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
 
-                    produk = peti.dapatkan_elemen(idxRowPeti, idxColPeti).get();
-                    if (!Util::instanceof<Produk>(produk)) {
+                    shared_ptr<Entitas> produk = peti.hapus(idxRowPeti, idxColPeti);
+                    if (!Util::instanceof<Produk>(produk.get())) {
                         cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
                     }
-                    else if (Util::instanceof<ProdukTanamanMaterial>(produk)) {
+                    else if (Util::instanceof<ProdukTanamanMaterial>(produk.get())) {
                         cout << "Slot " << slot_masukan_peti << " berisi produk tanaman material yang tidak bisa dimakan." << endl;
                     }
                     else {
-                        Produk* makanan = dynamic_cast<Produk*>(produk);
+                        Produk* makanan = dynamic_cast<Produk*>(produk.get());
                         if (Util::instanceof<Omnivora>(hewanLapar)) {
                             hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
                         }
@@ -131,7 +131,7 @@ void Peternak::beri_pangan() {
                                 hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
                             }
                         }
-                        cout << "Kamu memilih " << hewanLapar->dapatkan_nama() << " untuk ditanam." << endl;
+                        cout << "Kamu memilih " << makanan->dapatkan_nama() << " untuk diberi ke " << hewanLapar->dapatkan_nama() << endl;
                     }
 
                     break;
@@ -234,7 +234,7 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                                     throw aksesTidakValid(row,col);
                                 }
                                 if(peternakan.apakah_slot_kosong(row,col)){
-                                    throw tidakBisaTambahElemen(", Kamu ga punya tanaman di situ");
+                                    throw tidakBisaTambahElemen(", Kamu ga punya hewan di situ");
                                 }
                                 if (peternakan.dapatkan_elemen(row, col)->bisa_panen()) {
                                     if (Util::strComp(nama.at(nomor - 1), peternakan.dapatkan_elemen(row, col)->dapatkan_nama())) {
@@ -242,9 +242,15 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                                         shared_ptr<Entitas> ent = peternakan.hapus(row, col);
                                         shared_ptr<Entitas> prod;
 
-                                        auto res = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama());
+                                        auto res = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama()+"_MEAT");
 
                                         prod = make_shared<ProdukHewan>(ent->dapatkan_nama(), get<0>(res), get<1>(res));
+
+                                        if(Util::strComp(ent->dapatkan_kode_huruf(), "CHK") || Util::strComp(ent->dapatkan_kode_huruf(), "DCK")){
+                                            auto resEgg = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama()+"_EGG");
+                                            shared_ptr<Entitas> egg = make_shared<ProdukHewan>(ent->dapatkan_nama(), get<0>(resEgg), get<1>(resEgg), true);
+                                            peti += (egg);
+                                        }
 
                                         // tambah ke peti penyimpanan
                                         peti += (prod);
@@ -260,12 +266,12 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                                     cout << "----Itu belum bisa dipanen-----" << endl;
                                 }
                             }catch(const tidakBisaTambahElemen& e) {
-                                    cout << e.what() <<endl;
+                                cout << e.what() <<endl;
                             }catch(const aksesTidakValid& e) {
                                 cout << e.what();
                             }
                         }
-                        cout << petak << " petak tanaman " << nama.at(nomor - 1) << " pada petak ";
+                        cout << petak << " petak peternakan " << nama.at(nomor - 1) << " pada petak ";
                         for (auto& each : succ) {
                             cout << each << " ";
                         }

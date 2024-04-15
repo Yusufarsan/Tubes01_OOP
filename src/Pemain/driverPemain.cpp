@@ -8,7 +8,7 @@ int main() {
     shared_ptr<Hewan> beruang = make_shared<Omnivora>("5", "BER", "beruang", 200, 10);
 
     cout << "constructor" << endl;
-    Pemain player("player", 1000, 50, make_tuple(2, 2));
+    Pemain player("player", 1000, 50, make_tuple(7, 7));
     // cout << player;
 
     cout << "dapatkan_nama" << endl;
@@ -22,24 +22,27 @@ int main() {
     player.atur_berat_badan(60);
     cout << player.dapatkan_berat_badan() << endl;
 
-    string slot_masukan;
+    // string slot_masukan;
 
     // cin >> slot_masukan;
 
 
-    // player.tambah_peti(slot_masukan, sapi);
+    player.tambah_peti(sapi);
+    player.tambah_peti(ayam);
+    player.tambah_peti(kambing);
+    player.tambah_peti(ular);
 
-    cout << endl << "cetak_peti" << endl;
-    player.cetak_peti();
+    // cout << endl << "cetak_peti" << endl;
+    // player.cetak_peti();
 
-    cin >> slot_masukan;
+    // cin >> slot_masukan;
 
-    player.tambah_peti(slot_masukan, ular);
+    // player.tambah_peti(slot_masukan, ular);
 
-    player.cetak_peti();
+    // player.cetak_peti();
 
-    cout << "hapus" << endl;
-    cin >> slot_masukan;
+    // cout << "hapus" << endl;
+    // cin >> slot_masukan;
 
 
     // player.hapus_peti(slot_masukan);
@@ -48,8 +51,10 @@ int main() {
     player.cetak_peti();
 
     cout << endl << "jualan" << endl;
+    cout << player.dapatkan_uang()<<endl;
     Toko* toko = new Toko();
     player.jual(*toko);
+    cout << player.dapatkan_uang()<<endl;
 
     cout << endl << "Cetak Peti" << endl;
     player.cetak_peti();

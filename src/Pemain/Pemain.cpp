@@ -130,6 +130,7 @@ void Pemain::cetak_peti() {
 
         for (int m = 0; m < numCol; m++) {
             if (peti.apakah_slot_kosong(n - 1, m)) {
+                // cout << "test";
                 cout << "     |";
             }
             else {
@@ -176,7 +177,7 @@ bool Pemain::cek_bisa_dimakan(const string& slot) {        // Belom di test
 
 // Command
 void Pemain::jual(Toko& toko) {
-    cetak_peti();
+    this->cetak_peti();
 
     if (peti.apakah_kosong()) {
         cout << "Gak punya harta kok mau jual!" << endl;
@@ -196,50 +197,84 @@ void Pemain::jual(Toko& toko) {
         cout << "Silakan pilih petak yang ingin Anda jual!" << endl;
         cout << "Petak : ";
 
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        getline(cin, slot_masukan);
 
-
-        istringstream iss(slot_masukan);
-        vector<string> list_slot_masukan;
-
-        string slot;
-        while (getline(iss, slot, ',')) {
-            slot.erase(0, slot.find_first_not_of(" \t"));
-            slot.erase(slot.find_last_not_of(" \t") + 1);
-            list_slot_masukan.push_back(slot);
+        // cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        // getline(cin, slot_masukan);
+        if(Util::strComp(slot_masukan, "BATAL")){
+            return;
         }
 
+
+        // istringstream iss(slot_masukan);
+        vector<string> list_slot_masukan;
+        list_slot_masukan.push_back("A01");
+        list_slot_masukan.push_back("B01");
+        list_slot_masukan.push_back("C01");
+
+        // string slot;
+        // while (getline(iss, slot, ',')) {
+        //     slot.erase(0, slot.find_first_not_of(" \t"));
+        //     slot.erase(slot.find_last_not_of(" \t") + 1);
+        //     list_slot_masukan.push_back(slot);
+        // }
+
         // TINGGAL JUAL KE TOKO
-        for (const string& cell : list_slot_masukan) {
+        vector<shared_ptr<Entitas>> daftarDijual;
+        for (size_t i = 0; i < list_slot_masukan.size(); i++) {
+            cout << i<<list_slot_masukan.size()<<endl;
+            const string& cell = list_slot_masukan[i];
             cout << "Anda memilih slot: " << cell << endl;
 
             int row = Util::indeks_baris_slot(cell);
             int col = Util::indeks_kolom_slot(cell);
-            shared_ptr<Entitas> ent = peti.dapatkan_elemen(row, col);
-            if (!peti.apakah_slot_kosong(row, col)) {
-                if (Util::instanceof<Bangunan>(ent.get())) {
-                    if (!isWalikota) {
-                        cout << "   Kamu gabisa jual " << ent->dapatkan_nama() << endl;
-                        break;
+            try{
+                shared_ptr<Entitas> ent = peti.dapatkan_elemen(row, col);
+                if (!peti.apakah_slot_kosong(row, col)) {
+                    if (Util::instanceof<Bangunan>(ent.get())) {
+                        if (!isWalikota) {
+                            throw tidakDapatMenjual(ent->dapatkan_nama());
+                        }
+
                     }
+                    cout << "   -> " << ent->dapatkan_nama() << " dengan harga " << ent->dapatkan_harga() << endl;
 
+                    // Tambahkan uang ke pemain
+                    atur_uang(dapatkan_uang() + ent->dapatkan_harga());
+
+                    // Tambahkan barang ke toko
+                    toko.masukanEntitas(ent);
+
+                    cout << "   Berhasil menjual " << ent->dapatkan_nama() << endl;
+                    
+
+                    shared_ptr<Entitas> prod = peti.hapus(row, col);
+                    cout << prod->dapatkan_nama();
+                    daftarDijual.push_back(prod);
+                    // daftarDijual.at(0)->dapatkan_nama();
                 }
-                cout << "   -> " << ent->dapatkan_nama() << " dengan harga " << ent->dapatkan_harga() << endl;
-
-                // Tambahkan uang ke pemain
-                atur_uang(dapatkan_uang() + ent->dapatkan_harga());
-
-                // Tambahkan barang ke toko
-                toko.masukanEntitas(ent);
-
-                cout << "   Berhasil menjual " << ent->dapatkan_nama() << endl;
-                peti.hapus(row, col);
-            }
-            else {
-                cout << "ups, untuk yang ini barangnya gaada nih.." << endl;
+                else {
+                    throw slotKosong(cell);
+                }
+            }catch (const exception& e) {
+                cout << daftarDijual.size() << i;
+                cout << e.what() <<endl;
+                for (size_t j = 0; j < i; j++) {
+                    string& cell = list_slot_masukan[j];
+                    row = Util::indeks_baris_slot(cell);
+                    col = Util::indeks_kolom_slot(cell);
+                    atur_uang(dapatkan_uang()-daftarDijual.at(j)->dapatkan_harga());
+                    peti.tambah_elemen_matriks(row,col, daftarDijual.at(j));
+                    if (Util::instanceof<Produk>(daftarDijual.at(j).get())) {
+                        toko.kurangi_produk(dynamic_pointer_cast<Produk>(daftarDijual.at(j)));
+                        
+                    }else if (Util::instanceof<Bangunan>(daftarDijual.at(j).get())) {
+                        toko.kurangi_bangunan(dynamic_pointer_cast<Bangunan>(daftarDijual.at(j)));
+                    }
+                }
+                return;
             }
         }
+        cout <<"habis"<<endl;
 
 
     }

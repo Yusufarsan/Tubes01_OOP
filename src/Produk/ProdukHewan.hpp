@@ -30,6 +30,8 @@ public:
      */
     ProdukHewan(string origin, int berat, int harga): Produk(origin+"_MEAT", Util::dapatkan_kode(origin)+"M", origin, berat, harga){};
     
+    ProdukHewan(string origin, int berat, int harga, bool isTelur): Produk(origin+"_EGG", Util::dapatkan_kode(origin)+"E", origin, berat, harga){};
+    
     /**
      * @brief Destroy the Produk Hewan object
      * 
