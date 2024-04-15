@@ -41,7 +41,6 @@ public:
 
     // tambahElement pada slot kosong
     Matrix& operator+=(shared_ptr<A> El) {
-        cout << "a";
         if (!apakah_penuh()) {
             bool isInserted = false;
 

@@ -241,7 +241,6 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                                             prod = make_shared<ProdukHewan>(ent->dapatkan_nama(), get<0>(res), get<1>(res));
 
                                             // tambah ke peti penyimpanan
-                                            cout << "a";
                                             peti += (prod);
                                             succ.push_back(slot);
                                             i++;
