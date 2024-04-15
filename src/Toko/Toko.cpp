@@ -195,7 +195,7 @@ void Toko::cetak_isi_toko() {
     }
 }
 
-void Toko::tampilBarang(bool isWalikota) {
+void Toko::tampilBarang(bool isTampilBangunan) {
     int number = 1;
     for (int i = 0; i < this->tanaman.size(); i++) {
         cout << number << ". " << tanaman[i].get()->dapatkan_nama() << " - " << tanaman[i].get()->dapatkan_harga() << endl;
@@ -211,9 +211,10 @@ void Toko::tampilBarang(bool isWalikota) {
         cout << number << ". " << it->first->dapatkan_nama() << " - " << it->first->dapatkan_harga() << " (" << it->second << ")" << endl;
         number++;
     }
-
-    for (auto it = this->bangunan.begin(); it != this->bangunan.end(); it++) {
-        cout << number << ". " << it->first->dapatkan_nama() << " - " << it->first->dapatkan_harga() << " (" << it->second << ")" << endl;
-        number++;
+    if(isTampilBangunan){
+        for (auto it = this->bangunan.begin(); it != this->bangunan.end(); it++) {
+            cout << number << ". " << it->first->dapatkan_nama() << " - " << it->first->dapatkan_harga() << " (" << it->second << ")" << endl;
+            number++;
+        }
     }
 }

@@ -192,9 +192,6 @@ void Pemain::jual(Toko& toko) {
 
         }
 
-        // Menampilkan apa saja yang dapat dibeli oleh role;
-        toko.tampilBarang(isWalikota);
-
         // Memilih petak
         cout << "Silakan pilih petak yang ingin Anda jual!" << endl;
         cout << "Petak : ";
@@ -256,15 +253,18 @@ void Pemain::membeli(Toko& toko) {
         cout << "Selamat Datang di Bacin Mart" << endl;
         cout << "Berikut merupakan barang yang bisa kamu beli" << endl;
 
+        bool isTampilBangunan;
         bool isWalikota;
         if (Util::instanceof<Walikota>(this)) {
+            isTampilBangunan = false;
             isWalikota = true;
         }
         else {
             isWalikota = false;
+            isTampilBangunan = true;
 
         }
-        toko.tampilBarang(isWalikota);
+        toko.tampilBarang(isTampilBangunan);
         cout << endl;
 
         cout << "Uang Anda : " << uang << endl;
