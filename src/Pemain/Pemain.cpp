@@ -24,6 +24,10 @@ int Pemain::dapatkan_berat_badan() {
     return this->berat_badan;
 }
 
+Matrix<Entitas> Pemain::dapatkan_peti() {
+    return this->peti;
+}
+
 void Pemain::atur_uang(int uang) {
     this->uang = uang;
 }
@@ -33,19 +37,27 @@ void Pemain::atur_berat_badan(int berat) {
 }
 
 // Method
-Matrix<Entitas> Pemain::dapatkan_peti() {
-    return this->peti;
+void Pemain::tambah_peti(shared_ptr<Entitas> val) {
+    peti += val;
 }
 
-tuple<int,int> Pemain::dapatkan_konfig_produk(vector<shared_ptr<Produk>> daftarProduk, string nama){
+void Pemain::tambah_peti(string slot, shared_ptr<Entitas> val) {
+    int idxRow = Util::indeks_baris_slot(slot);
+    int idxCol = Util::indeks_kolom_slot(slot);
+
+    peti.tambah_elemen_matriks(idxRow, idxCol, val);
+}
+
+tuple<int, int> Pemain::dapatkan_konfig_produk(vector<shared_ptr<Produk>> daftarProduk, string nama) {
     auto hasil = std::find_if(daftarProduk.begin(), daftarProduk.end(),
-                              [nama](shared_ptr<Produk> produk) {
-                                  return Util::strComp(produk->dapatkan_nama(), nama);
-                              });
-    if(hasil!=daftarProduk.end()){ //ketemu
+        [nama](shared_ptr<Produk> produk) {
+            return Util::strComp(produk->dapatkan_nama(), nama);
+        });
+    if (hasil != daftarProduk.end()) { //ketemu
         return make_tuple(hasil->get()->dapatkan_berat_tambahan(), hasil->get()->dapatkan_harga());
-    }else{
-        return make_tuple(0,0);
+    }
+    else {
+        return make_tuple(0, 0);
     }
 }
 

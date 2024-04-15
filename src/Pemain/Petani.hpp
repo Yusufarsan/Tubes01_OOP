@@ -26,7 +26,10 @@ private:
     Matrix<Tanaman> ladang;
 
 public:
-    // Hash function untuk pair<string, string>
+    /**
+     * @brief  Hash function untuk pair
+     *
+     */
     class pair_hash {
     public:
         template <class T1, class T2>
@@ -37,29 +40,131 @@ public:
     };
 
     // Constructor dan Destructor
+
+    /**
+     * @brief Construct a new Petani object
+     *
+     * @param nama
+     * @param uang
+     * @param berat_badan
+     * @param ukuran_peti
+     * @param ukuran_ladang
+     */
     Petani(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti, tuple<int, int> ukuran_ladang); // ctor
+
+    /**
+     * @brief Destroy the Petani object
+     *
+     */
     ~Petani(); // dtor
 
     // Getter
+
+    /**
+     * @brief Mengembalikan ladang
+     *
+     * @return Matrix<Tanaman>
+     */
     Matrix<Tanaman> dapatkan_ladang();
 
     // Method
+
+    /**
+     * @brief Mengembalikan jumlah slot efektif ladang
+     *
+     * @return int
+     */
     int jumlah_slot_efektif_ladang();
+
+    /**
+     * @brief Mengembalikan jumlah slot kosong ladang
+     *
+     * @return int
+     */
     int jumlah_slot_kosong_ladang();
+
+    /**
+     * @brief Mengecek apakah slot ladang valid
+     *
+     * @param slot
+     * @return true
+     * @return false
+     */
     bool cek_slot_ladang_valid(const string& slot);
+
+    /**
+     * @brief Mengecek apakah ladang penuh
+     *
+     * @return true
+     * @return false
+     */
     bool cek_ladang_penuh();
+
+    /**
+     * @brief Mengecek apakah ladang kosong
+     *
+     * @return true
+     * @return false
+     */
     bool cek_ladang_kosong();
+
+    /**
+     * @brief Menambahkan tanaman ke ladang
+     *
+     * @param slot
+     * @param val
+     */
     void tambah_ladang(string slot, shared_ptr<Tanaman> val);
+
+    /**
+     * @brief Menambah semua umur tanaman di ladang sebanyak 1
+     *
+     */
     void next_umur();     // Nambahin semua umur tanaman yg di tanem sebanyak 1 karena efek command next
+
+    /**
+     * @brief Mengembalikan frekuensi panen
+     *
+     * @return unordered_map<pair<string, string>, int, Petani::pair_hash>
+     */
     unordered_map<pair<string, string>, int, Petani::pair_hash> frekuensi_panen();
 
     // Command 
+
+    /**
+     * @brief Melakukan command tanam
+     *
+     */
     void tanam();
+
+    /**
+     * @brief Melakukan command panen
+     *
+     * @param daftarProduk
+     */
     void panen(vector<shared_ptr<Produk>> daftarProduk);
+
+    /**
+     * @brief Menghitung pajak yang harus dibayar
+     *
+     * @return int
+     */
     int hitung_pajak();
 
     // Print Info
+
+    /**
+     * @brief Mencetak ladang
+     *
+     */
     void cetak_ladang();
+
+    /**
+     * @brief Mencetak frekuensi panen
+     *
+     * @param frequencyMap
+     * @return tuple<vector<string>, vector<string>, int>
+     */
     tuple<vector<string>, vector<string>, int> tampilkanPanen(unordered_map<pair<string, string>, int, Petani::pair_hash> frequencyMap);
 };
 
