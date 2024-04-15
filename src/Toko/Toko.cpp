@@ -46,16 +46,14 @@ shared_ptr<Entitas> Toko::dapatkan_entitas(int num, bool isWalikota) {
         for (int i = 0; i < num - this->tanaman.size() - this->hewan.size() - 1; i++) {
             it++;
         }
-        shared_ptr<Entitas> ptrProduk = make_unique<Produk>(*it->first);
-        return ptrProduk;
+        return make_shared<Produk>(*dynamic_pointer_cast<Produk>(it->first));
     }
     else if (num <= this->tanaman.size() + this->hewan.size() + this->produk.size() + this->bangunan.size() && !isWalikota) {
         auto it = this->bangunan.begin();
         for (int i = 0; i < num - this->tanaman.size() - this->hewan.size() - this->produk.size() - 1; i++) {
             it++;
         }
-        shared_ptr<Entitas> ptrBangunan = make_unique<Bangunan>(*it->first);
-        return ptrBangunan;
+        return make_shared<Bangunan>(*dynamic_pointer_cast<Bangunan>(it->first));
     }
     else {
         throw string("Nomor barang tidak valid");
@@ -72,6 +70,8 @@ int Toko::dapatkan_jumlah_suatu_produk(shared_ptr<Produk> p) {
             return it->second;
         }
     }
+
+    return 0;
 }
 
 int Toko::dapatkan_jumlah_bangunan() {
@@ -84,6 +84,8 @@ int Toko::dapatkan_jumlah_suatu_bangunan(shared_ptr<Bangunan> b) {
             return it->second;
         }
     }
+
+    return 0;
 }
 
 tuple<shared_ptr<Produk>, int> Toko::dapatkan_produk(int i) {
@@ -119,19 +121,49 @@ void Toko::masukanEntitas(shared_ptr<Entitas> Ent) {
 }
 
 void Toko::tambah_produk(shared_ptr<Produk> p) {
-    this->produk[p]++;
+    for (auto it = this->produk.begin(); it != this->produk.end(); it++) {
+        if (it->first->dapatkan_nama() == p.get()->dapatkan_nama()) {
+            it->second++;
+            return;
+        }
+    }
+
+    this->produk.insert(make_pair(p, 1));
 }
 
 void Toko::tambah_bangunan(shared_ptr<Bangunan> b) {
-    this->bangunan[b]++;
+    for (auto it = this->bangunan.begin(); it != this->bangunan.end(); it++) {
+        if (it->first->dapatkan_nama() == b.get()->dapatkan_nama()) {
+            it->second++;
+            return;
+        }
+    }
+
+    this->bangunan.insert(make_pair(b, 1));
 }
 
 void Toko::kurangi_produk(shared_ptr<Produk> p) {
-    this->produk[p]--;
+    for (auto it = this->produk.begin(); it != this->produk.end(); it++) {
+        if (it->first->dapatkan_nama() == p.get()->dapatkan_nama()) {
+            it->second--;
+            if (it->second == 0) {
+                this->produk.erase(it);
+            }
+            return;
+        }
+    }
 }
 
 void Toko::kurangi_bangunan(shared_ptr<Bangunan> b) {
-    this->bangunan[b]--;
+    for (auto it = this->bangunan.begin(); it != this->bangunan.end(); it++) {
+        if (it->first->dapatkan_nama() == b.get()->dapatkan_nama()) {
+            it->second--;
+            if (it->second == 0) {
+                this->bangunan.erase(it);
+            }
+            return;
+        }
+    }
 }
 
 // Print Info
