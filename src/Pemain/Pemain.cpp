@@ -352,6 +352,10 @@ void Pemain::makan() {       // Belom di test dan tinggal perbaikin print-an
             int row = Util::indeks_baris_slot(slot);
             int col = Util::indeks_kolom_slot(slot);
 
+            if(slot == "-1"){
+                break;
+            }
+
             if (!peti.apakah_index_valid(row, col)) {   // Validasi slot
                 throw "Slot tidak valid\n";
             }

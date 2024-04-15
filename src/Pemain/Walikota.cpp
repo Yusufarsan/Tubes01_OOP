@@ -8,7 +8,7 @@ Walikota::Walikota(const Walikota& other) : Pemain(other.nama, other.uang, other
 Walikota::~Walikota() {}
 
 // Method
-bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, string namaPemain) {
+bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, string namaPemain){
     bool isFound = false;
     int i = 0;
     while (!isFound && i < daftarPemain->size()) {
@@ -22,7 +22,7 @@ bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, s
     return isFound;
 }
 
-bool Walikota::jenis_pemain_valid(string jenisPemain) {
+bool Walikota::jenis_pemain_valid(string jenisPemain){
     return Util::strComp(jenisPemain, "peternak") || Util::strComp(jenisPemain, "petani");
 }
 
@@ -228,16 +228,16 @@ void Walikota::tambah_pemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int
 
 
         bool namaValid = false;
-        while (!namaValid) {
+        while(!namaValid){
             cout << "Masukan nama pemain: ";
             cin >> namaPemain;
 
             bool jenisValid = false;
-            while (!apakah_nama_terdaftar(daftarPemain, namaPemain) && !jenisValid) {
+            while(!apakah_nama_terdaftar(daftarPemain, namaPemain) && !jenisValid){
                 cout << "Masukan jenis pemain: ";
                 cin >> jenisPemain;
 
-                if (jenis_pemain_valid(jenisPemain)) {
+                if(jenis_pemain_valid(jenisPemain)){
                     jenisValid = true; namaValid = true;
                     if (Util::strComp(jenisPemain, "peternak")) {
                         shared_ptr<Pemain> pemainBaru = make_unique<Peternak>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_peternakan);
@@ -245,27 +245,21 @@ void Walikota::tambah_pemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int
                         this->uang -= 50;
                         cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
                         break;
-                    }
-                    else { //petani
+                    }else{ //petani
                         shared_ptr<Pemain> pemainBaru = make_unique<Petani>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_lahan);
                         daftarPemain->push_back(pemainBaru);
                         this->uang -= 50;
                         cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
                         break;
                     }
-                }
-                else {
+                }else{
                     if (Util::strComp(jenisPemain, "walikota")) {
                         cout << "Walikota nya satu aja yah, biar ga berantem" << endl;
-                    }
-                    else {
+                    }else{
                         cout << "Role ini tidak tersedia" << endl;
                     }
                 }
             }
-
-            // Kondisi saat nama yg diberikan tidak unik
-            cout << "Nama yang diberikan sudah digunakan, coba lagi" << endl << endl;
         }
     }
     else {

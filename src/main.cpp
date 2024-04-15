@@ -73,6 +73,9 @@ int main() {
             else if (Util::strComp(input, "BANGUN")) {
                 mp.bangun();
             }
+            else if(Util::strComp(input, "TAMBAH_PEMAIN")){
+                mp.tambah_pemain();
+            }
             else if (Util::strComp(input, "MAKAN")) {
                 mp.makan();
             }
@@ -94,6 +97,8 @@ int main() {
             else if (Util::strComp(input, "KELUAR")) {
                 mp.keluar();
                 break;
+            }else if(Util::strComp(input, "INFO")){
+                
             }
             else {
                 cout << "Command apa itu? Coba masukin command lain yg ada di spek\n";
