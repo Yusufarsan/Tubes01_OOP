@@ -157,6 +157,10 @@ void Peternak::ternak() {
             cout << "Petak : ";
             cin >> slot_masukan_peti;
 
+            if(slot_masukan_peti=="BATAL"){
+                return;
+            }
+
             if (peti.apakah_slot_valid(slot_masukan_peti)) {
                 idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
                 idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
@@ -210,6 +214,9 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
             bool isJumlahValid = false;
             cout << "Nomor hewan yang ingin dipanen: ";
             cin >> nomor;
+            if(nomor == -1){
+                return;
+            }
             if (cin.fail() || nomor >= counter || nomor <= 0) {
                 cout << "---Masukkan nomor yang valid!---" << endl;
                 cin.clear(); // Clear the error flag

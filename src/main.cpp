@@ -99,6 +99,8 @@ int main() {
                 break;
             }else if(Util::strComp(input, "INFO")){
                 mp.info_pemain();
+            }else if(Util::strComp(input, "HELP")){
+                mp.help();
             }
             else {
                 cout << "Command apa itu? Coba masukin command lain yg ada di spek\n";

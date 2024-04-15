@@ -246,7 +246,17 @@ public:
      */
     void print_konfigurasi();
 
+    /**
+     * @brief Mencetak informasi pemain
+     *
+     */
     void info_pemain();
+
+    /**
+     * @brief Mencetak informasi command yang dapat dilakukan
+     *
+     */
+    void help();
 };
 
 #endif

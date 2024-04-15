@@ -399,3 +399,14 @@ void ManagerPermainan::info_pemain(){
         cout << "Berat: "<<each.get()->dapatkan_berat_badan() << endl << endl;
     }
 }
+
+// Print command apa saja yang ada
+void ManagerPermainan::help(){
+    cout << "-----HELP-----" << endl <<endl;
+    vector<string> command = {"NEXT", "CETAK_PENYIMPANAN", "PUNGUT_PAJAK", "CETAK_LADANG", "CETAK_PETERNAKAN", "TANAM", "TERNAK", "BANGUN", "TAMBAH_PEMAIN", "MAKAN", "KASIH MAKAN", "BELI", "JUAL", "PANEN", "SIMPAN", "KELUAR", "INFO"};
+    for(int i=0; i<command.size(); i++){
+        cout<< i+1 << ". " << command[i] << endl;
+    }
+
+    cout << "Jika ingin kembali, coba ketik \"BATAL\" atau \"-1\"" <<endl;
+}

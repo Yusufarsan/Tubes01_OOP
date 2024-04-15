@@ -309,6 +309,9 @@ void Pemain::membeli(Toko& toko) {
         int num, kuantitas;
         cout << "Barang ingin dibeli : ";
         cin >> num;
+        if(num==-1){
+            return;
+        }
 
         shared_ptr<Entitas> barang;
 
@@ -483,6 +486,7 @@ void Pemain::makan() {       // Belom di test dan tinggal perbaikin print-an
 
             cout << "Dengan lahapnya, kamu memakanan hidangan itu\n";
             cout << "Alhasil, berat badan kamu naik menjadi " << this->dapatkan_berat_badan() << "\n\n";
+            break;
         }
         catch (const char* e) {
             cout << e << endl << endl;

@@ -74,6 +74,9 @@ void Petani::panen(vector<shared_ptr<Produk>> daftarProduk) {
             bool isJumlahValid = false;
             cout << "Nomor tanaman yang ingin dipanen: ";
             cin >> nomor;
+            if(nomor==-1){
+                return;
+            }
             if (cin.fail() || nomor >= counter || nomor <= 0) {
                 cout << "---Masukkan nomor yang valid!---" << endl;
                 cin.clear(); // Clear the error flag
