@@ -367,19 +367,26 @@ void Pemain::membeli(Toko& toko) {
                 cout << "Pilih slot untuk menyimpan barang yang Anda beli!" << endl;
                 this->cetak_peti();
 
-                cout << "Petak slot: ";
-                string slot_masukan;
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                getline(cin, slot_masukan);
 
-                istringstream iss(slot_masukan);
                 vector<string> list_slot_masukan;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                while(list_slot_masukan.size()!=kuantitas){
+                    string slot_masukan;
+                    cout << "Petak slot: ";
+                    getline(cin, slot_masukan);
 
-                string slot;
-                while (getline(iss, slot, ',')) {
-                    slot.erase(0, slot.find_first_not_of(" \t"));
-                    slot.erase(slot.find_last_not_of(" \t") + 1);
-                    list_slot_masukan.push_back(slot);
+                    istringstream iss(slot_masukan);
+
+                    string slot;
+                    while (getline(iss, slot, ',')) {
+                        slot.erase(0, slot.find_first_not_of(" \t"));
+                        slot.erase(slot.find_last_not_of(" \t") + 1);
+                        list_slot_masukan.push_back(slot);
+                    }
+                    if(list_slot_masukan.size()!=kuantitas){
+                        cout << "Masukkan jumlah slot sesuai dengan kuantitas"<<endl;
+                        list_slot_masukan.clear();
+                    }
                 }
 
                 while (list_slot_masukan.size() != kuantitas) {
