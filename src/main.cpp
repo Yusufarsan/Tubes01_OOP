@@ -98,7 +98,7 @@ int main() {
                 mp.keluar();
                 break;
             }else if(Util::strComp(input, "INFO")){
-                
+                mp.info_pemain();
             }
             else {
                 cout << "Command apa itu? Coba masukin command lain yg ada di spek\n";

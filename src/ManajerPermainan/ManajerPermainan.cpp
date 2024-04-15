@@ -324,6 +324,7 @@ void ManagerPermainan::simpan() {
 void ManagerPermainan::tambah_pemain() {
     if (shared_ptr<Walikota> p = dynamic_pointer_cast<Walikota>(this->daftar_pemain.at(this->giliran))) {
         p->tambah_pemain(&this->daftar_pemain, this->besar_penyimpanan, 40, this->besar_lahan, this->besar_peternakan);
+        atur_pemain(this->daftar_pemain);
     }
     else {
         // throw BukanWalkotException("Hanya Walikota yang dapat menambah pemain\n");
@@ -378,4 +379,23 @@ void ManagerPermainan::print_konfigurasi() {
 
     cout << "Daftar Produk di Toko:" << endl;
     this->toko.cetak_isi_toko();
+}
+
+// Print info pemain
+void ManagerPermainan::info_pemain(){
+    cout << "-----INFORMASI PEMAIN-----" << endl << endl;
+    for(const shared_ptr<Pemain> each : this->daftar_pemain){
+        cout << "Nama: " << each.get()->dapatkan_nama() << endl;
+        string role;
+        if(Util::instanceof<Walikota>(each.get())){
+            role = "Walikota";
+        }else if(Util::instanceof<Peternak>(each.get())){
+            role = "Peternak";
+        }else if(Util::instanceof<Petani>(each.get())){
+            role = "Petani";
+        }
+        cout << "Role: " << role <<endl;
+        cout << "Uang: " << each.get()->dapatkan_uang() << endl;
+        cout << "Berat: "<<each.get()->dapatkan_berat_badan() << endl << endl;
+    }
 }

@@ -12,7 +12,7 @@ bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, s
     bool isFound = false;
     int i = 0;
     while (!isFound && i < daftarPemain->size()) {
-        if ((*daftarPemain)[i]->dapatkan_nama() == namaPemain) {
+        if (Util::strComp((*daftarPemain)[i]->dapatkan_nama(), namaPemain)) {
             isFound = true;
             cout << "Ups, namanya sudah digunakan nih..." << endl;
             break;
@@ -195,7 +195,7 @@ void Walikota::bangun(vector<shared_ptr<Bangunan>> daftar_bangunan) {           
         cin >> pilihan_bangunan;
 
         // Cek apakah user memasukkan "BATAL", jika iya maka command BANGUN tidak jadi dijalankan
-        if (pilihan_bangunan == "BATAL") {
+        if (Util::strComp(pilihan_bangunan, "BATAL")) {
             cout << "Kamu membatalkan pembangunan. Labil bgt sih.\n\n";
             return;
         }
@@ -232,11 +232,17 @@ void Walikota::tambah_pemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int
             cout << "Masukan nama pemain: ";
             cin >> namaPemain;
 
+            if(Util::strComp(namaPemain, "BATAL")){
+                break;
+            }
             bool jenisValid = false;
             while(!apakah_nama_terdaftar(daftarPemain, namaPemain) && !jenisValid){
                 cout << "Masukan jenis pemain: ";
                 cin >> jenisPemain;
 
+                if(Util::strComp(jenisPemain, "BATAL")){
+                    break;
+                }
                 if(jenis_pemain_valid(jenisPemain)){
                     jenisValid = true; namaValid = true;
                     if (Util::strComp(jenisPemain, "peternak")) {

@@ -245,6 +245,8 @@ public:
      *
      */
     void print_konfigurasi();
+
+    void info_pemain();
 };
 
 #endif
