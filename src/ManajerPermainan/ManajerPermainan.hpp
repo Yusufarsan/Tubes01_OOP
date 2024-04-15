@@ -128,6 +128,18 @@ public:
      */
     void inisialisasi_toko();
 
+    /**
+     * @brief Mengecek apakah role sudah menang
+     *
+     */
+    bool cek_menang();
+
+    /**
+     * @brief Mengecek apakah role sudah menang
+     *
+     */
+    void selebrasi();
+
     // Command Permainan
 
     /**

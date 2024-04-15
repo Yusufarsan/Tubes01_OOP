@@ -73,6 +73,24 @@ void ManagerPermainan::inisialisasi_toko() {
     this->toko.atur_hewan(this->daftar_hewan);
 }
 
+bool ManagerPermainan::cek_menang(){
+    return (this->daftar_pemain.at(this->giliran)->dapatkan_berat_badan()>=berat_pemenang && this->daftar_pemain.at(this->giliran)->dapatkan_uang()>= uang_pemenang);
+}
+
+void ManagerPermainan::selebrasi(){
+    cout << R"(
+        ██╗    ██╗██╗███╗   ██╗███╗   ██╗███████╗██████╗ 
+        ██║    ██║██║████╗  ██║████╗  ██║██╔════╝██╔══██╗
+        ██║ █╗ ██║██║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝
+        ██║███╗██║██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗
+        ╚███╔███╔╝██║██║ ╚████║██║ ╚████║███████╗██║  ██║
+        ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
+        )" <<endl;    
+
+    cout << "Selamat kepada " << this->daftar_pemain.at(this->giliran)->dapatkan_nama() << " telah memenangkan permainan ini." << endl;                              
+                                                 
+}
+
 // Command Permainan
 void ManagerPermainan::next() {
     this->giliran = (this->giliran + 1) % this->daftar_pemain.size();

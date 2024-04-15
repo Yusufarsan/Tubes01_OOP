@@ -1,5 +1,5 @@
 4
-Budi Peternak 20 100
+Budi Peternak 79 1000
 5
 COW
 COW_MEAT

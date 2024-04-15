@@ -42,6 +42,10 @@ int main() {
 
     cout << "Permainan sudah dapat dimulai! Selamat bermain!!" << endl;
     while (true) {
+        if(mp.cek_menang()){
+            mp.selebrasi();
+            break;
+        }
         cout << "Pemain saat ini: " << mp.pemain_skrg()->dapatkan_nama() << endl;
         cout << "> ";
         cin >> input;
