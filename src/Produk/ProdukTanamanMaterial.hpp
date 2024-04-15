@@ -28,7 +28,7 @@ public:
      * @param berat
      * @param harga
      */
-    ProdukTanamanMaterial(string origin, int berat, int harga) : Produk(origin + "_WOOD", Util::dapatkan_kode(origin) + "W", origin + "_TREE", 0, harga) {};
+    ProdukTanamanMaterial(string origin, int harga) : Produk(origin + "_WOOD", Util::dapatkan_kode(origin) + "W", origin + "_TREE", 0, harga) {};
 
     /**
      * @brief Destroy the Produk Tanaman Material object

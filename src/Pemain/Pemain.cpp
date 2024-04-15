@@ -301,16 +301,14 @@ void Pemain::membeli(Toko& toko) {
                 for (const string& cell : list_slot_masukan) {
                     int row = Util::indeks_baris_slot(cell);
                     int col = Util::indeks_kolom_slot(cell);
-                    if (peti.apakah_index_valid(row, col)) {
-                        if (peti.apakah_slot_kosong(row, col)) {
-                            peti.tambah_elemen_matriks(row, col, barang);
-                        }
-                        else {
-                            throw "Slot yang dipilih sudah terisi";
-                        }
-                    }
-                    else {
-                        throw "Slot yang dipilih tidak valid";
+                    try {
+                        peti.tambah_elemen_matriks(row, col, barang);
+                    } catch (const aksesTidakValid& e) {
+                        cout << e.what() << endl;
+                        return;
+                    } catch (const tidakBisaTambahElemen& e) {
+                        cout << e.what() << endl;
+                        return;
                     }
                 }
 
