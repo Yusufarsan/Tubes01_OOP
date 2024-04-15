@@ -2,6 +2,7 @@
 #include "Walikota.hpp"
 #include "Petani.hpp"
 #include "Peternak.hpp"
+#include "../Exception/ExceptionMatrix.hpp"
 
 // Constructor
 Pemain::Pemain(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti) :
@@ -38,14 +39,22 @@ void Pemain::atur_berat_badan(int berat) {
 
 // Method
 void Pemain::tambah_peti(shared_ptr<Entitas> val) {
-    peti += val;
+    try{
+        peti += val;
+    }catch(const tidakBisaTambahElemen e){
+        cout << e.what() << endl;
+    }
 }
 
 void Pemain::tambah_peti(string slot, shared_ptr<Entitas> val) {
-    int idxRow = Util::indeks_baris_slot(slot);
-    int idxCol = Util::indeks_kolom_slot(slot);
+    try{
+        int idxRow = Util::indeks_baris_slot(slot);
+        int idxCol = Util::indeks_kolom_slot(slot);
 
-    peti.tambah_elemen_matriks(idxRow, idxCol, val);
+        peti.tambah_elemen_matriks(idxRow, idxCol, val);
+    }catch(const exception& e){
+        cout << e.what();
+    }
 }
 
 tuple<int, int> Pemain::dapatkan_konfig_produk(vector<shared_ptr<Produk>> daftarProduk, string nama) {

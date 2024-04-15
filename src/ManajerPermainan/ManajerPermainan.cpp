@@ -16,6 +16,7 @@ ManagerPermainan::ManagerPermainan(string path) {
         this->besar_penyimpanan = make_tuple(misc[2], misc[3]);
         this->besar_lahan = make_tuple(misc[4], misc[5]);
         this->besar_peternakan = make_tuple(misc[6], misc[7]);
+        inisialisasi_toko();
     }
     catch (const invalid_argument& e) {
         cout << e.what() << '\n';

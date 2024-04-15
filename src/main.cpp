@@ -19,11 +19,11 @@ int main() {
         cout << endl;
 
         try {
-            if (input == "y") {
+            if (Util::strComp(input,"Y")) {
                 mp.muat();
                 break;
             }
-            else if (input == "n") {
+            else if (Util::strComp(input, "N")) {
                 cout << "Inisialisasi pemain..." << endl;
                 mp.inisialisasi_pemain();
                 cout << "Berhasil menginisialisasi pemain Petani1, Peternak1, dan Walikota\n\n";
@@ -52,43 +52,43 @@ int main() {
                 mp.next();
                 cout << "Giliran dilanjut ke pemain " << mp.pemain_skrg()->dapatkan_nama() << endl << endl;
             }
-            else if (input == "CETAK_PENYIMPANAN") {
+            else if (Util::strComp(input, "CETAK_PENYIMPANAN")) {
                 mp.cetak_penyimpanan();
             }
-            else if (input == "PUNGUT_PAJAK") {
+            else if (Util::strComp(input, "PUNGUT_PAJAK")) {
                 mp.pungut_pajak();  
             }
-            else if (input == "CETAK_LADANG") {
+            else if (Util::strComp(input, "CETAK_LADANG")) {
                 mp.cetak_ladang();
             }
-            else if (input == "CETAK_PETERNAKAN") {
+            else if (Util::strComp(input, "CETAK_PETERNAKAN")) {
                 mp.cetak_peternakan();
             }
-            else if (input == "TANAM") {
+            else if (Util::strComp(input, "TANAM")) {
                 mp.tanam();
             }
-            else if (input == "TERNAK") {
+            else if (Util::strComp(input, "TERNAK")) {
                 mp.ternak();
             }
-            else if (input == "BANGUN") {
+            else if (Util::strComp(input, "BANGUN")) {
                 mp.bangun();
             }
-            else if (input == "MAKAN") {
+            else if (Util::strComp(input, "MAKAN")) {
                 mp.makan();
             }
-            else if (input == "KASIH_MAKAN") {
+            else if (Util::strComp(input, "KASIH_MAKAN")) {
                 mp.kasih_makan();
             }
-            else if (input == "BELI") {
+            else if (Util::strComp(input, "BELI")) {
                 mp.beli();
             }
-            else if (input == "JUAL") {
+            else if (Util::strComp(input, "JUAL")) {
                 mp.jual();
             }
-            else if (input == "PANEN") {
+            else if (Util::strComp(input, "PANEN")) {
                 mp.panen();
             }
-            else if (input == "SIMPAN") {
+            else if (Util::strComp(input, "SIMPAN")) {
                 mp.simpan();
             }
             else if (Util::strComp(input, "KELUAR")) {

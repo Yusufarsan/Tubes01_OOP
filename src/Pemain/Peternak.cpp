@@ -1,4 +1,5 @@
 #include "Peternak.hpp"
+#include "../Exception/ExceptionMatrix.hpp"
 
 // Constructor & Destructor
 Peternak::Peternak(string nama, int uang, int berat_badan, tuple<int, int> ukuran_peti, tuple<int, int> ukuran_peternakan) : Pemain(nama, uang, berat_badan, ukuran_peti), peternakan(get<0>(ukuran_peternakan), get<1>(ukuran_peternakan)) {}
@@ -228,40 +229,40 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                             cin >> slot;
                             int row = Util::indeks_baris_slot(slot);
                             int col = Util::indeks_kolom_slot(slot);
-                            if (peternakan.apakah_index_valid(row, col)) {
-                                if (!peternakan.apakah_slot_kosong(row, col)) {
-                                    if (peternakan.dapatkan_elemen(row, col)->bisa_panen()) {
-                                        if (Util::strComp(nama.at(nomor - 1), peternakan.dapatkan_elemen(row, col)->dapatkan_nama())) {
-                                            // hapus dari ladang dan konversi dari Tanaman -> Entitas -> Produk
-                                            shared_ptr<Entitas> ent = peternakan.hapus(row, col);
-                                            shared_ptr<Entitas> prod;
+                            try{
+                                if(!peternakan.apakah_index_valid(row,col)){
+                                    throw aksesTidakValid(row,col);
+                                }
+                                if(peternakan.apakah_slot_kosong(row,col)){
+                                    throw tidakBisaTambahElemen(", Kamu ga punya tanaman di situ");
+                                }
+                                if (peternakan.dapatkan_elemen(row, col)->bisa_panen()) {
+                                    if (Util::strComp(nama.at(nomor - 1), peternakan.dapatkan_elemen(row, col)->dapatkan_nama())) {
+                                        // hapus dari ladang dan konversi dari Tanaman -> Entitas -> Produk
+                                        shared_ptr<Entitas> ent = peternakan.hapus(row, col);
+                                        shared_ptr<Entitas> prod;
 
-                                            auto res = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama());
+                                        auto res = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama());
 
-                                            prod = make_shared<ProdukHewan>(ent->dapatkan_nama(), get<0>(res), get<1>(res));
+                                        prod = make_shared<ProdukHewan>(ent->dapatkan_nama(), get<0>(res), get<1>(res));
 
-                                            // tambah ke peti penyimpanan
-                                            peti += (prod);
-                                            succ.push_back(slot);
-                                            i++;
-                                            cout << "----Berhasil----" << endl;
-                                        }
-                                        else {
-                                            cout << "Katanya mau panen " << nama.at(nomor - 1) << endl;
-                                        }
-
+                                        // tambah ke peti penyimpanan
+                                        peti += (prod);
+                                        succ.push_back(slot);
+                                        i++;
+                                        cout << "----Berhasil----" << endl;
                                     }
                                     else {
-                                        cout << "--Itu belum bisa dipanen---" << endl;
+                                        cout << "----Katanya mau panen " << nama.at(nomor - 1) <<"----"<< endl;
                                     }
 
+                                }else {
+                                    cout << "----Itu belum bisa dipanen-----" << endl;
                                 }
-                                else {
-                                    cout << "Kamu ga punya tanaman di situ" << endl;
-                                }
-                            }
-                            else {
-                                cout << "Weitts kelebihan tu petaknya" << endl;
+                            }catch(const tidakBisaTambahElemen& e) {
+                                    cout << e.what() <<endl;
+                            }catch(const aksesTidakValid& e) {
+                                cout << e.what();
                             }
                         }
                         cout << petak << " petak tanaman " << nama.at(nomor - 1) << " pada petak ";
@@ -273,7 +274,7 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                         isNumValid = true;
                     }
                     else {
-                        cout << "---Penyimpanan kamu ga cukup hey---" << endl;
+                        cout << "----Penyimpanan kamu ga cukup hey----" << endl;
                         isJumlahValid = true;
                     }
                 }
