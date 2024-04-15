@@ -272,14 +272,49 @@ void Pemain::membeli(Toko& toko) {
         int num, kuantitas;
         cout << "Barang ingin dibeli : ";
         cin >> num;
+
+        shared_ptr<Entitas> barang;
+
+        try {
+            barang = toko.dapatkan_entitas(num, isWalikota);
+        }
+        catch (const string& err) {
+            cout << err << endl;
+            return;
+        }
+
         cout << "Kuantitas : ";
         cin >> kuantitas;
+        while (kuantitas < 1) {
+            cout << "Jumlah tidak valid" << endl;
+            cout << "Kuantitas : ";
+            cin >> kuantitas;
+        }
+
+        int jumlah_barang;
+        if (Util::instanceof<Produk>(barang.get())) {
+            shared_ptr<Produk> ptrProduk(dynamic_cast<Produk*>(barang.get()));
+            jumlah_barang = toko.dapatkan_jumlah_suatu_produk(ptrProduk);
+            while (kuantitas > jumlah_barang){
+                cout << "Jumlah barang di toko kurang dari yang diinginkan" << endl;
+                cout << "Kuantitas : ";
+                cin >> kuantitas;
+            }
+        }
+        else if (Util::instanceof<Bangunan>(barang.get())) {
+            shared_ptr<Bangunan> ptrBangunan(dynamic_cast<Bangunan*>(barang.get()));
+            jumlah_barang = toko.dapatkan_jumlah_suatu_bangunan(ptrBangunan);
+            while (kuantitas > jumlah_barang){
+                cout << "Jumlah barang di toko kurang dari yang diinginkan" << endl;
+                cout << "Kuantitas : ";
+                cin >> kuantitas;
+            }
+        }
 
         if (kuantitas > peti.jumlah_slot_kosong()) {
             cout << "Slot penyimpanan tidak cukup" << endl;
         }
-        else {
-            shared_ptr<Entitas> barang = toko.dapatkan_entitas(num);
+        else {  
             if (kuantitas * barang->dapatkan_harga() > uang) {
                 cout << "Uang tidak cukup" << endl;
             }
@@ -307,26 +342,52 @@ void Pemain::membeli(Toko& toko) {
                     list_slot_masukan.push_back(slot);
                 }
 
-                for (const string& cell : list_slot_masukan) {
+                while (list_slot_masukan.size() != kuantitas) {
+                    if (list_slot_masukan.size() > kuantitas) {
+                        list_slot_masukan.pop_back();
+                    } else {
+                        cout << "Input slot kurang dari jumlah barang yang dibeli" << endl;
+                        return;
+                    }
+                }
+
+                for (size_t i = 0; i < list_slot_masukan.size(); ++i) {
+                    const string& cell = list_slot_masukan[i];
                     int row = Util::indeks_baris_slot(cell);
                     int col = Util::indeks_kolom_slot(cell);
                     try {
                         peti.tambah_elemen_matriks(row, col, barang);
                     } catch (const aksesTidakValid& e) {
-                        cout << e.what() << endl;
+                        cout << e.what() << std::endl;
+                        for (size_t j = 0; j < i; j++) {
+                            string& cell = list_slot_masukan[j];
+                            row = Util::indeks_baris_slot(cell);
+                            col = Util::indeks_kolom_slot(cell);
+                            peti.hapus(row, col);
+                        }
                         return;
                     } catch (const tidakBisaTambahElemen& e) {
-                        cout << e.what() << endl;
+                        cout << e.what() << " / duplikat input slot" << std::endl;
+                        for (size_t j = 0; j < i; j++) {
+                            string& cell = list_slot_masukan[j];
+                            row = Util::indeks_baris_slot(cell);
+                            col = Util::indeks_kolom_slot(cell);
+                            peti.hapus(row, col);
+                        }
                         return;
                     }
                 }
 
                 // Kurangi barang yang dibeli dari toko
                 if (Util::instanceof<Produk>(barang.get())) {
-                    toko.kurangi_produk(dynamic_pointer_cast<Produk>(barang));
+                    for (int i = 0; i < kuantitas; i++) {
+                        toko.kurangi_produk(dynamic_pointer_cast<Produk>(barang));
+                    }
                 }
                 else if (Util::instanceof<Bangunan>(barang.get())) {
-                    toko.kurangi_bangunan(dynamic_pointer_cast<Bangunan>(barang));
+                    for (int i = 0; i < kuantitas; i++) {
+                        toko.kurangi_bangunan(dynamic_pointer_cast<Bangunan>(barang));
+                    }
                 }
 
                 // Kurangi uang
