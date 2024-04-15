@@ -147,7 +147,7 @@ bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan
 }
 
 // Command
-void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain) {
+void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain, vector<shared_ptr<Pemain>> temp_daftar_pemain) {
     cout << "Cring cring cring..." << endl;
     cout << "Pajak sudah dipungut!" << endl;
     cout << endl;
@@ -155,17 +155,20 @@ void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain) {
 
     int pajak_pemain = 0;
     int jumlah_pajak = 0;
-    sort(daftar_pemain.begin(), daftar_pemain.end(), bandingkan_pajak);
     int j = 1;
-    for (int i = 0; i < daftar_pemain.size(); i++) {
-        if (Util::instanceof<Petani>(daftar_pemain[i].get())) {
-            shared_ptr<Petani> petani = dynamic_pointer_cast<Petani>(daftar_pemain[i]);
+
+    sort(temp_daftar_pemain.begin(), temp_daftar_pemain.end(), bandingkan_pajak);
+
+    for (int i = 0; i < temp_daftar_pemain.size(); i++) {
+        auto it = find(daftar_pemain.begin(), daftar_pemain.end(), temp_daftar_pemain[i]);
+        if (Util::instanceof<Petani>(temp_daftar_pemain[i].get())) {
+            shared_ptr<Petani> petani = dynamic_pointer_cast<Petani>(*it);
             pajak_pemain = petani->hitung_pajak();
             petani->atur_uang(petani->dapatkan_uang() - pajak_pemain);
             cout << j << ". " << petani->dapatkan_nama() << " - Petani: " << pajak_pemain << " gulden" << endl;
         }
-        else if (Util::instanceof<Peternak>(daftar_pemain[i].get())) {
-            shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(daftar_pemain[i]);
+        else if (Util::instanceof<Peternak>(temp_daftar_pemain[i].get())) {
+            shared_ptr<Peternak> peternak = dynamic_pointer_cast<Peternak>(*it);
             pajak_pemain = peternak->hitung_pajak();
             peternak->atur_uang(peternak->dapatkan_uang() - pajak_pemain);
             cout << j << ". " << peternak->dapatkan_nama() << " - Peternak: " << pajak_pemain << " gulden" << endl;

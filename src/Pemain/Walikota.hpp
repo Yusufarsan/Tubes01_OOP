@@ -99,8 +99,9 @@ public:
      * @brief Menagih pajak dari semua pemain
      *
      * @param daftar_pemain
+     * @param temp_daftar_pemain
      */
-    void tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain);
+    void tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain, vector<shared_ptr<Pemain>> temp_daftar_pemain);
 
     /**
      * @brief Melakukan command bangun
