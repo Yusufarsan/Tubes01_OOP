@@ -23,7 +23,7 @@ Toko& Toko::operator=(const Toko& other) {
 }
 
 // Getter & Setter
-shared_ptr<Entitas> Toko::dapatkan_entitas(int num) {
+shared_ptr<Entitas> Toko::dapatkan_entitas(int num, bool isWalikota) {
     if (num <= this->tanaman.size()) {
         shared_ptr<Entitas> ptrTanaman = make_unique<Tanaman>(*this->tanaman[num - 1]);
         return ptrTanaman;
@@ -49,7 +49,7 @@ shared_ptr<Entitas> Toko::dapatkan_entitas(int num) {
         shared_ptr<Entitas> ptrProduk = make_unique<Produk>(*it->first);
         return ptrProduk;
     }
-    else {
+    else if (num <= this->tanaman.size() + this->hewan.size() + this->produk.size() + this->bangunan.size() && !isWalikota) {
         auto it = this->bangunan.begin();
         for (int i = 0; i < num - this->tanaman.size() - this->hewan.size() - this->produk.size() - 1; i++) {
             it++;
@@ -57,14 +57,33 @@ shared_ptr<Entitas> Toko::dapatkan_entitas(int num) {
         shared_ptr<Entitas> ptrBangunan = make_unique<Bangunan>(*it->first);
         return ptrBangunan;
     }
+    else {
+        throw string("Nomor barang tidak valid");
+    }
 }
 
 int Toko::dapatkan_jumlah_produk() {
     return this->produk.size();
 }
 
+int Toko::dapatkan_jumlah_suatu_produk(shared_ptr<Produk> p) {
+    for (auto it = this->produk.begin(); it != this->produk.end(); it++) {
+        if (it->first->dapatkan_nama() == p.get()->dapatkan_nama()) {
+            return it->second;
+        }
+    }
+}
+
 int Toko::dapatkan_jumlah_bangunan() {
     return this->bangunan.size();
+}
+
+int Toko::dapatkan_jumlah_suatu_bangunan(shared_ptr<Bangunan> b) {
+    for (auto it = this->bangunan.begin(); it != this->bangunan.end(); it++) {
+        if (it->first->dapatkan_nama() == b.get()->dapatkan_nama()) {
+            return it->second;
+        }
+    }
 }
 
 tuple<shared_ptr<Produk>, int> Toko::dapatkan_produk(int i) {

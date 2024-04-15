@@ -156,8 +156,8 @@ void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain) {
     int pajak_pemain = 0;
     int jumlah_pajak = 0;
     sort(daftar_pemain.begin(), daftar_pemain.end(), bandingkan_pajak);
+    int j = 1;
     for (int i = 0; i < daftar_pemain.size(); i++) {
-        int j = 1;
         if (Util::instanceof<Petani>(daftar_pemain[i].get())) {
             shared_ptr<Petani> petani = dynamic_pointer_cast<Petani>(daftar_pemain[i]);
             pajak_pemain = petani->hitung_pajak();

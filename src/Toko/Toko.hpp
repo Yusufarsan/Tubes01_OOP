@@ -62,7 +62,7 @@ public:
      * @param num
      * @return shared_ptr<Entitas>
      */
-    shared_ptr<Entitas> dapatkan_entitas(int num);
+    shared_ptr<Entitas> dapatkan_entitas(int num, bool isWalikota);
 
     /**
      * @brief Mengembalikan jumlah produk
@@ -72,11 +72,27 @@ public:
     int dapatkan_jumlah_produk();
 
     /**
+     * @brief Mengembalikan jumlah dari suatu produk
+     *
+     * @param Entitas
+     * @return int
+     */
+    int dapatkan_jumlah_suatu_produk(shared_ptr<Produk> p);
+
+    /**
      * @brief Mengembalikan jumlah bangunan
      *
      * @return int
      */
     int dapatkan_jumlah_bangunan();
+
+    /**
+     * @brief Mengembalikan jumlah dari suatu bangunan
+     *
+     * @param Entitas
+     * @return int
+     */
+    int dapatkan_jumlah_suatu_bangunan(shared_ptr<Bangunan> b);
 
     /**
      * @brief Mengembalikan daftar produk
