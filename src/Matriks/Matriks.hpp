@@ -41,6 +41,7 @@ public:
 
     // tambahElement pada slot kosong
     Matrix& operator+=(shared_ptr<A> El) {
+        cout << "a";
         if (!apakah_penuh()) {
             bool isInserted = false;
 
@@ -51,9 +52,9 @@ public:
                         isInserted = true;
                         break;
                     }
-                    if (isInserted) {
-                        break;
-                    }
+                }
+                if (isInserted) {
+                    break;
                 }
             }
         }else{
@@ -75,10 +76,10 @@ public:
                         break;
                     }
                 }
-
                 if (isInserted) {
                     break;
                 }
+
             }
         }else{
             throw tidakBisaTambahElemen(", sudah penuh");
@@ -120,10 +121,15 @@ public:
     }
 
     bool apakah_slot_valid(const string& slot){   
-        int idxRow = Util::indeks_baris_slot(slot);
-        int idxCol = Util::indeks_kolom_slot(slot);
-        
-        return apakah_index_valid(idxRow, idxCol);
+        try{
+            int idxRow = Util::indeks_baris_slot(slot);
+            int idxCol = Util::indeks_kolom_slot(slot);
+            
+            return apakah_index_valid(idxRow, idxCol);
+        }catch(const exception& e){
+            cout << e.what() <<endl;
+            return false;
+        }
     }
 
     bool apakah_slot_kosong(int idxRow, int idxCol){        

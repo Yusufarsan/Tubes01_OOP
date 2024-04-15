@@ -50,6 +50,7 @@ unordered_map<pair<string, string>, int, Peternak::pair_hash> Peternak::frekuens
             shared_ptr<Hewan> hew = peternakan.dapatkan_elemen(i, j);
             if (hew != nullptr && hew.get()->bisa_panen()) {
                 // Increment the frequency count for the  hewan's name
+                cout << hew.get()->dapatkan_nama() <<endl;
                 frequencyMap[make_pair(hew.get()->dapatkan_kode_huruf(), hew.get()->dapatkan_nama())]++;
             }
         }
@@ -240,6 +241,7 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                                             prod = make_shared<ProdukHewan>(ent->dapatkan_nama(), get<0>(res), get<1>(res));
 
                                             // tambah ke peti penyimpanan
+                                            cout << "a";
                                             peti += (prod);
                                             succ.push_back(slot);
                                             i++;

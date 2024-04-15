@@ -20,84 +20,43 @@ int main() {
     peternak.tambah_peternakan("B2", make_shared<Karnivora>(karnivora));
     peternak.tambah_peternakan("C3", make_shared<Omnivora>(omnivora));
 
-    // Init Matriks
-    cout << "Matriks Awal" << endl;
-    gembala.cetak_peti();
-    gembala.cetak_peternakan();
+    // Mencetak peternakan
+    std::cout << "Peternakan setelah penambahan hewan:" << std::endl;
+    peternak.cetak_peternakan();
+    std::cout << std::endl;
 
-    // Memeriksa apakah ladang kosong
-    if (gembala.cek_peternakan_kosong()) {
-        cout << "Ladang kosong." << endl;
+    // Memeriksa apakah peternakan penuh
+    if (peternak.cek_peternakan_penuh()) {
+        std::cout << "Peternakan penuh." << std::endl;
     } else {
-        cout << "Ladang tidak kosong." << endl;
+        std::cout << "Peternakan belum penuh." << std::endl;
     }
 
-    // Menambahkan tanaman ke ladang
-    // gembala.tambah_ladang("A1", (tanaman1));
-    // gembala.tambah_ladang("A2", (tanaman1));
-    // gembala.tambah_ladang("A1", tanaman1);
-    // gembala.tambah_ladang("A2", tanaman1);
-    // gembala.tambah_ladang("B2", tanaman2);
-    // gembala.tambah_ladang("C3", tanaman3);
-
-    // Menambahkan tanaman ke peti
-    cout << "Penambahan Tanaman ke Peti" << endl;
-    gembala.tambah_peti(hewan1);
-    gembala.tambah_peti(hewan2);
-    gembala.tambah_peti(hewan3);
-
-
-    gembala.cetak_peti();
-
-    gembala.cetak_peternakan();
-    // Memeriksa apakah ladang penuh
-    if (gembala.cek_peternakan_penuh()) {
-        cout << "Ladang penuh." << endl;
+    // Memeriksa apakah peternakan kosong
+    if (peternak.cek_peternakan_kosong()) {
+        std::cout << "Peternakan kosong." << std::endl;
     } else {
-        cout << "Ladang belum penuh." << endl;
+        std::cout << "Peternakan tidak kosong." << std::endl;
     }
 
-    // Memeriksa apakah ladang kosong
-    if (gembala.cek_peternakan_kosong()) {
-        cout << "Ladang kosong." << endl;
-    } else {
-        cout << "Ladang tidak kosong." << endl;
-    }
+    // Menampilkan jumlah slot kosong di peternakan
+    std::cout << "Jumlah slot kosong di peternakan: " << peternak.jumlah_slot_kosong_peternakan() << std::endl;
 
-    // Menampilkan jumlah slot kosong di ladang
-    cout << "Jumlah slot kosong di ladang: " << gembala.jumlah_slot_kosong_peternakan() << endl;
+    // Memulai proses ternak
+    peternak.ternak();
 
-    // Melakukan penghapusan 
+    // Memberi makan hewan di peternakan
+    peternak.beri_pangan();
 
 
-    // Memulai proses penanaman
-    gembala.ternak();
-    gembala.ternak();
-    gembala.cetak_peti();
-    gembala.cetak_peternakan();
-
-    // gembala.dapatkan_peternakan().dapatkan_elemen(0, 0).get()->atur_umur(300);
-    hewan1.get()->atur_berat(8);
-
-    cout << "Perubahan berat Hewan1 = 8/10" << endl;
-    gembala.cetak_peternakan();
-
-    cout << "Belum Ada Yg Bisa Dipanen" << endl;
-    // Melakukan panen
-    gembala.panen();
-
-    cout << gembala.dapatkan_peternakan().dapatkan_elemen(2, 2).get()->dapatkan_berat() << endl;
-    cout << "+1x2 Umur" << endl;
-
-    cout << gembala.dapatkan_peternakan().dapatkan_elemen(2, 2).get()->dapatkan_berat() << endl;
-    cout << gembala.dapatkan_peternakan().dapatkan_elemen(2, 2).get()->dapatkan_berat() << endl;
+    peternak.cetak_peti();
     // Melakukan panen
     peternak.panen(daftarProduk);
 
-    // Mencetak ladang setelah operasi
-    cout << "Peternakan setelah operasi:" << endl;
-    gembala.cetak_peternakan();
-    gembala.cetak_peti();
+    // Mencetak peternakan setelah operasi
+    std::cout << "Peternakan setelah operasi:" << std::endl;
+    peternak.cetak_peternakan();
+    peternak.cetak_peti();
 
     return 0;
 }
