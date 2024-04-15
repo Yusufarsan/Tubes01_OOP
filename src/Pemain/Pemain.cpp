@@ -39,20 +39,22 @@ void Pemain::atur_berat_badan(int berat) {
 
 // Method
 void Pemain::tambah_peti(shared_ptr<Entitas> val) {
-    try{
+    try {
         peti += val;
-    }catch(const tidakBisaTambahElemen e){
+    }
+    catch (const tidakBisaTambahElemen e) {
         cout << e.what() << endl;
     }
 }
 
 void Pemain::tambah_peti(string slot, shared_ptr<Entitas> val) {
-    try{
+    try {
         int idxRow = Util::indeks_baris_slot(slot);
         int idxCol = Util::indeks_kolom_slot(slot);
 
         peti.tambah_elemen_matriks(idxRow, idxCol, val);
-    }catch(const exception& e){
+    }
+    catch (const exception& e) {
         cout << e.what();
     }
 }
@@ -293,18 +295,18 @@ void Pemain::membeli(Toko& toko) {
 
         int jumlah_barang;
         if (Util::instanceof<Produk>(barang.get())) {
-            shared_ptr<Produk> ptrProduk(dynamic_cast<Produk*>(barang.get()));
+            shared_ptr<Produk> ptrProduk = dynamic_pointer_cast<Produk>(barang);
             jumlah_barang = toko.dapatkan_jumlah_suatu_produk(ptrProduk);
-            while (kuantitas > jumlah_barang){
+            while (kuantitas > jumlah_barang) {
                 cout << "Jumlah barang di toko kurang dari yang diinginkan" << endl;
                 cout << "Kuantitas : ";
                 cin >> kuantitas;
             }
         }
         else if (Util::instanceof<Bangunan>(barang.get())) {
-            shared_ptr<Bangunan> ptrBangunan(dynamic_cast<Bangunan*>(barang.get()));
+            shared_ptr<Bangunan> ptrBangunan = dynamic_pointer_cast<Bangunan>(barang);
             jumlah_barang = toko.dapatkan_jumlah_suatu_bangunan(ptrBangunan);
-            while (kuantitas > jumlah_barang){
+            while (kuantitas > jumlah_barang) {
                 cout << "Jumlah barang di toko kurang dari yang diinginkan" << endl;
                 cout << "Kuantitas : ";
                 cin >> kuantitas;
@@ -314,7 +316,7 @@ void Pemain::membeli(Toko& toko) {
         if (kuantitas > peti.jumlah_slot_kosong()) {
             cout << "Slot penyimpanan tidak cukup" << endl;
         }
-        else {  
+        else {
             if (kuantitas * barang->dapatkan_harga() > uang) {
                 cout << "Uang tidak cukup" << endl;
             }
@@ -345,7 +347,8 @@ void Pemain::membeli(Toko& toko) {
                 while (list_slot_masukan.size() != kuantitas) {
                     if (list_slot_masukan.size() > kuantitas) {
                         list_slot_masukan.pop_back();
-                    } else {
+                    }
+                    else {
                         cout << "Input slot kurang dari jumlah barang yang dibeli" << endl;
                         return;
                     }
@@ -357,7 +360,8 @@ void Pemain::membeli(Toko& toko) {
                     int col = Util::indeks_kolom_slot(cell);
                     try {
                         peti.tambah_elemen_matriks(row, col, barang);
-                    } catch (const aksesTidakValid& e) {
+                    }
+                    catch (const aksesTidakValid& e) {
                         cout << e.what() << std::endl;
                         for (size_t j = 0; j < i; j++) {
                             string& cell = list_slot_masukan[j];
@@ -366,7 +370,8 @@ void Pemain::membeli(Toko& toko) {
                             peti.hapus(row, col);
                         }
                         return;
-                    } catch (const tidakBisaTambahElemen& e) {
+                    }
+                    catch (const tidakBisaTambahElemen& e) {
                         cout << e.what() << " / duplikat input slot" << std::endl;
                         for (size_t j = 0; j < i; j++) {
                             string& cell = list_slot_masukan[j];
