@@ -89,7 +89,7 @@ void ManagerPermainan::cetak_penyimpanan() {
 
 void ManagerPermainan::pungut_pajak() {
     if (shared_ptr<Walikota> p = dynamic_pointer_cast<Walikota>(this->daftar_pemain.at(this->giliran))) {
-        p->tagih_pajak(this->daftar_pemain);
+        p->tagih_pajak(this->daftar_pemain, this->daftar_pemain);
     }
     else {
         // throw BukanWalkotException("Hanya Walikota yang dapat mengumpulkan pajak\n");
