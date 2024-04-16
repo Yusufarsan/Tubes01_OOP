@@ -238,7 +238,14 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 int k = 0;
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == line) {
-                        shared_ptr<Tanaman> tanaman = make_unique<Tanaman>(*daftar_tanaman[k]);
+                        shared_ptr<Tanaman> tanaman;
+                        if (Util::instanceof<TanamanBuah>(daftar_tanaman[k].get())) {
+                            tanaman = make_unique<TanamanBuah>(*dynamic_pointer_cast<TanamanBuah>(daftar_tanaman[k]));
+                        }
+                        else if (Util::instanceof<TanamanMaterial>(daftar_tanaman[k].get())) {
+                            tanaman = make_unique<TanamanMaterial>(*dynamic_pointer_cast<TanamanMaterial>(daftar_tanaman[k]));
+                        }
+
                         pemain->tambah_peti(tanaman);
                         found = true;
                     }
@@ -340,7 +347,14 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 int k = 0;
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == line) {
-                        shared_ptr<Tanaman> tanaman = make_unique<Tanaman>(*daftar_tanaman[k]);
+                        shared_ptr<Tanaman> tanaman;
+                        if (Util::instanceof<TanamanBuah>(daftar_tanaman[k].get())) {
+                            tanaman = make_unique<TanamanBuah>(*dynamic_pointer_cast<TanamanBuah>(daftar_tanaman[k]));
+                        }
+                        else if (Util::instanceof<TanamanMaterial>(daftar_tanaman[k].get())) {
+                            tanaman = make_unique<TanamanMaterial>(*dynamic_pointer_cast<TanamanMaterial>(daftar_tanaman[k]));
+                        }
+
                         pemain->tambah_peti(tanaman);
                         found = true;
                     }
@@ -447,7 +461,14 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 int k = 0;
                 while (!found && k < daftar_tanaman.size()) {
                     if (daftar_tanaman[k]->dapatkan_nama() == line) {
-                        shared_ptr<Tanaman> tanaman = make_unique<Tanaman>(*daftar_tanaman[k]);
+                        shared_ptr<Tanaman> tanaman;
+                        if (Util::instanceof<TanamanBuah>(daftar_tanaman[k].get())) {
+                            tanaman = make_unique<TanamanBuah>(*dynamic_pointer_cast<TanamanBuah>(daftar_tanaman[k]));
+                        }
+                        else if (Util::instanceof<TanamanMaterial>(daftar_tanaman[k].get())) {
+                            tanaman = make_unique<TanamanMaterial>(*dynamic_pointer_cast<TanamanMaterial>(daftar_tanaman[k]));
+                        }
+
                         pemain->tambah_peti(tanaman);
                         found = true;
                     }
