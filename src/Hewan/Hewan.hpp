@@ -93,8 +93,9 @@ public:
      * @brief Virtual method untuk melakukan command makan
      * 
      * @param makanan 
+     * @return bool
      */
-    virtual void makan(Produk* makanan) = 0;
+    virtual bool makan(Produk* makanan) = 0;
 
     // Print Info
 

@@ -54,8 +54,9 @@ public:
      * @brief Melakukan command makan
      *
      * @param makanan
+     * @return bool
      */
-    void makan(Produk* makanan);
+    bool makan(Produk* makanan);
 };
 
 #endif
