@@ -8,7 +8,7 @@ Walikota::Walikota(const Walikota& other) : Pemain(other.nama, other.uang, other
 Walikota::~Walikota() {}
 
 // Method
-bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, string namaPemain){
+bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, string namaPemain) {
     bool isFound = false;
     int i = 0;
     while (!isFound && i < daftarPemain->size()) {
@@ -22,7 +22,7 @@ bool Walikota::apakah_nama_terdaftar(vector<shared_ptr<Pemain>>* daftarPemain, s
     return isFound;
 }
 
-bool Walikota::jenis_pemain_valid(string jenisPemain){
+bool Walikota::jenis_pemain_valid(string jenisPemain) {
     return Util::strComp(jenisPemain, "peternak") || Util::strComp(jenisPemain, "petani");
 }
 
@@ -173,6 +173,10 @@ void Walikota::tagih_pajak(vector<shared_ptr<Pemain>>& daftar_pemain, vector<sha
             peternak->atur_uang(peternak->dapatkan_uang() - pajak_pemain);
             cout << j << ". " << peternak->dapatkan_nama() << " - Peternak: " << pajak_pemain << " gulden" << endl;
         }
+        else if (Util::instanceof<Walikota>(temp_daftar_pemain[i].get())) {
+            continue;
+        }
+
         jumlah_pajak += pajak_pemain;
         j++;
     }
@@ -231,22 +235,22 @@ void Walikota::tambah_pemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int
 
 
         bool namaValid = false;
-        while(!namaValid){
+        while (!namaValid) {
             cout << "Masukan nama pemain: ";
             cin >> namaPemain;
 
-            if(Util::strComp(namaPemain, "BATAL")){
+            if (Util::strComp(namaPemain, "BATAL")) {
                 break;
             }
             bool jenisValid = false;
-            while(!apakah_nama_terdaftar(daftarPemain, namaPemain) && !jenisValid){
+            while (!apakah_nama_terdaftar(daftarPemain, namaPemain) && !jenisValid) {
                 cout << "Masukan jenis pemain: ";
                 cin >> jenisPemain;
 
-                if(Util::strComp(jenisPemain, "BATAL")){
+                if (Util::strComp(jenisPemain, "BATAL")) {
                     break;
                 }
-                if(jenis_pemain_valid(jenisPemain)){
+                if (jenis_pemain_valid(jenisPemain)) {
                     jenisValid = true; namaValid = true;
                     if (Util::strComp(jenisPemain, "peternak")) {
                         shared_ptr<Pemain> pemainBaru = make_unique<Peternak>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_peternakan);
@@ -254,17 +258,20 @@ void Walikota::tambah_pemain(vector<shared_ptr<Pemain>>* daftarPemain, tuple<int
                         this->uang -= 50;
                         cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
                         break;
-                    }else{ //petani
+                    }
+                    else { //petani
                         shared_ptr<Pemain> pemainBaru = make_unique<Petani>(namaPemain, 50, beratAwal, ukuranPenyimpanan, besar_lahan);
                         daftarPemain->push_back(pemainBaru);
                         this->uang -= 50;
                         cout << "Berhasil ditambahkan seorang " << jenisPemain << " bernama " << namaPemain << endl;
                         break;
                     }
-                }else{
+                }
+                else {
                     if (Util::strComp(jenisPemain, "walikota")) {
                         cout << "Walikota nya satu aja yah, biar ga berantem" << endl;
-                    }else{
+                    }
+                    else {
                         cout << "Role ini tidak tersedia" << endl;
                     }
                 }
