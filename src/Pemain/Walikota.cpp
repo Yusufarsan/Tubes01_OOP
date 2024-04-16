@@ -54,8 +54,7 @@ void Walikota::cetak_resep_semua_bangunan(vector<shared_ptr<Bangunan>> daftar_ba
     for (int i = 0; i < daftar_bangunan.size(); i++) {
         // Cetak nama dan harga bangunan
         string nama_bangunan = daftar_bangunan.at(i)->dapatkan_nama();
-        int harga_bangunan = daftar_bangunan.at(i)->dapatkan_harga();
-        cout << "   " << i + 1 << ". " << nama_bangunan << " (" << harga_bangunan << " gulden, ";
+        cout << "   " << i + 1 << ". " << nama_bangunan << " (";
 
         // Iterasi setiap bahan pada suatu bangunan
         map<string, int> map_resep = daftar_bangunan.at(i)->dapatkan_resep();
@@ -78,43 +77,50 @@ bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan
 
     // Inisialisasi jumlah setiap ProdukTanamanMaterial yg dibutuhkan menjadi 0
     for (const pair<string, int>& iterator : bangunan->dapatkan_resep()) {
+        // cout << "ini map penghitung\n";
+        // cout << iterator.first << endl;
         penghitung[iterator.first] = 0;
         // kekurangan_bahan[iterator.first] = 0;
     }
 
-    // Inisialisasi array of string slot material
-    vector<string> arr_slot;
+    // // Inisialisasi array of string slot material
+    // vector<string> arr_slot;
 
     // Mendapatkan jumlah setiap ProdukTanamanMaterial yang dimiliki
     for (int i = 0; i < this->peti.dapatkanBaris(); i++) {
         for (int j = 0; j < this->peti.dapatkanKolom(); j++) {
-            if (Util::instanceof<ProdukTanamanMaterial>(this->peti.dapatkan_elemen(i, j).get())) {
-                ++penghitung[this->peti.dapatkan_elemen(i, j)->dapatkan_nama()];
+            if (shared_ptr<ProdukTanamanMaterial> material = dynamic_pointer_cast<ProdukTanamanMaterial>(this->peti.dapatkan_elemen(i, j))) {
+                penghitung[material->dapatkan_nama()] += 1;
 
-                // Membuat array of string slot material untuk dihapus dari peti jika semua bahan cukup
-                arr_slot.push_back(Util::label_slot_tabel(i, j));
+                // // Membuat array of string slot material untuk dihapus dari peti jika semua bahan cukup
+                // arr_slot.push_back(Util::label_slot_tabel(i, j));
             }
         }
     }
 
+    // // Mencetak semua map penghitung
+    // cout << "Bahan yang kamu miliki adalah sebagai berikut.\n";
+    // for (const pair<string, int>& iterator : penghitung) {
+    //     cout << "   " << iterator.first << ": " << iterator.second << "\n";
+    // }
+
     // Mengecek tiap bahan apakah mencukupi atau tidak
     bool bahan_cukup = true;
     for (pair<string, int> iterator : penghitung) {
-        iterator.second -= bangunan->dapatkan_resep()[iterator.first];
-        if (iterator.second < 0) {
+        penghitung[iterator.first] -= bangunan->dapatkan_resep()[iterator.first];
+        if (penghitung[iterator.first] < 0) {
             bahan_cukup = false;
         }
     }
 
-    // cek uang walikota cukup apa ga
-    if (this->dapatkan_uang() < bangunan->dapatkan_harga()) {
-        bahan_cukup = false;
-    }
+    // // cek uang walikota cukup apa ga
+    // if (this->dapatkan_uang() < bangunan->dapatkan_harga()) {
+    //     bahan_cukup = false;
+    // }
 
     // Kalo bahan ga cukup, cetak kekurangannya
     if (!bahan_cukup) {
-        cout << "Kamu tidak punya sumber daya yang cukup! Masih memerlukan " << (this->dapatkan_uang() < bangunan->dapatkan_harga()) ? abs(this->uang - bangunan->dapatkan_harga()) : 0;
-        cout << " gulden, ";
+        cout << "Kamu tidak punya sumber daya yang cukup! Masih memerlukan ";
 
         // Iterasi pada map penghitung
         bool isFirst = true;
@@ -122,19 +128,32 @@ bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan
             if (!isFirst) {
                 cout << ", ";
             }
+            isFirst = false;
             cout << (iterator.second < 0) ? abs(iterator.second) : 0;
             cout << " " << iterator.first;
         }
-        cout << "!\n\n";
+        cout << "!\n";
 
         return bahan_cukup; // Udah pas false
     }
 
     // Menghapus slot material dari peti
-    for (const string iterator : arr_slot) {
-        int idxRow = Util::indeks_baris_slot(iterator);
-        int idxCol = Util::indeks_kolom_slot(iterator);
-        peti.hapus(idxRow, idxCol);
+    map<string, int> copy_resep = bangunan->dapatkan_resep();
+    // Mengiterasi semua elemen peti
+    for (int i = 0; i < this->peti.dapatkanBaris(); i++) {
+        for (int j = 0; j < this->peti.dapatkanKolom(); j++) {
+            if (shared_ptr<ProdukTanamanMaterial> material = dynamic_pointer_cast<ProdukTanamanMaterial>(this->peti.dapatkan_elemen(i, j))) {
+                // Mengecek apakah material.dapatkan_nama() ada pada copy_resep
+                if (copy_resep.find(material->dapatkan_nama()) != copy_resep.end()) {
+                    // Mengurangi jumlah bahan yang dimiliki
+                    if (copy_resep[material->dapatkan_nama()] > 0) {
+                        copy_resep[material->dapatkan_nama()] -= 1;
+                        // Menghapus elemen dari peti
+                        this->peti.hapus(i, j);
+                    }
+                }
+            }
+        }
     }
 
     // Menambahkan Bangunan ke peti walkot
@@ -208,9 +227,12 @@ void Walikota::bangun(vector<shared_ptr<Bangunan>> daftar_bangunan) {           
         }
 
         // Cek apakah pilihan_bangunan ada dalam daftar_bangunan
+        bool apa_ada = false;
         for (int i = 0; i < daftar_bangunan.size(); i++) {
             // Asumsikan ga ada nama bangunan yang sama
             if (daftar_bangunan.at(i)->dapatkan_nama() == pilihan_bangunan) {
+                apa_ada = true;
+
                 // Cek apakah material yg dimiliki mencukupi untuk membangun sekaligus mencetak kekurangan jika bahan tidak cukup
                 if (this->cek_bahan(daftar_bangunan.at(i))) {
                     // method cek_bahan akan melakukan hapus peti sekaligus tambah peti
@@ -224,7 +246,10 @@ void Walikota::bangun(vector<shared_ptr<Bangunan>> daftar_bangunan) {           
         if (berhasil_bangun) {
             break;
         }
-        cout << "Kamu tidak punya resep bangunan tersebut!\n\n";
+        if (!apa_ada) {
+            cout << "Bangunan tersebut tidak ada dalam daftar resep bangunan!\n";
+        }
+        cout << "\n";
     }
 }
 
