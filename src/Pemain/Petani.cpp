@@ -30,7 +30,7 @@ int Petani::jumlah_slot_kosong_ladang() {
 void Petani::tambah_ladang(string slot, shared_ptr<Tanaman> val) {
     int idxRow = Util::indeks_baris_slot(slot);
     int idxCol = Util::indeks_kolom_slot(slot);
-    
+
     ladang.tambah_elemen_matriks(idxRow, idxCol, val);
 }
 
@@ -74,7 +74,7 @@ void Petani::panen(vector<shared_ptr<Produk>> daftarProduk) {
             bool isJumlahValid = false;
             cout << "Nomor tanaman yang ingin dipanen: ";
             cin >> nomor;
-            if(nomor==-1){
+            if (nomor == -1) {
                 return;
             }
             if (cin.fail() || nomor >= counter || nomor <= 0) {
@@ -96,7 +96,7 @@ void Petani::panen(vector<shared_ptr<Produk>> daftarProduk) {
                             cin >> slot;
                             int row = Util::indeks_baris_slot(slot);
                             int col = Util::indeks_kolom_slot(slot);
-                            try{
+                            try {
                                 if (!ladang.apakah_index_valid(row, col)) {
                                     throw aksesTidakValid(row, col);
                                 }
@@ -130,9 +130,11 @@ void Petani::panen(vector<shared_ptr<Produk>> daftarProduk) {
                                 else {
                                     cout << "--Itu belum bisa dipanen---" << endl;
                                 }
-                            }catch(const tidakBisaTambahElemen& e){
-                                cout << e.what() <<endl;
-                            }catch(const aksesTidakValid& e){
+                            }
+                            catch (const tidakBisaTambahElemen& e) {
+                                cout << e.what() << endl;
+                            }
+                            catch (const aksesTidakValid& e) {
                                 cout << e.what();
                             }
                         }
@@ -158,11 +160,11 @@ void Petani::panen(vector<shared_ptr<Produk>> daftarProduk) {
                         isJumlahValid = true;
                     }
                     else {
-                        if (cin.fail()){
+                        if (cin.fail()) {
                             cin.clear(); // Clear the error flag
                             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
                         }
-                        
+
                         cout << "---Masukan petak yang valid!--- (-1 for back)" << endl;
                     }
                 }

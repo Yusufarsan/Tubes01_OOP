@@ -110,7 +110,6 @@ void ManagerPermainan::pungut_pajak() {
         p->tagih_pajak(this->daftar_pemain, this->daftar_pemain);
     }
     else {
-        // throw BukanWalkotException("Hanya Walikota yang dapat mengumpulkan pajak\n");
         cout << "Hanya Walikota yang dapat mengumpulkan pajak" << endl;
     }
 }
@@ -120,7 +119,6 @@ void ManagerPermainan::cetak_ladang() {
         p->cetak_ladang();
     }
     else {
-        // throw BukanPetaniException("Hanya Petani yang dapat mencetak ladang\n");
         cout << "Hanya Petani yang dapat mencetak ladang" << endl;
     }
 }
@@ -130,7 +128,6 @@ void ManagerPermainan::cetak_peternakan() {
         p->cetak_peternakan();
     }
     else {
-        // throw BukanPeternakException("Hanya Peternak yang dapat mencetak peternakan\n");
         cout << "Hanya Peternak yang dapat mencetak peternakan" << endl;
     }
 
@@ -141,7 +138,6 @@ void ManagerPermainan::tanam() {
         p->tanam();
     }
     else {
-        // throw BukanPetaniException("Hanya Petani yang dapat menanam\n");
         cout << "Hanya Petani yang dapat menanam" << endl;
     }
 }
@@ -151,7 +147,6 @@ void ManagerPermainan::ternak() {
         p->ternak();
     }
     else {
-        // throw BukanPeternakException("Hanya Peternak yang dapat beternak\n");
         cout << "Hanya Peternak yang dapat beternak" << endl;
     }
 }
@@ -161,7 +156,6 @@ void ManagerPermainan::bangun() {
         p->bangun(this->daftar_bangunan);
     }
     else {
-        // throw BukanWalkotException("Hanya Walikota yang dapat membangun\n");
         cout << "Hanya Walikota yang dapat membangun" << endl;
     }
 }
@@ -175,7 +169,6 @@ void ManagerPermainan::kasih_makan() {
         p->beri_pangan();
     }
     else {
-        // throw BukanPeternakException("Hanya Peternak yang dapat memberi makan\n");
         cout << "Hanya Peternak yang dapat memberi makan" << endl;
     }
 }
@@ -191,7 +184,6 @@ void ManagerPermainan::beli() {
         p->membeli(this->toko);
     }
     else {
-        // throw BukanWalkotException("Hanya Walikota yang dapat membeli\n");
         cout << "Terdapat kesalahan saat melakukan downcast class Pemain" << endl;
     }
 }
@@ -205,7 +197,7 @@ void ManagerPermainan::jual() {
         cout << e.what() << endl;
         cout << "-----Penjualan gagal!-----" << endl;
     }
-    
+
 }
 
 void ManagerPermainan::panen() {
@@ -216,7 +208,6 @@ void ManagerPermainan::panen() {
         p->panen(daftar_produk);
     }
     else {
-        // throw BukanPetaniPeternakException("Hanya Petani atau Peternak yang dapat memanen\n");
         cout << "Hanya Petani atau Peternak yang dapat memanen" << endl;
     }
 }
@@ -341,7 +332,6 @@ void ManagerPermainan::tambah_pemain() {
         atur_pemain(this->daftar_pemain);
     }
     else {
-        // throw BukanWalkotException("Hanya Walikota yang dapat menambah pemain\n");
         cout << "Hanya Walikota yang dapat menambah pemain" << endl;
     }
 }

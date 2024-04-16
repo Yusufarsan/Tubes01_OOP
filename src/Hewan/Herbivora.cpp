@@ -17,14 +17,14 @@ Herbivora& Herbivora::operator=(const Herbivora& other) {
 // Command
 bool Herbivora::makan(Produk* makanan) {
     if (Util::instanceof<ProdukTanamanBuah>(makanan)) {
-        //melakukan proses makan
+        // Melakukan proses makan
         tambah_berat(makanan->dapatkan_berat_tambahan());
         cout << "Setelah memakan " << makanan->dapatkan_nama() << ", berat " << dapatkan_nama() << " menjadi " << dapatkan_berat() << endl;
 
         return true;
     }
     else {
-        //mengeluarkan pesan error
+        // Mengeluarkan pesan error
         cout << dapatkan_nama() << " merupakan herbivora, Ia alergi dengan " << makanan->dapatkan_nama();
 
         return false;

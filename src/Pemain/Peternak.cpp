@@ -118,7 +118,7 @@ void Peternak::beri_pangan() {
                     }
                     else {
                         Produk* makanan = dynamic_cast<Produk*>(produk.get());
-                        if(hewanLapar->makan(makanan)){
+                        if (hewanLapar->makan(makanan)) {
                             peti.hapus(idxRowPeti, idxColPeti);
                         }
                     }
@@ -258,8 +258,8 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                                         cout << "----Katanya mau panen " << nama.at(nomor - 1) << "----" << endl;
                                     }
 
-                                }                                
-else {
+                                }
+                                else {
                                     cout << "----Itu belum bisa dipanen-----" << endl;
                                 }
                             }

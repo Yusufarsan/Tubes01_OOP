@@ -7,10 +7,10 @@ int main() {
     daftarProduk = InputKonfigurasi::InputKonfigurasiProduk("Pemain/confprod.txt");
 
     // Membuat objek peternak
-    Peternak peternak("NamaPeternak", 1000, 70, {5, 5}, {10, 10});
+    Peternak peternak("NamaPeternak", 1000, 70, { 5, 5 }, { 10, 10 });
 
     // Membuat beberapa hewan
-    Herbivora herbivora("1", "COW", "COW" , 20, 6);
+    Herbivora herbivora("1", "COW", "COW", 20, 6);
     Karnivora karnivora("2", "SNK", "SNAKE", 13, 4);
     Omnivora omnivora("3", "CHK", "CHICKEN", 50, 3);
     herbivora.atur_berat(100);
@@ -29,14 +29,16 @@ int main() {
     // Memeriksa apakah peternakan penuh
     if (peternak.cek_peternakan_penuh()) {
         std::cout << "Peternakan penuh." << std::endl;
-    } else {
+    }
+    else {
         std::cout << "Peternakan belum penuh." << std::endl;
     }
 
     // Memeriksa apakah peternakan kosong
     if (peternak.cek_peternakan_kosong()) {
         std::cout << "Peternakan kosong." << std::endl;
-    } else {
+    }
+    else {
         std::cout << "Peternakan tidak kosong." << std::endl;
     }
 

@@ -211,7 +211,7 @@ void Toko::tampilBarang(bool isTampilBangunan) {
         cout << number << ". " << it->first->dapatkan_nama() << " - " << it->first->dapatkan_harga() << " (" << it->second << ")" << endl;
         number++;
     }
-    if(isTampilBangunan){
+    if (isTampilBangunan) {
         for (auto it = this->bangunan.begin(); it != this->bangunan.end(); it++) {
             cout << number << ". " << it->first->dapatkan_nama() << " - " << it->first->dapatkan_harga() << " (" << it->second << ")" << endl;
             number++;

@@ -103,27 +103,29 @@ int Util::indeks_kolom_slot(const string& slot) {
     return index - 1;
 };
 
-bool Util::apakah_vokal(char c){
+bool Util::apakah_vokal(char c) {
     // Mengubah huruf menjadi huruf kecil untuk memudahkan perbandingan
     c = std::tolower(c);
-    
+
     // Mengecek apakah karakter merupakan vokal
     return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
 }
 
-string Util::dapatkan_kode(string nama){
+string Util::dapatkan_kode(string nama) {
     string kode;
 
     kode += nama[0];
-    for(size_t i=1; i<nama.length(); i++){
-        if(isalpha(nama[i])){
-            if(nama.length()>3){
-                if(apakah_vokal(nama[i])){
-                    kode += toupper(nama[i+1]);
-                }else{
+    for (size_t i = 1; i < nama.length(); i++) {
+        if (isalpha(nama[i])) {
+            if (nama.length() > 3) {
+                if (apakah_vokal(nama[i])) {
+                    kode += toupper(nama[i + 1]);
+                }
+                else {
                     kode += toupper(nama[i]);
                 }
-            }else{
+            }
+            else {
                 kode += nama[1];
             }
             break;
@@ -133,17 +135,17 @@ string Util::dapatkan_kode(string nama){
     return kode;
 }
 
-int Util::angka_acak(int awal, int akhir){
+int Util::angka_acak(int awal, int akhir) {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(awal, akhir);
     return dis(gen);
 }
 
-string Util::dapatkan_nama_tumb(string nama){
+string Util::dapatkan_nama_tumb(string nama) {
     // Mencari posisi _TREE dalam string
     size_t pos = nama.find("_TREE");
-    
+
     // Jika _TREE tidak ditemukan atau berada di awal string, kembalikan string kosong
     if (pos == std::string::npos || pos == 0) {
         return "";

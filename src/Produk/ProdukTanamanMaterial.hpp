@@ -23,10 +23,10 @@ public:
 
     /**
      * @brief Construct a new Produk Tanaman Material object
-     * 
-     * @param origin 
-     * @param berat_tambahan 
-     * @param harga 
+     *
+     * @param origin
+     * @param berat_tambahan
+     * @param harga
      */
     ProdukTanamanMaterial(string origin, int berat_tambahan, int harga) : Produk(origin + "_WOOD", Util::dapatkan_kode(origin) + "W", origin + "_TREE", berat_tambahan, harga) {};
 

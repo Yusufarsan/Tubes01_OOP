@@ -77,32 +77,17 @@ bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan
 
     // Inisialisasi jumlah setiap ProdukTanamanMaterial yg dibutuhkan menjadi 0
     for (const pair<string, int>& iterator : bangunan->dapatkan_resep()) {
-        // cout << "ini map penghitung\n";
-        // cout << iterator.first << endl;
         penghitung[iterator.first] = 0;
-        // kekurangan_bahan[iterator.first] = 0;
     }
-
-    // // Inisialisasi array of string slot material
-    // vector<string> arr_slot;
 
     // Mendapatkan jumlah setiap ProdukTanamanMaterial yang dimiliki
     for (int i = 0; i < this->peti.dapatkanBaris(); i++) {
         for (int j = 0; j < this->peti.dapatkanKolom(); j++) {
             if (shared_ptr<ProdukTanamanMaterial> material = dynamic_pointer_cast<ProdukTanamanMaterial>(this->peti.dapatkan_elemen(i, j))) {
                 penghitung[material->dapatkan_nama()] += 1;
-
-                // // Membuat array of string slot material untuk dihapus dari peti jika semua bahan cukup
-                // arr_slot.push_back(Util::label_slot_tabel(i, j));
             }
         }
     }
-
-    // // Mencetak semua map penghitung
-    // cout << "Bahan yang kamu miliki adalah sebagai berikut.\n";
-    // for (const pair<string, int>& iterator : penghitung) {
-    //     cout << "   " << iterator.first << ": " << iterator.second << "\n";
-    // }
 
     // Mengecek tiap bahan apakah mencukupi atau tidak
     bool bahan_cukup = true;
@@ -112,11 +97,6 @@ bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan
             bahan_cukup = false;
         }
     }
-
-    // // cek uang walikota cukup apa ga
-    // if (this->dapatkan_uang() < bangunan->dapatkan_harga()) {
-    //     bahan_cukup = false;
-    // }
 
     // Kalo bahan ga cukup, cetak kekurangannya
     if (!bahan_cukup) {
@@ -157,10 +137,8 @@ bool Walikota::cek_bahan(shared_ptr<Bangunan> bangunan) {       // Nge cek bahan
     }
 
     // Menambahkan Bangunan ke peti walkot
-    // peti+=make_shared<Entitas>(bangunan);
     shared_ptr<Entitas> copied_bangunan = make_unique<Bangunan>(*dynamic_pointer_cast<Bangunan>(bangunan));
     peti.tambah_elemen_matriks(copied_bangunan);
-    // this->tambah_peti(&bangunan);
 
     return bahan_cukup; // udah pasti true
 }

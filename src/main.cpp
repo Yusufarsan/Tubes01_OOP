@@ -19,7 +19,7 @@ int main() {
         cout << endl;
 
         try {
-            if (Util::strComp(input,"Y")) {
+            if (Util::strComp(input, "Y")) {
                 mp.muat();
                 break;
             }
@@ -29,10 +29,11 @@ int main() {
                 cout << "Berhasil menginisialisasi pemain Petani1, Peternak1, dan Walikota\n\n";
                 break;
             }
-            
+
             cout << "Ngomong apa si, coba masukkin ulang dah\n";
-        } catch (const invalid_argument& e) {
-        cout << e.what() << endl;
+        }
+        catch (const invalid_argument& e) {
+            cout << e.what() << endl;
         }
         catch (...) {
             cout << "Terjadi kesalahan dalam memuat state. Silakan coba lagi." << endl;
@@ -42,7 +43,7 @@ int main() {
 
     cout << "Permainan sudah dapat dimulai! Selamat bermain!!" << endl;
     while (true) {
-        if(mp.cek_menang()){
+        if (mp.cek_menang()) {
             mp.selebrasi();
             break;
         }
@@ -51,7 +52,7 @@ int main() {
         cin >> input;
 
         try {
-            if (Util::strComp(input, "NEXT")){
+            if (Util::strComp(input, "NEXT")) {
                 cout << "Pemain " << mp.pemain_skrg()->dapatkan_nama() << " mengakhiri gilirannya" << endl;
                 mp.next();
                 cout << "Giliran dilanjut ke pemain " << mp.pemain_skrg()->dapatkan_nama() << endl << endl;
@@ -60,7 +61,7 @@ int main() {
                 mp.cetak_penyimpanan();
             }
             else if (Util::strComp(input, "PUNGUT_PAJAK")) {
-                mp.pungut_pajak();  
+                mp.pungut_pajak();
             }
             else if (Util::strComp(input, "CETAK_LADANG")) {
                 mp.cetak_ladang();
@@ -77,7 +78,7 @@ int main() {
             else if (Util::strComp(input, "BANGUN")) {
                 mp.bangun();
             }
-            else if(Util::strComp(input, "TAMBAH_PEMAIN")){
+            else if (Util::strComp(input, "TAMBAH_PEMAIN")) {
                 mp.tambah_pemain();
             }
             else if (Util::strComp(input, "MAKAN")) {
@@ -101,35 +102,26 @@ int main() {
             else if (Util::strComp(input, "KELUAR")) {
                 mp.keluar();
                 break;
-            }else if(Util::strComp(input, "INFO")){
+            }
+            else if (Util::strComp(input, "INFO")) {
                 mp.info_pemain();
-            }else if(Util::strComp(input, "HELP")){
+            }
+            else if (Util::strComp(input, "HELP")) {
                 mp.help();
             }
             else {
                 cout << "Command apa itu? Coba masukin command lain yg ada di spek\n";
             }
-        } catch (const invalid_argument& e) {
+        }
+        catch (const invalid_argument& e) {
             cout << e.what() << endl;
         }
-        // catch (const Saad& e) {     // NANTI LENGKAPIN SEMUA EXCEPTION NYA DISINI
-        //     cout << e.what() << endl;
-        // }
-        // catch (const Iki& e) {
-        //     cout << e.what() << endl;
-        // }
-        // catch (const Dapur& e) {
-        //     cout << e.what() << endl;
-        // }
-        // catch (const Ucup& e) {
-        //     cout << e.what() << endl;
-        // }
         catch (...) {           // INI KAYAK ELSE NYA EXCEPTION BAGI GW, jadi kalo ada case yg bocor, masuknya kesini   
             cout << "Terjadi kesalahan dalam menjalankan command. Silakan coba lagi." << endl;
         }
 
         cout << endl;
     }
-    
+
     return 0;
 }

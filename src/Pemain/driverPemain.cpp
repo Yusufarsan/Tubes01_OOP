@@ -47,14 +47,14 @@ int main() {
 
     // player.hapus_peti(slot_masukan);
 
-    
+
     player.cetak_peti();
 
     cout << endl << "jualan" << endl;
-    cout << player.dapatkan_uang()<<endl;
+    cout << player.dapatkan_uang() << endl;
     Toko* toko = new Toko();
     player.jual(*toko);
-    cout << player.dapatkan_uang()<<endl;
+    cout << player.dapatkan_uang() << endl;
 
     cout << endl << "Cetak Peti" << endl;
     player.cetak_peti();

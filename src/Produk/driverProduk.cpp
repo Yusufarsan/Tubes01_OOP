@@ -13,7 +13,8 @@ int main() {
     ProdukHewan* produkHewanPtr = dynamic_cast<ProdukHewan*>(produkPtr);
     if (produkHewanPtr != nullptr) {
         std::cout << "The Produk object can be downcast to ProdukHewan" << std::endl;
-    } else {
+    }
+    else {
         std::cout << "The Produk object cannot be downcast to ProdukHewan" << std::endl;
     }
     produkHewanPtr->print_info();

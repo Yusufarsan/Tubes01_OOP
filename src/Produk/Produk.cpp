@@ -9,11 +9,11 @@ Produk::Produk(string id, string kode_huruf, string nama, int harga, int berat_t
     jumlah_produk++;
 }
 
-Produk::Produk(string nama, string kode, string origin, int berat_tambahan, int harga): origin(origin), berat_tambahan(berat_tambahan), Entitas(to_string(dapatkan_jumlah_produk_saat_ini()), kode, nama, harga){
+Produk::Produk(string nama, string kode, string origin, int berat_tambahan, int harga) : origin(origin), berat_tambahan(berat_tambahan), Entitas(to_string(dapatkan_jumlah_produk_saat_ini()), kode, nama, harga) {
     jumlah_produk++;
 }
 
-Produk::~Produk() {jumlah_produk--;}
+Produk::~Produk() { jumlah_produk--; }
 
 Produk& Produk::operator=(const Produk& produk) {
     Entitas::operator=(produk);
@@ -24,7 +24,7 @@ Produk& Produk::operator=(const Produk& produk) {
 }
 
 // Getter & Setter
-int Produk::dapatkan_jumlah_produk_saat_ini(){
+int Produk::dapatkan_jumlah_produk_saat_ini() {
     return jumlah_produk;
 }
 int Produk::dapatkan_berat_tambahan() {

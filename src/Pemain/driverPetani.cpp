@@ -9,7 +9,7 @@ int main() {
 
 
     // Membuat objek petani
-    Petani paktani("NamaPetani", 1000, 70, {5, 5}, {5, 5});
+    Petani paktani("NamaPetani", 1000, 70, { 5, 5 }, { 5, 5 });
 
     // Membuat beberapa tanaman
     TanamanMaterial tanaman1("1", "TEK", "TEAK_TREE", 15, 5);
@@ -35,14 +35,16 @@ int main() {
     // Memeriksa apakah ladang penuh
     if (paktani.cek_ladang_penuh()) {
         cout << "Ladang penuh." << endl;
-    } else {
+    }
+    else {
         cout << "Ladang belum penuh." << endl;
     }
 
     // Memeriksa apakah ladang kosong
     if (paktani.cek_ladang_kosong()) {
         cout << "Ladang kosong." << endl;
-    } else {
+    }
+    else {
         cout << "Ladang tidak kosong." << endl;
     }
 
