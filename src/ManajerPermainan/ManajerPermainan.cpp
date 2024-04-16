@@ -223,8 +223,11 @@ void ManagerPermainan::panen() {
 
 void ManagerPermainan::muat() {
     string path_to_file;
-    cout << "Masukkan lokasi berkas state : ";
+    string rel = "../state/";
+    string ext = ".txt";
+    cout << "Masukkan nama berkas state (ex. save1): ";
     cin >> path_to_file;
+    path_to_file = rel + path_to_file + ext;
     cout << endl;
 
     this->atur_pemain(InputKonfigurasi::InputStatePemain(path_to_file, this->daftar_tanaman, this->daftar_hewan, this->daftar_produk, this->daftar_bangunan, this->besar_penyimpanan, this->besar_lahan, this->besar_peternakan, this->toko));
@@ -241,8 +244,11 @@ void ManagerPermainan::inisialisasi_pemain() {
 
 void ManagerPermainan::simpan() {
     string path_to_file;
-    cout << "Masukkan lokasi berkas state : ";
+    string rel = "../state/";
+    string ext = ".txt";
+    cout << "Masukkan nama berkas state (ex. save1): ";
     cin >> path_to_file;
+    path_to_file = rel+ path_to_file + ext;
     cout << endl;
 
     // Check if folder exists
