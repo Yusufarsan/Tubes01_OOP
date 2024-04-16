@@ -32,7 +32,7 @@ Tugas Besar OOP
 5. Jalankan executable
 
     ```bash
-    ./BCN_BacinPunya
+    ./main
     ```
 
 ## Anggota
