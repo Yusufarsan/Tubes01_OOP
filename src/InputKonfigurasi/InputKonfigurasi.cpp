@@ -268,7 +268,17 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_produk.size()) {
                     if (daftar_produk[k]->dapatkan_nama() == line) {
-                        shared_ptr<Produk> produk = make_unique<Produk>(*daftar_produk[k]);
+                        shared_ptr<Produk> produk;
+                        if (Util::instanceof<ProdukHewan>(daftar_produk[k].get())) {
+                            produk = make_unique<ProdukHewan>(*dynamic_pointer_cast<ProdukHewan>(daftar_produk[k]));
+                        }
+                        else if (Util::instanceof<ProdukTanamanBuah>(daftar_produk[k].get())) {
+                            produk = make_unique<ProdukTanamanBuah>(*dynamic_pointer_cast<ProdukTanamanBuah>(daftar_produk[k]));
+                        }
+                        else if (Util::instanceof<ProdukTanamanMaterial>(daftar_produk[k].get())) {
+                            produk = make_unique<ProdukTanamanMaterial>(*dynamic_pointer_cast<ProdukTanamanMaterial>(daftar_produk[k]));
+                        }
+
                         pemain->tambah_peti(produk);
                         found = true;
                     }
@@ -359,7 +369,17 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_produk.size()) {
                     if (daftar_produk[k]->dapatkan_nama() == line) {
-                        shared_ptr<Produk> produk = make_unique<Produk>(*daftar_produk[k]);
+                        shared_ptr<Produk> produk;
+                        if (Util::instanceof<ProdukHewan>(daftar_produk[k].get())) {
+                            produk = make_unique<ProdukHewan>(*dynamic_pointer_cast<ProdukHewan>(daftar_produk[k]));
+                        }
+                        else if (Util::instanceof<ProdukTanamanBuah>(daftar_produk[k].get())) {
+                            produk = make_unique<ProdukTanamanBuah>(*dynamic_pointer_cast<ProdukTanamanBuah>(daftar_produk[k]));
+                        }
+                        else if (Util::instanceof<ProdukTanamanMaterial>(daftar_produk[k].get())) {
+                            produk = make_unique<ProdukTanamanMaterial>(*dynamic_pointer_cast<ProdukTanamanMaterial>(daftar_produk[k]));
+                        }
+
                         pemain->tambah_peti(produk);
                         found = true;
                     }
@@ -457,7 +477,17 @@ vector<shared_ptr<Pemain>> InputKonfigurasi::InputStatePemain(string nama_file, 
                 k = 0;
                 while (!found && k < daftar_produk.size()) {
                     if (daftar_produk[k]->dapatkan_nama() == line) {
-                        shared_ptr<Produk> produk = make_unique<Produk>(*daftar_produk[k]);
+                        shared_ptr<Produk> produk;
+                        if (Util::instanceof<ProdukHewan>(daftar_produk[k].get())) {
+                            produk = make_unique<ProdukHewan>(*dynamic_pointer_cast<ProdukHewan>(daftar_produk[k]));
+                        }
+                        else if (Util::instanceof<ProdukTanamanBuah>(daftar_produk[k].get())) {
+                            produk = make_unique<ProdukTanamanBuah>(*dynamic_pointer_cast<ProdukTanamanBuah>(daftar_produk[k]));
+                        }
+                        else if (Util::instanceof<ProdukTanamanMaterial>(daftar_produk[k].get())) {
+                            produk = make_unique<ProdukTanamanMaterial>(*dynamic_pointer_cast<ProdukTanamanMaterial>(daftar_produk[k]));
+                        }
+
                         pemain->tambah_peti(produk);
                         found = true;
                     }

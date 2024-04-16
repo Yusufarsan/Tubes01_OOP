@@ -38,7 +38,7 @@ int Peternak::jumlah_slot_kosong_peternakan() {
 void Peternak::tambah_peternakan(string slot, shared_ptr<Hewan> val) {
     int idxRow = Util::indeks_baris_slot(slot);
     int idxCol = Util::indeks_kolom_slot(slot);
-    
+
     peternakan.tambah_elemen_matriks(idxRow, idxCol, val);
 };
 
@@ -51,7 +51,7 @@ unordered_map<pair<string, string>, int, Peternak::pair_hash> Peternak::frekuens
             shared_ptr<Hewan> hew = peternakan.dapatkan_elemen(i, j);
             if (hew != nullptr && hew.get()->bisa_panen()) {
                 // Increment the frequency count for the  hewan's name
-                cout << hew.get()->dapatkan_nama() <<endl;
+                cout << hew.get()->dapatkan_nama() << endl;
                 frequencyMap[make_pair(hew.get()->dapatkan_kode_huruf(), hew.get()->dapatkan_nama())]++;
             }
         }
@@ -131,7 +131,7 @@ void Peternak::beri_pangan() {
                                 hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
                                 cout << "Setelah memakan " << makanan->dapatkan_nama() << ", berat " << hewanLapar->dapatkan_nama() << " menjadi " << hewanLapar->dapatkan_berat() << endl;
                             }
-                            else{
+                            else {
                                 cout << hewanLapar->dapatkan_nama() << " merupakan karnivora, Ia alergi dengan " << makanan->dapatkan_nama();
                             }
                         }
@@ -142,7 +142,7 @@ void Peternak::beri_pangan() {
                                 hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
                                 cout << "Setelah memakan " << makanan->dapatkan_nama() << ", berat " << hewanLapar->dapatkan_nama() << " menjadi " << hewanLapar->dapatkan_berat() << endl;
                             }
-                            else{
+                            else {
                                 cout << hewanLapar->dapatkan_nama() << " merupakan herbivora, Ia alergi dengan " << makanan->dapatkan_nama();
                             }
                         }
@@ -171,7 +171,7 @@ void Peternak::ternak() {
             cout << "Petak : ";
             cin >> slot_masukan_peti;
 
-            if(slot_masukan_peti=="BATAL"){
+            if (slot_masukan_peti == "BATAL") {
                 return;
             }
 
@@ -228,7 +228,7 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
             bool isJumlahValid = false;
             cout << "Nomor hewan yang ingin dipanen: ";
             cin >> nomor;
-            if(nomor == -1){
+            if (nomor == -1) {
                 return;
             }
             if (cin.fail() || nomor >= counter || nomor <= 0) {
@@ -250,11 +250,11 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                             cin >> slot;
                             int row = Util::indeks_baris_slot(slot);
                             int col = Util::indeks_kolom_slot(slot);
-                            try{
-                                if(!peternakan.apakah_index_valid(row,col)){
-                                    throw aksesTidakValid(row,col);
+                            try {
+                                if (!peternakan.apakah_index_valid(row, col)) {
+                                    throw aksesTidakValid(row, col);
                                 }
-                                if(peternakan.apakah_slot_kosong(row,col)){
+                                if (peternakan.apakah_slot_kosong(row, col)) {
                                     throw tidakBisaTambahElemen(", Kamu ga punya hewan di situ");
                                 }
                                 if (peternakan.dapatkan_elemen(row, col)->bisa_panen()) {
@@ -263,12 +263,12 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                                         shared_ptr<Entitas> ent = peternakan.hapus(row, col);
                                         shared_ptr<Entitas> prod;
 
-                                        auto res = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama()+"_MEAT");
+                                        auto res = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama() + "_MEAT");
 
                                         prod = make_shared<ProdukHewan>(ent->dapatkan_nama(), get<0>(res), get<1>(res));
 
-                                        if(Util::strComp(ent->dapatkan_kode_huruf(), "CHK") || Util::strComp(ent->dapatkan_kode_huruf(), "DCK")){
-                                            auto resEgg = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama()+"_EGG");
+                                        if (Util::strComp(ent->dapatkan_kode_huruf(), "CHK") || Util::strComp(ent->dapatkan_kode_huruf(), "DCK")) {
+                                            auto resEgg = dapatkan_konfig_produk(daftarProduk, ent->dapatkan_nama() + "_EGG");
                                             shared_ptr<Entitas> egg = make_shared<ProdukHewan>(ent->dapatkan_nama(), get<0>(resEgg), get<1>(resEgg), true);
                                             peti += (egg);
                                         }
@@ -280,15 +280,18 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                                         cout << "----Berhasil----" << endl;
                                     }
                                     else {
-                                        cout << "----Katanya mau panen " << nama.at(nomor - 1) <<"----"<< endl;
+                                        cout << "----Katanya mau panen " << nama.at(nomor - 1) << "----" << endl;
                                     }
 
-                                }else {
+                                }                                
+else {
                                     cout << "----Itu belum bisa dipanen-----" << endl;
                                 }
-                            }catch(const tidakBisaTambahElemen& e) {
-                                cout << e.what() <<endl;
-                            }catch(const aksesTidakValid& e) {
+                            }
+                            catch (const tidakBisaTambahElemen& e) {
+                                cout << e.what() << endl;
+                            }
+                            catch (const aksesTidakValid& e) {
                                 cout << e.what();
                             }
                         }
@@ -314,7 +317,7 @@ void Peternak::panen(vector<shared_ptr<Produk>> daftarProduk) {
                         isJumlahValid = true;
                     }
                     else {
-                        if (cin.fail()){
+                        if (cin.fail()) {
                             cin.clear(); // Clear the error flag
                             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
                         }
