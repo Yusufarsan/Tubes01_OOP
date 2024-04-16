@@ -201,12 +201,11 @@ void ManagerPermainan::jual() {
         shared_ptr<Pemain> pemain = this->daftar_pemain.at(this->giliran);
         pemain->jual(this->toko);
     }
-    catch (const tidakDapatMenjual& e) {
+    catch (const exception& e) {
         cout << e.what() << endl;
+        cout << "-----Penjualan gagal!-----" << endl;
     }
-    catch (const slotKosong& e) {
-        cout << e.what() << endl;
-    }
+    
 }
 
 void ManagerPermainan::panen() {
