@@ -111,11 +111,11 @@ void Toko::atur_hewan(vector<shared_ptr<Hewan>> h) {
 // Method
 void Toko::masukanEntitas(shared_ptr<Entitas> Ent) {
     if (Util::instanceof<Bangunan>(Ent.get())) {
-        shared_ptr<Bangunan> ptrBangunan(dynamic_cast<Bangunan*>(Ent.get()));
+        shared_ptr<Bangunan> ptrBangunan = dynamic_pointer_cast<Bangunan>(Ent);
         tambah_bangunan(ptrBangunan);
     }
     else if (Util::instanceof<Produk>(Ent.get())) {
-        shared_ptr<Produk> ptrProduk(dynamic_cast<Produk*>(Ent.get()));
+        shared_ptr<Produk> ptrProduk = dynamic_pointer_cast<Produk>(Ent);
         tambah_produk(ptrProduk);
     }
 }

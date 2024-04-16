@@ -9,66 +9,64 @@ using namespace std;
 
 
 class tidakBisaTambahElemen : public exception {       // Contoh class yang nerima string sebagai pesan error
-    private:
-        string message;
-    public:
-        tidakBisaTambahElemen(const string& message) : message("Maaf tidak bisa menambah elemen"+message) {}
+private:
+    string message;
+public:
+    tidakBisaTambahElemen(const string& message) : message("Maaf tidak bisa menambah elemen" + message) {}
 
-        const char* what() const throw() {
-            return message.c_str();
-        }
+    const char* what() const throw() {
+        return message.c_str();
+    }
 };
 
 class aksesTidakValid : public exception {       // Contoh class yang nerima int lalu memberikan pesan mengapa error bisa terjadi
-    private:
-        int baris;
-        int kolom;
-        string message;
-    public:
-        aksesTidakValid(int baris, int kolom) : baris(baris), kolom(kolom) {
-            ostringstream oss;
-            oss << "Maaf kamu akses matriks di luar batas, baris: " << baris << " kolom: " << kolom << endl;
-            message = oss.str();
-        }
+private:
+    int baris;
+    int kolom;
+    string message;
+public:
+    aksesTidakValid(int baris, int kolom) : baris(baris), kolom(kolom) {
+        ostringstream oss;
+        oss << "Maaf kamu akses matriks di luar batas, baris: " << baris << " kolom: " << kolom << endl;
+        message = oss.str();
+    }
 
-        const char* what() const noexcept override {
-            return message.c_str();
-        }
+    const char* what() const noexcept override {
+        return message.c_str();
+    }
 };
 
-class slotKosong: public exception{
-    private:
-        string slot;
-        string message;
-    
-    public:
-        slotKosong(string slot): slot(slot){
-            ostringstream oss;
-            oss << "Maaf slot " + slot + " kosong" << endl;
-            message = oss.str();
-        }
+class slotKosong : public exception {
+private:
+    string slot;
+    string message;
 
-        const char* what() const noexcept override{
-            return message.c_str();
-        }
+public:
+    slotKosong(string slot) :slot(slot) {
+        message = "Maaf slot " + slot + " kosong";
+    }
+
+    const char* what() const noexcept override {
+        return message.c_str();
+    }
 };
 
-class tidakDapatMenjual: public exception{
-    private:
-        string nama;
-        string message;
-    
-    public:
-        tidakDapatMenjual(string nama):nama(nama){
-            ostringstream oss;
-            oss << "Kamu tidak dapat menjual " + nama << endl;
-            message = oss.str();
-        }
+class tidakDapatMenjual : public exception {
+private:
+    string nama;
+    string message;
 
-        const char* what() const noexcept override{
-            return message.c_str();
-        }
-        
+public:
+    tidakDapatMenjual(string nama) :nama(nama) {
+        ostringstream oss;
+        oss << "Kamu tidak dapat menjual " + nama << endl;
+        message = oss.str();
+    }
+
+    const char* what() const noexcept override {
+        return message.c_str();
+    }
+
 };
 
 // Error di matriks:

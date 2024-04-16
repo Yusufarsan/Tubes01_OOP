@@ -73,11 +73,11 @@ void ManagerPermainan::inisialisasi_toko() {
     this->toko.atur_hewan(this->daftar_hewan);
 }
 
-bool ManagerPermainan::cek_menang(){
-    return (this->daftar_pemain.at(this->giliran)->dapatkan_berat_badan()>=berat_pemenang && this->daftar_pemain.at(this->giliran)->dapatkan_uang()>= uang_pemenang);
+bool ManagerPermainan::cek_menang() {
+    return (this->daftar_pemain.at(this->giliran)->dapatkan_berat_badan() >= berat_pemenang && this->daftar_pemain.at(this->giliran)->dapatkan_uang() >= uang_pemenang);
 }
 
-void ManagerPermainan::selebrasi(){
+void ManagerPermainan::selebrasi() {
     cout << R"(
         ██╗    ██╗██╗███╗   ██╗███╗   ██╗███████╗██████╗ 
         ██║    ██║██║████╗  ██║████╗  ██║██╔════╝██╔══██╗
@@ -85,10 +85,10 @@ void ManagerPermainan::selebrasi(){
         ██║███╗██║██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗
         ╚███╔███╔╝██║██║ ╚████║██║ ╚████║███████╗██║  ██║
         ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
-        )" <<endl;    
+        )" << endl;
 
-    cout << "Selamat kepada " << this->daftar_pemain.at(this->giliran)->dapatkan_nama() << " telah memenangkan permainan ini." << endl;                              
-                                                 
+    cout << "Selamat kepada " << this->daftar_pemain.at(this->giliran)->dapatkan_nama() << " telah memenangkan permainan ini." << endl;
+
 }
 
 // Command Permainan
@@ -197,18 +197,15 @@ void ManagerPermainan::beli() {
 }
 
 void ManagerPermainan::jual() {
-    if (shared_ptr<Walikota> p = dynamic_pointer_cast<Walikota>(this->daftar_pemain.at(this->giliran))) {
-        p->jual(this->toko);
+    try {
+        shared_ptr<Pemain> pemain = this->daftar_pemain.at(this->giliran);
+        pemain->jual(this->toko);
     }
-    else if (shared_ptr<Petani> p = dynamic_pointer_cast<Petani>(this->daftar_pemain.at(this->giliran))) {
-        p->jual(this->toko);
+    catch (const tidakDapatMenjual& e) {
+        cout << e.what() << endl;
     }
-    else if (shared_ptr<Peternak> p = dynamic_pointer_cast<Peternak>(this->daftar_pemain.at(this->giliran))) {
-        p->jual(this->toko);
-    }
-    else {
-        // throw BukanWalkotException("Hanya Walikota yang dapat menjual\n");
-        cout << "Terdapat kesalahan saat melakukan downcast class Pemain" << endl;
+    catch (const slotKosong& e) {
+        cout << e.what() << endl;
     }
 }
 
@@ -400,31 +397,33 @@ void ManagerPermainan::print_konfigurasi() {
 }
 
 // Print info pemain
-void ManagerPermainan::info_pemain(){
+void ManagerPermainan::info_pemain() {
     cout << "-----INFORMASI PEMAIN-----" << endl << endl;
-    for(const shared_ptr<Pemain> each : this->daftar_pemain){
+    for (const shared_ptr<Pemain> each : this->daftar_pemain) {
         cout << "Nama: " << each.get()->dapatkan_nama() << endl;
         string role;
-        if(Util::instanceof<Walikota>(each.get())){
+        if (Util::instanceof<Walikota>(each.get())) {
             role = "Walikota";
-        }else if(Util::instanceof<Peternak>(each.get())){
+        }
+        else if (Util::instanceof<Peternak>(each.get())) {
             role = "Peternak";
-        }else if(Util::instanceof<Petani>(each.get())){
+        }
+        else if (Util::instanceof<Petani>(each.get())) {
             role = "Petani";
         }
-        cout << "Role: " << role <<endl;
+        cout << "Role: " << role << endl;
         cout << "Uang: " << each.get()->dapatkan_uang() << endl;
-        cout << "Berat: "<<each.get()->dapatkan_berat_badan() << endl << endl;
+        cout << "Berat: " << each.get()->dapatkan_berat_badan() << endl << endl;
     }
 }
 
 // Print command apa saja yang ada
-void ManagerPermainan::help(){
-    cout << "-----HELP-----" << endl <<endl;
-    vector<string> command = {"NEXT", "CETAK_PENYIMPANAN", "PUNGUT_PAJAK", "CETAK_LADANG", "CETAK_PETERNAKAN", "TANAM", "TERNAK", "BANGUN", "TAMBAH_PEMAIN", "MAKAN", "KASIH MAKAN", "BELI", "JUAL", "PANEN", "SIMPAN", "KELUAR", "INFO"};
-    for(int i=0; i<command.size(); i++){
-        cout<< i+1 << ". " << command[i] << endl;
+void ManagerPermainan::help() {
+    cout << "-----HELP-----" << endl << endl;
+    vector<string> command = { "NEXT", "CETAK_PENYIMPANAN", "PUNGUT_PAJAK", "CETAK_LADANG", "CETAK_PETERNAKAN", "TANAM", "TERNAK", "BANGUN", "TAMBAH_PEMAIN", "MAKAN", "KASIH MAKAN", "BELI", "JUAL", "PANEN", "SIMPAN", "KELUAR", "INFO" };
+    for (int i = 0; i < command.size(); i++) {
+        cout << i + 1 << ". " << command[i] << endl;
     }
 
-    cout << "Jika ingin kembali, coba ketik \"BATAL\" atau \"-1\"" <<endl;
+    cout << "Jika ingin kembali, coba ketik \"BATAL\" atau \"-1\"" << endl;
 }

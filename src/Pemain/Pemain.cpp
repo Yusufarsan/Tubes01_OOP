@@ -190,7 +190,6 @@ void Pemain::jual(Toko& toko) {
         }
         else {
             isWalikota = false;
-
         }
 
         // Memilih petak
@@ -198,85 +197,94 @@ void Pemain::jual(Toko& toko) {
         cout << "Petak : ";
 
 
-        // cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        // getline(cin, slot_masukan);
-        if(Util::strComp(slot_masukan, "BATAL")){
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        getline(cin, slot_masukan);
+        if (Util::strComp(slot_masukan, "BATAL")) {
             return;
         }
 
 
-        // istringstream iss(slot_masukan);
+        istringstream iss(slot_masukan);
         vector<string> list_slot_masukan;
-        list_slot_masukan.push_back("A01");
-        list_slot_masukan.push_back("B01");
-        list_slot_masukan.push_back("C01");
 
-        // string slot;
-        // while (getline(iss, slot, ',')) {
-        //     slot.erase(0, slot.find_first_not_of(" \t"));
-        //     slot.erase(slot.find_last_not_of(" \t") + 1);
-        //     list_slot_masukan.push_back(slot);
-        // }
+        string slot;
+        while (getline(iss, slot, ',')) {
+            slot.erase(0, slot.find_first_not_of(" \t"));
+            slot.erase(slot.find_last_not_of(" \t") + 1);
+            list_slot_masukan.push_back(slot);
+        }
 
         // TINGGAL JUAL KE TOKO
         vector<shared_ptr<Entitas>> daftarDijual;
         for (size_t i = 0; i < list_slot_masukan.size(); i++) {
-            cout << i<<list_slot_masukan.size()<<endl;
             const string& cell = list_slot_masukan[i];
             cout << "Anda memilih slot: " << cell << endl;
 
             int row = Util::indeks_baris_slot(cell);
             int col = Util::indeks_kolom_slot(cell);
-            try{
-                shared_ptr<Entitas> ent = peti.dapatkan_elemen(row, col);
-                if (!peti.apakah_slot_kosong(row, col)) {
-                    if (Util::instanceof<Bangunan>(ent.get())) {
-                        if (!isWalikota) {
-                            throw tidakDapatMenjual(ent->dapatkan_nama());
+
+            shared_ptr<Entitas> ent = peti.dapatkan_elemen(row, col);
+            if (!peti.apakah_slot_kosong(row, col)) {
+                if (Util::instanceof<Bangunan>(ent.get()) && !isWalikota) {
+                    for (size_t j = 0; j < i; j++) {
+                        string& cell = list_slot_masukan[j];
+                        row = Util::indeks_baris_slot(cell);
+                        col = Util::indeks_kolom_slot(cell);
+                        atur_uang(dapatkan_uang() - daftarDijual.at(j)->dapatkan_harga());
+                        if (Util::instanceof<Produk>(ent.get())) {
+                            peti.tambah_elemen_matriks(row, col, make_shared<Produk>(*dynamic_pointer_cast<Produk>(daftarDijual.at(j))));
+                            toko.kurangi_produk(dynamic_pointer_cast<Produk>(daftarDijual.at(j)));
+
                         }
-
+                        else if (Util::instanceof<Bangunan>(ent.get())) {
+                            peti.tambah_elemen_matriks(row, col, make_shared<Bangunan>(*dynamic_pointer_cast<Bangunan>(daftarDijual.at(j))));
+                            toko.kurangi_bangunan(dynamic_pointer_cast<Bangunan>(daftarDijual.at(j)));
+                        }
+                        else {
+                            peti.tambah_elemen_matriks(row, col, daftarDijual.at(j));
+                        }
                     }
-                    cout << "   -> " << ent->dapatkan_nama() << " dengan harga " << ent->dapatkan_harga() << endl;
 
-                    // Tambahkan uang ke pemain
-                    atur_uang(dapatkan_uang() + ent->dapatkan_harga());
-
-                    // Tambahkan barang ke toko
-                    toko.masukanEntitas(ent);
-
-                    cout << "   Berhasil menjual " << ent->dapatkan_nama() << endl;
-                    
-
-                    shared_ptr<Entitas> prod = peti.hapus(row, col);
-                    cout << prod->dapatkan_nama();
-                    daftarDijual.push_back(prod);
-                    // daftarDijual.at(0)->dapatkan_nama();
+                    throw tidakDapatMenjual(ent->dapatkan_nama());
                 }
-                else {
-                    throw slotKosong(cell);
-                }
-            }catch (const exception& e) {
-                cout << daftarDijual.size() << i;
-                cout << e.what() <<endl;
+                cout << "   -> " << ent->dapatkan_nama() << " dengan harga " << ent->dapatkan_harga() << endl;
+
+                // Tambahkan uang ke pemain
+                atur_uang(dapatkan_uang() + ent->dapatkan_harga());
+
+                // Tambahkan barang ke toko
+                toko.masukanEntitas(ent);
+
+                cout << "   Berhasil menjual " << ent->dapatkan_nama() << endl;
+
+
+                peti.hapus(row, col);
+
+                daftarDijual.push_back(ent);
+            }
+            else {
                 for (size_t j = 0; j < i; j++) {
                     string& cell = list_slot_masukan[j];
                     row = Util::indeks_baris_slot(cell);
                     col = Util::indeks_kolom_slot(cell);
-                    atur_uang(dapatkan_uang()-daftarDijual.at(j)->dapatkan_harga());
-                    peti.tambah_elemen_matriks(row,col, daftarDijual.at(j));
-                    if (Util::instanceof<Produk>(daftarDijual.at(j).get())) {
+                    atur_uang(dapatkan_uang() - daftarDijual.at(j)->dapatkan_harga());
+                    if (Util::instanceof<Produk>(ent.get())) {
+                        peti.tambah_elemen_matriks(row, col, make_shared<Produk>(*dynamic_pointer_cast<Produk>(daftarDijual.at(j))));
                         toko.kurangi_produk(dynamic_pointer_cast<Produk>(daftarDijual.at(j)));
-                        
-                    }else if (Util::instanceof<Bangunan>(daftarDijual.at(j).get())) {
+
+                    }
+                    else if (Util::instanceof<Bangunan>(ent.get())) {
+                        peti.tambah_elemen_matriks(row, col, make_shared<Bangunan>(*dynamic_pointer_cast<Bangunan>(daftarDijual.at(j))));
                         toko.kurangi_bangunan(dynamic_pointer_cast<Bangunan>(daftarDijual.at(j)));
                     }
+                    else {
+                        peti.tambah_elemen_matriks(row, col, daftarDijual.at(j));
+                    }
                 }
-                return;
+
+                throw slotKosong(cell);
             }
         }
-        cout <<"habis"<<endl;
-
-
     }
 }
 
@@ -309,7 +317,7 @@ void Pemain::membeli(Toko& toko) {
         int num, kuantitas;
         cout << "Barang ingin dibeli : ";
         cin >> num;
-        if(num==-1){
+        if (num == -1) {
             return;
         }
 
@@ -370,7 +378,7 @@ void Pemain::membeli(Toko& toko) {
 
                 vector<string> list_slot_masukan;
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                while(list_slot_masukan.size()!=kuantitas){
+                while (list_slot_masukan.size() != kuantitas) {
                     string slot_masukan;
                     cout << "Petak slot: ";
                     getline(cin, slot_masukan);
@@ -383,8 +391,8 @@ void Pemain::membeli(Toko& toko) {
                         slot.erase(slot.find_last_not_of(" \t") + 1);
                         list_slot_masukan.push_back(slot);
                     }
-                    if(list_slot_masukan.size()!=kuantitas){
-                        cout << "Masukkan jumlah slot sesuai dengan kuantitas"<<endl;
+                    if (list_slot_masukan.size() != kuantitas) {
+                        cout << "Masukkan jumlah slot sesuai dengan kuantitas" << endl;
                         list_slot_masukan.clear();
                     }
                 }
@@ -463,7 +471,7 @@ void Pemain::makan() {       // Belom di test dan tinggal perbaikin print-an
             int row = Util::indeks_baris_slot(slot);
             int col = Util::indeks_kolom_slot(slot);
 
-            if(slot == "-1"){
+            if (slot == "-1") {
                 break;
             }
 
