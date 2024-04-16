@@ -109,7 +109,7 @@ void Peternak::beri_pangan() {
                     idxRowPeti = Util::indeks_baris_slot(slot_masukan_peti);
                     idxColPeti = Util::indeks_kolom_slot(slot_masukan_peti);
 
-                    shared_ptr<Entitas> produk = peti.hapus(idxRowPeti, idxColPeti);
+                    shared_ptr<Entitas> produk = peti.dapatkan_elemen(idxRowPeti, idxColPeti);
                     if (!Util::instanceof<Produk>(produk.get())) {
                         cout << "Slot " << slot_masukan_peti << " tidak berisi makanan." << endl;
                     }
@@ -119,19 +119,33 @@ void Peternak::beri_pangan() {
                     else {
                         Produk* makanan = dynamic_cast<Produk*>(produk.get());
                         if (Util::instanceof<Omnivora>(hewanLapar)) {
+                            peti.hapus(idxRowPeti, idxColPeti);
+
                             hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                            cout << "Setelah memakan " << makanan->dapatkan_nama() << ", berat " << hewanLapar->dapatkan_nama() << " menjadi " << hewanLapar->dapatkan_berat() << endl;
                         }
                         else if (Util::instanceof<Karnivora>(hewanLapar)) {
                             if (Util::instanceof<ProdukHewan>(makanan)) {
+                                peti.hapus(idxRowPeti, idxColPeti);
+
                                 hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                                cout << "Setelah memakan " << makanan->dapatkan_nama() << ", berat " << hewanLapar->dapatkan_nama() << " menjadi " << hewanLapar->dapatkan_berat() << endl;
+                            }
+                            else{
+                                cout << hewanLapar->dapatkan_nama() << " merupakan karnivora, Ia alergi dengan " << makanan->dapatkan_nama();
                             }
                         }
                         else {
                             if (Util::instanceof<ProdukTanamanBuah>(makanan)) {
+                                peti.hapus(idxRowPeti, idxColPeti);
+
                                 hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
+                                cout << "Setelah memakan " << makanan->dapatkan_nama() << ", berat " << hewanLapar->dapatkan_nama() << " menjadi " << hewanLapar->dapatkan_berat() << endl;
+                            }
+                            else{
+                                cout << hewanLapar->dapatkan_nama() << " merupakan herbivora, Ia alergi dengan " << makanan->dapatkan_nama();
                             }
                         }
-                        cout << "Kamu memilih " << makanan->dapatkan_nama() << " untuk diberi ke " << hewanLapar->dapatkan_nama() << endl;
                     }
 
                     break;
