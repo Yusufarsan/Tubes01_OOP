@@ -3,6 +3,7 @@
 Tugas Besar OOP
 
 ## Cara Mengkompilasi
+Jika menggunakan windows maka gunakan wsl dalam mengkompilasi
 
 1. Install CMake
 
