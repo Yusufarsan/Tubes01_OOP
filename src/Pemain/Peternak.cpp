@@ -118,33 +118,8 @@ void Peternak::beri_pangan() {
                     }
                     else {
                         Produk* makanan = dynamic_cast<Produk*>(produk.get());
-                        if (Util::instanceof<Omnivora>(hewanLapar)) {
+                        if(hewanLapar->makan(makanan)){
                             peti.hapus(idxRowPeti, idxColPeti);
-
-                            hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
-                            cout << "Setelah memakan " << makanan->dapatkan_nama() << ", berat " << hewanLapar->dapatkan_nama() << " menjadi " << hewanLapar->dapatkan_berat() << endl;
-                        }
-                        else if (Util::instanceof<Karnivora>(hewanLapar)) {
-                            if (Util::instanceof<ProdukHewan>(makanan)) {
-                                peti.hapus(idxRowPeti, idxColPeti);
-
-                                hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
-                                cout << "Setelah memakan " << makanan->dapatkan_nama() << ", berat " << hewanLapar->dapatkan_nama() << " menjadi " << hewanLapar->dapatkan_berat() << endl;
-                            }
-                            else {
-                                cout << hewanLapar->dapatkan_nama() << " merupakan karnivora, Ia alergi dengan " << makanan->dapatkan_nama();
-                            }
-                        }
-                        else {
-                            if (Util::instanceof<ProdukTanamanBuah>(makanan)) {
-                                peti.hapus(idxRowPeti, idxColPeti);
-
-                                hewanLapar->tambah_berat(makanan->dapatkan_berat_tambahan());
-                                cout << "Setelah memakan " << makanan->dapatkan_nama() << ", berat " << hewanLapar->dapatkan_nama() << " menjadi " << hewanLapar->dapatkan_berat() << endl;
-                            }
-                            else {
-                                cout << hewanLapar->dapatkan_nama() << " merupakan herbivora, Ia alergi dengan " << makanan->dapatkan_nama();
-                            }
                         }
                     }
 
